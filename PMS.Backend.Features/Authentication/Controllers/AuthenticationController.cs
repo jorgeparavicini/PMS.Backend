@@ -33,14 +33,14 @@ namespace PMS.Backend.Features.Authentication.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<string>> Login(LoginModel input)
         {
-            var result = await _signInManager.PasswordSignInAsync(input.UserName, input.Password, input.RememberMe, true);
+            var result =
+                await _signInManager.PasswordSignInAsync(input.UserName, input.Password, input.RememberMe, true);
             if (result.Succeeded)
             {
-                return Ok();
+                return Ok("Successfully logged in");
             }
 
-            return Unauthorized(
-                $"Locked Out: {result.IsLockedOut}, Not Allowed: {result.IsNotAllowed}, TFA: {result.RequiresTwoFactor}");
+            return Unauthorized("Could not authenticate user");
         }
 
         [HttpPost("register")]
