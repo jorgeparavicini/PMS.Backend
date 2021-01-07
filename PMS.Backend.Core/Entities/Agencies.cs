@@ -19,5 +19,7 @@ namespace PMS.Backend.Core.Entities
         public bool PayCom { get; set; }
         
         public string EmergencyPhone { get; set; }
+        
+        public Contact Contact { get; set; }
     }
 }

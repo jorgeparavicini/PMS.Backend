@@ -8,7 +8,7 @@ namespace PMS.Backend.Features.Authentication
         public static void AddAuthenticationFeature(this IServiceCollection services)
         {
             // Controllers
-            services.AddScoped<AuthenticationController>();
+            //services.AddScoped<AuthenticationController>();
         }
     }
 }

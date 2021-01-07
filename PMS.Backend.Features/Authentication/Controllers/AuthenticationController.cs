@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using PMS.Backend.Features.Authentication.Models;
 
 namespace PMS.Backend.Features.Authentication.Controllers
 {
-    [ApiController]
+    /*[ApiController]
     [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
@@ -32,14 +33,14 @@ namespace PMS.Backend.Features.Authentication.Controllers
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<string>> Login(LoginModel input)
-        {
-            var result =
-                await _signInManager.PasswordSignInAsync(input.UserName, input.Password, input.RememberMe, true);
+        { 
+            var result = await _signInManager.PasswordSignInAsync(input.UserName, input.Password, input
+            .RememberMe, true);
             if (result.Succeeded)
             {
                 return Ok("Successfully logged in");
             }
-
+            
             return Unauthorized("Could not authenticate user");
         }
 
@@ -63,11 +64,17 @@ namespace PMS.Backend.Features.Authentication.Controllers
         }
 
         [HttpPost("logout")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return Ok();
         }
-    }
+
+        private string GenerateToken()
+        {
+            return "";
+        }
+    }*/
 }
