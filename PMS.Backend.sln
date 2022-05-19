@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30615.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Service", "PMS.Backend.Service\PMS.Backend.Service.csproj", "{38FFD8E9-F54D-487E-B1C1-FA4073ADFD7D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Core", "PMS.Backend.Core\PMS.Backend.Core.csproj", "{FA8F31A4-A4AB-416F-A363-02F1F20E8823}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Backend.Features", "PMS.Backend.Features\PMS.Backend.Features.csproj", "{C8B8D1A9-DDEB-43AC-8F79-25EDD40B7897}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Features", "PMS.Backend.Features\PMS.Backend.Features.csproj", "{C8B8D1A9-DDEB-43AC-8F79-25EDD40B7897}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Backend.Security", "PMS.Backend.Security\PMS.Backend.Security.csproj", "{EB11408B-D280-4F21-BDE9-30444A9CF274}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Security", "PMS.Backend.Security\PMS.Backend.Security.csproj", "{EB11408B-D280-4F21-BDE9-30444A9CF274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Backend.Common", "PMS.Backend.Common\PMS.Backend.Common.csproj", "{88C2B413-EBD8-4505-A547-9F89A4353ECA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Common", "PMS.Backend.Common\PMS.Backend.Common.csproj", "{88C2B413-EBD8-4505-A547-9F89A4353ECA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
