@@ -7,7 +7,8 @@ namespace PMS.Backend.Features.Registration.Controllers;
 [Route("[controller]")]
 public class RegistrationController : ControllerBase
 {
-    private readonly PmsDbContext _dbContext;
-    
-    public RegistrationController(PmsDbContext dbContext) => _dbContext = dbContext;
+    public RegistrationController()
+    {
+        Console.WriteLine("Testing Code Coverage");
+    }
 }
