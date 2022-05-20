@@ -1,11 +1,7 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using PMS.Backend.Features.Authentication;
+using PMS.Backend.Core.Database;
+using PMS.Backend.Features.Registration;
 using PMS.Backend.Security;
 
 namespace PMS.Backend.Service
@@ -36,7 +32,10 @@ namespace PMS.Backend.Service
                 }
             );
 
-            services.AddSecurity(Configuration);
+            //services.AddSecurity(Configuration);
+            
+            services.AddDbContext<PmsDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("PMS")));
 
             services.AddCors(
                 options => options.AddPolicy(
@@ -51,7 +50,8 @@ namespace PMS.Backend.Service
             services.AddAutoMapper(typeof(SecurityProfile));
 
             // Custom Features
-            services.AddAuthenticationFeature();
+            //services.AddAuthenticationFeature();
+            services.AddRegistration();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

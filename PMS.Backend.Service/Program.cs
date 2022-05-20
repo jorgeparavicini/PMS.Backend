@@ -1,28 +1,17 @@
 using System.Reflection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
+using PMS.Backend.Service;
 
-namespace PMS.Backend.Service
-{
-    public static class Program
+CreateHostBuilder(args).Build().Run();
+
+static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((hostContext, builder) =>
     {
-        public static void Main(string[] args)
+        if (hostContext.HostingEnvironment.IsDevelopment())
         {
-            CreateHostBuilder(args).Build().Run();
+            builder.AddUserSecrets(Assembly.GetExecutingAssembly());
         }
-
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((hostContext, builder) =>
-            {
-                if (hostContext.HostingEnvironment.IsDevelopment())
-                {
-                    builder.AddUserSecrets(Assembly.GetExecutingAssembly());
-                }
-            }).ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseKestrel();
-                webBuilder.UseStartup<Startup>();
-            });
-    }
-}
+    }).ConfigureWebHostDefaults(webBuilder =>
+    {
+        webBuilder.UseKestrel();
+        webBuilder.UseStartup<Startup>();
+    });

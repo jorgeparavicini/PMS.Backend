@@ -1,14 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using PMS.Backend.Features.Authentication.Models;
+﻿namespace PMS.Backend.Features.Authentication.Controllers;
 
-namespace PMS.Backend.Features.Authentication.Controllers
-{
     /*[ApiController]
     [Route("auth")]
     public class AuthenticationController : ControllerBase
@@ -77,4 +68,4 @@ namespace PMS.Backend.Features.Authentication.Controllers
             return "";
         }
     }*/
-}
+
