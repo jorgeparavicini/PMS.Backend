@@ -13,13 +13,34 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
+        
     - name: Restore dependencies
       run: dotnet restore
+      
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      
+    - name: Generate coverage report
+      run: | 
+        cd ./PMS.Backend.Test/
+        dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory 
+        coverage 
+        cp TestResults/*/coverage.cobertura.xml coverage/coverage.cobertura.xml
+      
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage/coverage.cobertura.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
+        verbose: true
+        
+    - name: Revert Directory
+      run: cd ..
