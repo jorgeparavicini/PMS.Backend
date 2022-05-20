@@ -28,8 +28,7 @@ jobs:
     - name: Generate coverage report
       run: | 
         cd ./PMS.Backend.Test/
-        dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory 
-        coverage 
+        dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory coverage 
         cp TestResults/*/coverage.cobertura.xml coverage/coverage.cobertura.xml
       
     - name: Upload coverage report
