@@ -29,7 +29,7 @@ jobs:
       run: dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory coverage 
         
     - name: Copy coverage report to predicatble location
-        cp coverage/*/coverage.cobertura.xml coverage/coverage.cobertura.xml
+      run: cp coverage/*/coverage.cobertura.xml coverage/coverage.cobertura.xml
       
     - name: Upload coverage report
       uses: codecov/codecov-action@v2
