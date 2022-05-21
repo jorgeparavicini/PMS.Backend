@@ -28,7 +28,7 @@ public class Agency
 
     #region Relations
 
-    public List<AgencyContact> AgencyContacts { get; set; } = null!;
+    public IList<AgencyContact> AgencyContacts { get; } = new List<AgencyContact>();
 
     #endregion
 

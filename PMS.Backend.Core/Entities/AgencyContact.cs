@@ -35,6 +35,8 @@ public class AgencyContact
     public int AgencyId { get; set; }
     public Agency Agency { get; set; } = null!;
 
+    public IList<GroupReservation> GroupReservations { get; } = new List<GroupReservation>();
+
     #endregion
 
     public AgencyContact(
