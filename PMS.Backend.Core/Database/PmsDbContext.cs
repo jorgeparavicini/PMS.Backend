@@ -11,7 +11,5 @@ namespace PMS.Backend.Core.Database
         public PmsDbContext(DbContextOptions<PmsDbContext> options) : base(options)
         {
         }
-        
-        
     }
 }

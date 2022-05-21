@@ -8,7 +8,7 @@ namespace PMS.Backend.Security.Models.Requests
         [JsonPropertyName("username")]
         [Required]
         public string Username { get; init; }
-        
+
         [JsonPropertyName("password")]
         [Required]
         public string Password { get; init; }

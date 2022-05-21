@@ -2,8 +2,8 @@
 
 namespace PMS.Backend.Security.Entity
 {
-    public class User: IdentityUser
+    public class User : IdentityUser
     {
-        
+
     }
 }

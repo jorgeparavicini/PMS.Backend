@@ -33,7 +33,7 @@ namespace PMS.Backend.Service
             );
 
             //services.AddSecurity(Configuration);
-            
+
             services.AddDbContext<PmsDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PMS")));
 
@@ -62,7 +62,7 @@ namespace PMS.Backend.Service
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(
-                    c  => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PMS.Backend.Service v1")
+                    c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PMS.Backend.Service v1")
                 );
             }
 

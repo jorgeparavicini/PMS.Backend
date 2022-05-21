@@ -10,7 +10,7 @@ namespace PMS.Backend.Security.Database
         public SecurityDbContext(DbContextOptions<SecurityDbContext> options) : base(options)
         {
         }
-        
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
