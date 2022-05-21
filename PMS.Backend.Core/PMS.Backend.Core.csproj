@@ -14,8 +14,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities" />
     <Folder Include="Migrations" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PMS.Backend.Common\PMS.Backend.Common.csproj" />
   </ItemGroup>
 
 </Project>

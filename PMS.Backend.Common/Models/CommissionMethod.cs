@@ -2,5 +2,6 @@
 
 public enum CommissionMethod
 {
-    
+    DeductedByAgency,
+    DeductedByProvider,
 }
