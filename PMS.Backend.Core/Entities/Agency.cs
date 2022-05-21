@@ -5,6 +5,8 @@ namespace PMS.Backend.Core.Entities;
 
 public class Agency
 {
+    #region Properties
+    
     public int Id { get; set; }
     
     [MaxLength(255)]
@@ -22,6 +24,14 @@ public class Agency
     [MaxLength(255)]
     public string? EmergencyEmail { get; set; }
 
+    #endregion
+    
+    #region Relations
+    
+    public List<AgencyContact> AgencyContacts { get; set; } = null!;
+    
+    #endregion
+
     public Agency(
         string legalName,
         decimal defaultCommissionRate,
@@ -37,4 +47,6 @@ public class Agency
         EmergencyPhone = emergencyPhone;
         EmergencyEmail = emergencyEmail;
     }
+    
+    // TODO: Add Company, Association, Default Channel, Default Origination
 }
