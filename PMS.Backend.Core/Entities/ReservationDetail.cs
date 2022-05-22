@@ -1,6 +1,6 @@
 ﻿namespace PMS.Backend.Core.Entities;
 
-public class ReservationDetails
+public class ReservationDetail
 {
     #region Properties
 
@@ -23,7 +23,7 @@ public class ReservationDetails
 
     #endregion
 
-    public ReservationDetails(
+    public ReservationDetail(
         DateTime reservationDate,
         DateTime checkIn,
         DateTime checkOut,
