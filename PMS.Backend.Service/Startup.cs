@@ -51,7 +51,7 @@ namespace PMS.Backend.Service
 
             // Custom Features
             //services.AddAuthenticationFeature();
-            services.AddRegistration();
+            services.AddAPIFeature();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
