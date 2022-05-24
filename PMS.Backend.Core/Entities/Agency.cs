@@ -12,9 +12,9 @@ public class Agency
     [MaxLength(255)]
     public string LegalName { get; set; }
 
-    public decimal DefaultCommissionRate { get; set; }
+    public decimal? DefaultCommissionRate { get; set; }
 
-    public decimal DefaultCommissionOnExtras { get; set; }
+    public decimal? DefaultCommissionOnExtras { get; set; }
 
     public CommissionMethod CommissionMethod { get; set; }
 
@@ -34,11 +34,11 @@ public class Agency
 
     public Agency(
         string legalName,
-        decimal defaultCommissionRate,
-        decimal defaultCommissionOnExtras,
         CommissionMethod commissionMethod,
-        string? emergencyPhone,
-        string? emergencyEmail)
+        string? emergencyEmail = null,
+        decimal? defaultCommissionOnExtras = null,
+        decimal? defaultCommissionRate = null,
+        string? emergencyPhone = null)
     {
         LegalName = legalName;
         DefaultCommissionRate = defaultCommissionRate;

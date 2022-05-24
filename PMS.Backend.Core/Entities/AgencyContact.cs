@@ -12,19 +12,19 @@ public class AgencyContact
     public string ContactName { get; set; }
 
     [MaxLength(255)]
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
     [MaxLength(255)]
-    public string Phone { get; set; }
+    public string? Phone { get; set; }
 
     [MaxLength(255)]
-    public string Address { get; set; }
+    public string? Address { get; set; }
 
     [MaxLength(255)]
-    public string City { get; set; }
+    public string? City { get; set; }
 
     [MaxLength(255)]
-    public string ZipCode { get; set; }
+    public string? ZipCode { get; set; }
 
     public bool IsFrequentVendor { get; set; }
 
@@ -41,13 +41,13 @@ public class AgencyContact
 
     public AgencyContact(
         string contactName,
-        string email,
-        string phone,
-        string address,
-        string city,
-        string zipCode,
         bool isFrequentVendor,
-        int agencyId)
+        int agencyId,
+        string? city = null,
+        string? zipCode = null,
+        string? address = null,
+        string? phone = null,
+        string? email = null)
     {
         ContactName = contactName;
         Email = email;

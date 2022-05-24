@@ -9,7 +9,7 @@ public class Reservation
     public int Id { get; set; }
     
     [MaxLength(255)]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     #endregion
 
@@ -20,7 +20,7 @@ public class Reservation
 
     #endregion
 
-    public Reservation(string name)
+    public Reservation(string? name = null)
     {
         Name = name;
     }

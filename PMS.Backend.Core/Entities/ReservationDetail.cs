@@ -12,7 +12,7 @@ public class ReservationDetail
     
     public DateTime CheckOut { get; set; }
     
-    public DateTime FolioClosedOn { get; set; }
+    public DateTime? FolioClosedOn { get; set; }
 
     #endregion
 
@@ -27,8 +27,8 @@ public class ReservationDetail
         DateTime reservationDate,
         DateTime checkIn,
         DateTime checkOut,
-        DateTime folioClosedOn,
-        int reservationId)
+        int reservationId,
+        DateTime? folioClosedOn = null)
     {
         ReservationDate = reservationDate;
         CheckIn = checkIn;
