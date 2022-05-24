@@ -11,8 +11,8 @@ public class ReservationService : IReservationService
 
     public ReservationService(PmsDbContext dbContext) => _dbContext = dbContext;
     
-    public async Task<Reservation> GetReservation(int id)
+    public async Task<Reservation?> GetReservation(int id)
     {
-        return _dbContext.Res
+        return await _dbContext.Reservations.FindAsync(id);
     }
 }
