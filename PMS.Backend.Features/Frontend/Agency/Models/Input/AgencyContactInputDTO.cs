@@ -1,7 +1,6 @@
-﻿namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
+﻿namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 
-public record AgencyContactDTO(
-    int Id,
+public record AgencyContactInputDTO(
     string ContactName,
     string? Email,
     string? Phone,

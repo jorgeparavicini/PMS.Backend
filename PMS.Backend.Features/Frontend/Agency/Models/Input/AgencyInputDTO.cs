@@ -1,13 +1,12 @@
 ﻿using PMS.Backend.Common.Models;
 
-namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
+namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 
-public record AgencyDTO(
-    int Id,
+public record AgencyInputDTO(
     string LegalName,
     decimal? DefaultCommissionRate,
     decimal? DefaultCommissionOnExtras,
     CommissionMethod CommissionMethod,
     string? EmergencyPhone,
     string? EmergencyEmail,
-    IReadOnlyList<AgencyContactDTO> AgencyContacts);
+    IReadOnlyList<AgencyContactInputDTO> AgencyContacts);
