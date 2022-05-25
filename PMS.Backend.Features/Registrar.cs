@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using PMS.Backend.Features;
+using PMS.Backend.Features.Frontend;
 using PMS.Backend.Features.Frontend.Agency;
 using PMS.Backend.Features.Frontend.Reservation;
-using PMS.Backend.Features.Frontend.Reservation.Controllers;
-using PMS.Backend.Features.Reservation.Services.Contracts;
 
+[assembly: ApiConventionType(typeof(Conventions))]
 namespace PMS.Backend.Features;
 
 public static class Registrar
