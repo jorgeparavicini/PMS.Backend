@@ -38,17 +38,17 @@ public class Agency
     public Agency(
         string legalName,
         CommissionMethod commissionMethod,
-        string? emergencyEmail = null,
-        decimal? defaultCommissionOnExtras = null,
         decimal? defaultCommissionRate = null,
-        string? emergencyPhone = null)
+        decimal? defaultCommissionOnExtras = null,
+        string? emergencyPhone = null,
+        string? emergencyEmail = null)
     {
         LegalName = legalName;
         DefaultCommissionRate = defaultCommissionRate;
         DefaultCommissionOnExtras = defaultCommissionOnExtras;
         CommissionMethod = commissionMethod;
-        EmergencyPhone = emergencyPhone;
         EmergencyEmail = emergencyEmail;
+        EmergencyPhone = emergencyPhone;
     }
 
     // TODO: Add Company, Association, Default Channel, Default Origination
