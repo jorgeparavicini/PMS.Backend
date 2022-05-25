@@ -1,17 +1,35 @@
-using System.Reflection;
-using PMS.Backend.Service;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using PMS.Backend.Core.Database;
+using PMS.Backend.Features;
 
-CreateHostBuilder(args).Build().Run();
+var builder = WebApplication.CreateBuilder(args);
 
-static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((hostContext, builder) =>
-    {
-        if (hostContext.HostingEnvironment.IsDevelopment())
-        {
-            builder.AddUserSecrets(Assembly.GetExecutingAssembly());
-        }
-    }).ConfigureWebHostDefaults(webBuilder =>
-    {
-        webBuilder.UseKestrel();
-        webBuilder.UseStartup<Startup>();
-    });
+builder.Services.AddControllers();
+
+// Add Swagger
+builder.Services.AddSwaggerGen(c =>
+    c.SwaggerDoc("v1",
+        new OpenApiInfo { Title = "PMS.Backend.Service", Version = "v1" }));
+
+// Add Database
+builder.Services.AddDbContext<PmsDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")));
+
+builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
+builder.Services.AddAPI();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.UseRouting();
+app.MapControllers();
+app.Run();
