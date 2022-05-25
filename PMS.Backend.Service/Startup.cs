@@ -1,7 +1,9 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Database;
-using PMS.Backend.Features.Registration;
+using PMS.Backend.Features;
+using PMS.Backend.Features.Reservation;
 using PMS.Backend.Security;
 
 namespace PMS.Backend.Service
@@ -47,7 +49,7 @@ namespace PMS.Backend.Service
             );
 
             // Auto Mapper
-            services.AddAutoMapper(typeof(SecurityProfile));
+            services.AddAutoMapper(typeof(Features.Registrar).Assembly);
 
             // Custom Features
             //services.AddAuthenticationFeature();
