@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Folder Include="Authentication\Models\" />
-    <Folder Include="Frontend\Agency\Models\Input" />
   </ItemGroup>
 
   <ItemGroup>
