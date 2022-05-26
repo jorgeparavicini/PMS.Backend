@@ -6,6 +6,7 @@ using PMS.Backend.Features;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 // Add Swagger
 builder.Services.AddSwaggerGen(c =>
