@@ -26,18 +26,6 @@ public class GroupReservation
 
     #endregion
 
-    public GroupReservation(
-        string? reference,
-        DateTime reservationDate,
-        bool isQuote,
-        int agencyContactId)
-    {
-        Reference = reference;
-        ReservationDate = reservationDate;
-        IsQuote = isQuote;
-        AgencyContactId = agencyContactId;
-    }
-
     // TODO: Branches
     // TODO: Quote ID: not sure what is meant by that
     // TODO: Are BookingType, Channel, Origination Enums?

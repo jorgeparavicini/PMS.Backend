@@ -11,7 +11,7 @@ public class Agency
     public int Id { get; set; }
 
     [MaxLength(255)]
-    public string LegalName { get; set; }
+    public string LegalName { get; set; } = null!;
 
     [Precision(18,2)]
     public decimal? DefaultCommissionRate { get; set; }
@@ -34,22 +34,6 @@ public class Agency
     public IList<AgencyContact> AgencyContacts { get; } = new List<AgencyContact>();
 
     #endregion
-
-    public Agency(
-        string legalName,
-        CommissionMethod commissionMethod,
-        decimal? defaultCommissionRate = null,
-        decimal? defaultCommissionOnExtras = null,
-        string? emergencyPhone = null,
-        string? emergencyEmail = null)
-    {
-        LegalName = legalName;
-        DefaultCommissionRate = defaultCommissionRate;
-        DefaultCommissionOnExtras = defaultCommissionOnExtras;
-        CommissionMethod = commissionMethod;
-        EmergencyEmail = emergencyEmail;
-        EmergencyPhone = emergencyPhone;
-    }
 
     // TODO: Add Company, Association, Default Channel, Default Origination
 }

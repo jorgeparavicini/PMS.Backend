@@ -19,9 +19,4 @@ public class Reservation
     public GroupReservation GroupReservation { get; set; } = null!;
 
     #endregion
-
-    public Reservation(string? name = null)
-    {
-        Name = name;
-    }
 }

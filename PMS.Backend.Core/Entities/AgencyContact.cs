@@ -9,7 +9,7 @@ public class AgencyContact
     public int Id { get; set; }
 
     [MaxLength(255)]
-    public string ContactName { get; set; }
+    public string ContactName { get; set; } = null!;
 
     [MaxLength(255)]
     public string? Email { get; set; }
@@ -38,26 +38,6 @@ public class AgencyContact
     public IList<GroupReservation> GroupReservations { get; } = new List<GroupReservation>();
 
     #endregion
-
-    public AgencyContact(
-        string contactName,
-        bool isFrequentVendor,
-        int agencyId,
-        string? city = null,
-        string? zipCode = null,
-        string? address = null,
-        string? phone = null,
-        string? email = null)
-    {
-        ContactName = contactName;
-        Email = email;
-        Phone = phone;
-        Address = address;
-        City = city;
-        ZipCode = zipCode;
-        IsFrequentVendor = isFrequentVendor;
-        AgencyId = agencyId;
-    }
 
     // TODO: Add Country of residence, Language
 }

@@ -23,20 +23,6 @@ public class ReservationDetail
 
     #endregion
 
-    public ReservationDetail(
-        DateTime reservationDate,
-        DateTime checkIn,
-        DateTime checkOut,
-        int reservationId,
-        DateTime? folioClosedOn = null)
-    {
-        ReservationDate = reservationDate;
-        CheckIn = checkIn;
-        CheckOut = checkOut;
-        FolioClosedOn = folioClosedOn;
-        ReservationId = reservationId;
-    }
-
     // TODO: Reservations package, pax
     // TODO: What is package?
     // TODO: Complimentary - enum?
