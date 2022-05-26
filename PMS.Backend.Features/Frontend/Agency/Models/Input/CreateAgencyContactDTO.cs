@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
+namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 
 [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
-public record AgencyContactDTO(
-    int Id,
+public record CreateAgencyContactDTO(
     string ContactName,
     string? Email,
     string? Phone,

@@ -1,26 +1,29 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
 namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("agencies")]
 public class AgencyController : ControllerBase
 {
     private readonly IAgencyService _service;
 
     public AgencyController(IAgencyService service) => _service = service;
 
+    #region Agency
+
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AgencyDTO>>> GetAll()
+    public async Task<ActionResult<IEnumerable<AgencySummaryDTO>>> GetAll()
     {
         return Ok(await _service.GetAllAgenciesAsync());
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<AgencyDTO?>> Find(int id)
+    public async Task<ActionResult<AgencyDetailDTO?>> Find(
+        [FromRoute] int id)
     {
         if (await _service.FindAgencyAsync(id) is { } agency)
         {
@@ -31,14 +34,107 @@ public class AgencyController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Models.Input.AgencyInputDTO agency)
+    public async Task<ActionResult<AgencySummaryDTO>> Create(
+        [FromBody] CreateAgencyDTO agency)
     {
-        if (await _service.CreateAgencyAsync(agency) is { } id)
-        {
-             return CreatedAtAction(nameof(Find), new { id }, null);
-        }
-        
-        return BadRequest();
+        var summary = await _service.CreateAgencyAsync(agency);
+        return CreatedAtAction(nameof(Find), new { summary.Id }, summary);
     }
 
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<AgencySummaryDTO>> Update(
+        [FromRoute] int id,
+        [FromBody] UpdateAgencyDTO agency)
+    {
+        if (id != agency.Id)
+        {
+            return BadRequest("Agency Id mismatch");
+        }
+
+        if (await _service.UpdateAgencyAsync(agency) is { } summary)
+        {
+            return Ok(summary);
+        }
+
+        return NotFound();
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
+    {
+        await _service.DeleteAgencyAsync(id);
+
+        return NoContent();
+    }
+
+    #endregion
+
+    #region Agency Contact
+
+    [HttpGet("{agencyId:int}/contacts")]
+    public async Task<ActionResult<IEnumerable<AgencyContactDTO>>> FindAllContactsForAgency(
+        [FromRoute] int agencyId)
+    {
+        return Ok(await _service.GetAllContactsForAgencyAsync(agencyId));
+    }
+
+    [HttpGet("{agencyId:int}/contacts/{contactId:int}")]
+    public async Task<ActionResult<AgencyContactDTO>> FindContact(
+        [FromRoute] int agencyId,
+        [FromRoute] int contactId)
+    {
+        if (await _service.FindContactForAgency(agencyId, contactId) is { } contact)
+        {
+            return Ok(contact);
+        }
+
+        return NotFound();
+    }
+
+    [HttpPost("{agencyId:int}/contacts")]
+    public async Task<IActionResult> CreateContact(
+        [FromRoute] int agencyId,
+        [FromBody] CreateAgencyContactDTO contact)
+    {
+        if (await _service.CreateContactForAgencyAsync(agencyId, contact) is { } newContact)
+        {
+            return CreatedAtAction(nameof(FindContact),
+                new { agencyId, newContact.Id },
+                newContact);
+        }
+
+        return NotFound();
+    }
+
+    [HttpPut("{agencyId:int}/contacts/{contactId:int}")]
+    public async Task<ActionResult<AgencyContactDTO>> Update(
+        [FromRoute] int agencyId,
+        [FromRoute] int contactId,
+        [FromBody] UpdateAgencyContactDTO contact)
+    {
+        if (contactId != contact.Id)
+        {
+            return BadRequest("Contact Id mismatch");
+        }
+
+        if (await _service.UpdateContactForAgencyAsync(agencyId, contact) is { } updatedContact)
+        {
+            Ok(updatedContact);
+        }
+
+        return NotFound();
+    }
+
+    [HttpDelete("{agencyId:int}/contacts/{contactId:int}")]
+    public async Task<IActionResult> DeleteAgencyContact(
+        [FromRoute] int agencyId,
+        [FromRoute] int contactId)
+    {
+        await _service.DeleteAgencyContactAsync(agencyId, contactId);
+
+        return NoContent();
+    }
+
+    #endregion
 }

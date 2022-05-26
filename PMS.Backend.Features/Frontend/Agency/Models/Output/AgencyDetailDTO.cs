@@ -1,8 +1,10 @@
-﻿using PMS.Backend.Common.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using PMS.Backend.Common.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
 
-public record AgencyDTO(
+[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
+public record AgencyDetailDTO(
     int Id,
     string LegalName,
     decimal? DefaultCommissionRate,

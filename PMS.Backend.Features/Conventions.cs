@@ -110,9 +110,7 @@ public static class Conventions
 
     #region DELETE
 
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
     [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
     public static void Delete(

@@ -5,9 +5,37 @@ namespace PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
 public interface IAgencyService
 {
-    Task<IEnumerable<AgencyDTO>> GetAllAgenciesAsync();
-    
-    Task<AgencyDTO?> FindAgencyAsync(int id);
+    #region Agency
 
-    Task<int?> CreateAgencyAsync(AgencyInputDTO agency);
+    Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync();
+    
+    Task<AgencyDetailDTO?> FindAgencyAsync(int id);
+
+    Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO agency);
+
+    Task<AgencySummaryDTO?> UpdateAgencyAsync(UpdateAgencyDTO agency);
+
+    Task DeleteAgencyAsync(int id);
+
+    #endregion
+
+    #region Agency Contact
+
+    Task<IEnumerable<AgencyContactDTO>> GetAllContactsForAgencyAsync(int agencyId);
+    
+    Task<AgencyContactDTO?> FindContactForAgency(int agencyId, int contactId);
+
+    Task<AgencyContactDTO?> CreateContactForAgencyAsync(
+        int agencyId,
+        CreateAgencyContactDTO contact);
+
+    Task<AgencyContactDTO?> UpdateContactForAgencyAsync(
+        int agencyId,
+        UpdateAgencyContactDTO contact);
+
+    Task DeleteAgencyContactAsync(int agencyId, int contactId);
+
+    #endregion
+
+
 }

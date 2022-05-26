@@ -1,12 +1,13 @@
-﻿using PMS.Backend.Common.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using PMS.Backend.Common.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 
-public record AgencyInputDTO(
+[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
+public record CreateAgencyDTO(
     string LegalName,
     decimal? DefaultCommissionRate,
     decimal? DefaultCommissionOnExtras,
     CommissionMethod CommissionMethod,
     string? EmergencyPhone,
-    string? EmergencyEmail,
-    IReadOnlyList<AgencyContactInputDTO> AgencyContacts);
+    string? EmergencyEmail);

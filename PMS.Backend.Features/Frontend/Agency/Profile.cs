@@ -8,27 +8,12 @@ public class Profile : AutoMapper.Profile
 {
     public Profile()
     {
-        CreateMap<Core.Entities.Agency, AgencyDTO>();
-        CreateMap<AgencyInputDTO, Core.Entities.Agency>()
-            .ConstructUsing(x => 
-                new Core.Entities.Agency(
-                    x.LegalName,
-                    x.CommissionMethod,
-                    x.DefaultCommissionRate,
-                    x.DefaultCommissionOnExtras,
-                    x.EmergencyPhone,
-                    x.EmergencyEmail));
+        CreateMap<Core.Entities.Agency, AgencyDetailDTO>();
+        CreateMap<Core.Entities.Agency, AgencySummaryDTO>();
+        CreateMap<CreateAgencyDTO, Core.Entities.Agency>();
+        CreateMap<UpdateAgencyDTO, Core.Entities.Agency>();
+        
         CreateMap<AgencyContact, AgencyContactDTO>();
-        CreateMap<AgencyContactInputDTO, AgencyContact>()
-            .ConstructUsing(x =>
-                new AgencyContact(
-                    x.ContactName,
-                    x.IsFrequentVendor,
-                    0,
-                    x.City,
-                    x.ZipCode,
-                    x.Address,
-                    x.Phone,
-                    x.Email));
+        CreateMap<CreateAgencyContactDTO, AgencyContact>();
     }
 }
