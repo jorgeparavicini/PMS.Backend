@@ -13,10 +13,10 @@ public class Agency
     [MaxLength(255)]
     public string LegalName { get; set; } = null!;
 
-    [Precision(18,2)]
+    [Precision(5,4)]
     public decimal? DefaultCommissionRate { get; set; }
 
-    [Precision(18, 2)]
+    [Precision(5, 4)]
     public decimal? DefaultCommissionOnExtras { get; set; }
 
     public CommissionMethod CommissionMethod { get; set; }

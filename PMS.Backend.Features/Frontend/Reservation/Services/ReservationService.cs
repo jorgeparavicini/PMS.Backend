@@ -1,8 +1,7 @@
 ﻿using PMS.Backend.Core.Database;
-using PMS.Backend.Core.Entities;
-using PMS.Backend.Features.Registration.Services.Contracts;
+using PMS.Backend.Features.Frontend.Reservation.Services.Contracts;
 
-namespace PMS.Backend.Features.Registration.Services;
+namespace PMS.Backend.Features.Frontend.Reservation.Services;
 
 public class ReservationService : IReservationService
 {
@@ -11,7 +10,7 @@ public class ReservationService : IReservationService
 
     public ReservationService(PmsDbContext dbContext) => _dbContext = dbContext;
     
-    public async Task<Reservation?> GetReservation(int id)
+    public async Task<Core.Entities.Reservation?> GetReservation(int id)
     {
         return await _dbContext.Reservations.FindAsync(id);
     }

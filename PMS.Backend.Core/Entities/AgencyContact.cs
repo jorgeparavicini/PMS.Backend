@@ -27,6 +27,8 @@ public class AgencyContact
     public string? ZipCode { get; set; }
 
     public bool IsFrequentVendor { get; set; }
+    
+    public bool Hallo { get; set; }
 
     #endregion
 
