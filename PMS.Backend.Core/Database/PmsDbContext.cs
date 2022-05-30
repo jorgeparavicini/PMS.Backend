@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PMS.Backend.Core.Entities;
+using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Core.Entities.Reservation;
 
 namespace PMS.Backend.Core.Database
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PMS.Backend.Core.Entities;
+namespace PMS.Backend.Core.Entities.Reservation;
 
 public class Reservation
 {

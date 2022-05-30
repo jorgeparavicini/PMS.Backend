@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
-using PMS.Backend.Core.Entities;
+using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
@@ -22,7 +22,7 @@ public class AgencyService : IAgencyService
     public async Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync()
     {
         var agencies = await _context.Agencies.ToListAsync();
-        return _mapper.Map<List<Core.Entities.Agency>, List<AgencySummaryDTO>>(agencies);
+        return _mapper.Map<List<Core.Entities.Agency.Agency>, List<AgencySummaryDTO>>(agencies);
     }
 
     public async Task<AgencyDetailDTO?> FindAgencyAsync(int id)
@@ -35,7 +35,7 @@ public class AgencyService : IAgencyService
 
     public async Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO agency)
     {
-        var entity = _mapper.Map<Core.Entities.Agency>(agency);
+        var entity = _mapper.Map<Core.Entities.Agency.Agency>(agency);
         await _context.Agencies.AddAsync(entity);
         await _context.SaveChangesAsync();
 

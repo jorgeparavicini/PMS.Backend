@@ -10,7 +10,7 @@ public class ReservationService : IReservationService
 
     public ReservationService(PmsDbContext dbContext) => _dbContext = dbContext;
     
-    public async Task<Core.Entities.Reservation?> GetReservation(int id)
+    public async Task<Core.Entities.Reservation.Reservation?> GetReservation(int id)
     {
         return await _dbContext.Reservations.FindAsync(id);
     }

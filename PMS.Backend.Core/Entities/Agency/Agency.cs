@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Common.Models;
 
-namespace PMS.Backend.Core.Entities;
+namespace PMS.Backend.Core.Entities.Agency;
 
 public class Agency
 {

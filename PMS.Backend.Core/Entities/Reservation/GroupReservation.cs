@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PMS.Backend.Core.Entities.Agency;
 
-namespace PMS.Backend.Core.Entities;
+namespace PMS.Backend.Core.Entities.Reservation;
 
 public class GroupReservation
 {
