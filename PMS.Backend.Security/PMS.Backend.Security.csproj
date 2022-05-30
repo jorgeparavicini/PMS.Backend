@@ -19,8 +19,4 @@
       <ProjectReference Include="..\PMS.Backend.Common\PMS.Backend.Common.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Migrations" />
-    </ItemGroup>
-
 </Project>
