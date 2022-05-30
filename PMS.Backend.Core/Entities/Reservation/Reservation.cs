@@ -18,5 +18,7 @@ public class Reservation
     public int GroupReservationId { get; set; }
     public GroupReservation GroupReservation { get; set; } = null!;
 
+    public IList<ReservationDetail> ReservationDetails { get; } = new List<ReservationDetail>();
+
     #endregion
 }
