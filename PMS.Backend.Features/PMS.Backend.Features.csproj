@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\Models\" />
+    <Folder Include="Frontend\Reservation\Models\Output" />
   </ItemGroup>
 
   <ItemGroup>
