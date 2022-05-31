@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
@@ -51,12 +52,15 @@ public class AgencyController : ControllerBase
             return BadRequest("Agency Id mismatch");
         }
 
-        if (await _service.UpdateAgencyAsync(agency) is { } summary)
+        try
         {
+            var summary = await _service.UpdateAgencyAsync(agency);
             return Ok(summary);
         }
-
-        return NotFound();
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpDelete("{id:int}")]
@@ -97,14 +101,17 @@ public class AgencyController : ControllerBase
         [FromRoute] int agencyId,
         [FromBody] CreateAgencyContactDTO contact)
     {
-        if (await _service.CreateContactForAgencyAsync(agencyId, contact) is { } newContact)
+        try
         {
+            var newContact = await _service.CreateContactForAgencyAsync(agencyId, contact);
             return CreatedAtAction(nameof(FindContact),
                 new { agencyId, newContact.Id },
                 newContact);
         }
-
-        return NotFound();
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpPut("{agencyId:int}/contacts/{contactId:int}")]
@@ -118,12 +125,15 @@ public class AgencyController : ControllerBase
             return BadRequest("Contact Id mismatch");
         }
 
-        if (await _service.UpdateContactForAgencyAsync(agencyId, contact) is { } updatedContact)
+        try
         {
-            Ok(updatedContact);
+            var updatedContact = await _service.UpdateContactForAgencyAsync(agencyId, contact);
+            return Ok(updatedContact);
         }
-
-        return NotFound();
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpDelete("{agencyId:int}/contacts/{contactId:int}")]

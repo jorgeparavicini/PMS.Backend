@@ -13,7 +13,7 @@ public interface IAgencyService
 
     Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO agency);
 
-    Task<AgencySummaryDTO?> UpdateAgencyAsync(UpdateAgencyDTO agency);
+    Task<AgencySummaryDTO> UpdateAgencyAsync(UpdateAgencyDTO agency);
 
     Task DeleteAgencyAsync(int id);
 
@@ -25,11 +25,11 @@ public interface IAgencyService
     
     Task<AgencyContactDTO?> FindContactForAgency(int agencyId, int contactId);
 
-    Task<AgencyContactDTO?> CreateContactForAgencyAsync(
+    Task<AgencyContactDTO> CreateContactForAgencyAsync(
         int agencyId,
         CreateAgencyContactDTO contact);
 
-    Task<AgencyContactDTO?> UpdateContactForAgencyAsync(
+    Task<AgencyContactDTO> UpdateContactForAgencyAsync(
         int agencyId,
         UpdateAgencyContactDTO contact);
 

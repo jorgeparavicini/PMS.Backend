@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
@@ -42,7 +43,7 @@ public class AgencyService : IAgencyService
         return _mapper.Map<AgencySummaryDTO>(entity);
     }
 
-    public async Task<AgencySummaryDTO?> UpdateAgencyAsync(UpdateAgencyDTO agency)
+    public async Task<AgencySummaryDTO> UpdateAgencyAsync(UpdateAgencyDTO agency)
     {
         if (await _context.Agencies.FindAsync(agency.Id) is { } entity)
         {
@@ -51,7 +52,7 @@ public class AgencyService : IAgencyService
             return _mapper.Map<AgencySummaryDTO>(entity);
         }
 
-        return null;
+        throw new NotFoundException("Could not find agency");
     }
 
     public async Task DeleteAgencyAsync(int id)
@@ -77,9 +78,8 @@ public class AgencyService : IAgencyService
             .FirstOrDefaultAsync(x => x.AgencyId == agencyId && x.Id == contactId);
         return _mapper.Map<AgencyContactDTO?>(contact);
     }
-
-    // TODO: Use https://github.com/altmann/FluentResults
-    public async Task<AgencyContactDTO?> CreateContactForAgencyAsync(
+    
+    public async Task<AgencyContactDTO> CreateContactForAgencyAsync(
         int agencyId,
         CreateAgencyContactDTO contact)
     {
@@ -91,10 +91,10 @@ public class AgencyService : IAgencyService
             return _mapper.Map<AgencyContactDTO>(entity);
         }
 
-        return null;
+        throw new NotFoundException("Could not find agency");
     }
 
-    public async Task<AgencyContactDTO?> UpdateContactForAgencyAsync(
+    public async Task<AgencyContactDTO> UpdateContactForAgencyAsync(
         int agencyId,
         UpdateAgencyContactDTO contact)
     {
@@ -107,7 +107,7 @@ public class AgencyService : IAgencyService
             return _mapper.Map<AgencyContactDTO>(entity);
         }
 
-        return null;
+        throw new NotFoundException("Could not find agency contact");
     }
 
     public async Task DeleteAgencyContactAsync(int agencyId, int contactId)
