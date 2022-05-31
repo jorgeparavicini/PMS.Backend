@@ -3,7 +3,7 @@ using PMS.Backend.Core.Entities.Reservation;
 
 namespace PMS.Backend.Core.Entities.Agency;
 
-public class AgencyContact
+public class AgencyContact : Entity
 {
     #region Properties
 

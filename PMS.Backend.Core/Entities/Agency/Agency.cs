@@ -4,7 +4,7 @@ using PMS.Backend.Common.Models;
 
 namespace PMS.Backend.Core.Entities.Agency;
 
-public class Agency
+public class Agency : Entity
 {
     #region Properties
 
