@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
@@ -78,7 +79,7 @@ public class AgencyService : IAgencyService
             .FirstOrDefaultAsync(x => x.AgencyId == agencyId && x.Id == contactId);
         return _mapper.Map<AgencyContactDTO?>(contact);
     }
-    
+
     public async Task<AgencyContactDTO> CreateContactForAgencyAsync(
         int agencyId,
         CreateAgencyContactDTO contact)
@@ -86,6 +87,12 @@ public class AgencyService : IAgencyService
         if (await _context.Agencies.FindAsync(agencyId) is { } agency)
         {
             var entity = _mapper.Map<AgencyContact>(contact);
+            var result = entity.Validate();
+            if (result.IsFailed)
+            {
+                throw new BadRequestException($"{result.Errors}");
+            }
+            
             agency.AgencyContacts.Add(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<AgencyContactDTO>(entity);

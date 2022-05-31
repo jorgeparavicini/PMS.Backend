@@ -23,7 +23,7 @@ public class AgencyController : ControllerBase
         if (!result.Any())
         {
             return NoContent();
-        } 
+        }
         return Ok(result);
     }
 
@@ -43,8 +43,15 @@ public class AgencyController : ControllerBase
     public async Task<ActionResult<AgencySummaryDTO>> Create(
         [FromBody] CreateAgencyDTO agency)
     {
-        var summary = await _service.CreateAgencyAsync(agency);
-        return CreatedAtAction(nameof(Find), new { summary.Id }, summary);
+        try
+        {
+            var summary = await _service.CreateAgencyAsync(agency);
+            return CreatedAtAction(nameof(Find), new { summary.Id }, summary);
+        }
+        catch (BadRequestException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPut("{id:int}")]
@@ -65,6 +72,10 @@ public class AgencyController : ControllerBase
         catch (NotFoundException e)
         {
             return NotFound(e.Message);
+        }
+        catch (BadRequestException e)
+        {
+            return BadRequest(e.Message);
         }
     }
 
