@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
@@ -6,17 +7,16 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace PMS.Backend.Features;
 
+[ExcludeFromCodeCoverage]
 public static class Conventions
 {
     #region GET
 
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
     [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
-    public static void Get(
-        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-        [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-        object id)
+    public static void GetAll()
     {
     }
 
