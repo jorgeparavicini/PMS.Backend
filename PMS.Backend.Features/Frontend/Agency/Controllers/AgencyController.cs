@@ -19,7 +19,12 @@ public class AgencyController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AgencySummaryDTO>>> GetAll()
     {
-        return Ok(await _service.GetAllAgenciesAsync());
+        var result = await _service.GetAllAgenciesAsync();
+        if (!result.Any())
+        {
+            return NoContent();
+        } 
+        return Ok(result);
     }
 
     [HttpGet("{id:int}")]
@@ -80,7 +85,12 @@ public class AgencyController : ControllerBase
     public async Task<ActionResult<IEnumerable<AgencyContactDTO>>> FindAllContactsForAgency(
         [FromRoute] int agencyId)
     {
-        return Ok(await _service.GetAllContactsForAgencyAsync(agencyId));
+        var result = await _service.GetAllContactsForAgencyAsync(agencyId);
+        if (!result.Any())
+        {
+            return NoContent();
+        }
+        return Ok(result);
     }
 
     [HttpGet("{agencyId:int}/contacts/{contactId:int}")]
