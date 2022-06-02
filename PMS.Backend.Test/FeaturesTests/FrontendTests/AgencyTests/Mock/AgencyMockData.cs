@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 
@@ -9,55 +10,66 @@ public static class AgencyMockData
 {
     private static MapperConfiguration Config { get; } = new(cfg =>
     {
-        cfg.CreateMap<AgencyDetailDTO, AgencySummaryDTO>();
-        cfg.CreateMap<AgencyDetailDTO, CreateAgencyDTO>();
-        cfg.CreateMap<AgencyDetailDTO, UpdateAgencyDTO>();
-        cfg.CreateMap<AgencyContactDTO, CreateAgencyContactDTO>();
+        cfg.CreateMap<Agency, AgencySummaryDTO>();
+        cfg.CreateMap<Agency, AgencyDetailDTO>();
+        cfg.CreateMap<Agency, CreateAgencyDTO>();
+        cfg.CreateMap<Agency, UpdateAgencyDTO>();
+        cfg.CreateMap<AgencyContact, AgencyContactDTO>();
         cfg.CreateMap<AgencyContactDTO, UpdateAgencyContactDTO>();
+        cfg.CreateMap<AgencyContactDTO, CreateAgencyContactDTO>();
     });
 
     private static IMapper Mapper { get; } = Config.CreateMapper();
-    
-    private static List<AgencyDetailDTO> GetAgencyDetails()
+
+    public static List<Agency> GetAgencies()
     {
-        return new List<AgencyDetailDTO>
+        return new List<Agency>
         {
-            new(
-                1, 
-                "Agency1", 
-                decimal.One, 
-                decimal.One,
-                CommissionMethod.DeductedByAgency, 
-                "EmergencyPhone1", 
-                "EmergencyEmail1", 
-                new List<AgencyContactDTO>
+            new()
+            {
+                Id = 1,
+                LegalName = "Agency1",
+                DefaultCommissionRate = decimal.One,
+                DefaultCommissionOnExtras = decimal.One,
+                CommissionMethod = CommissionMethod.DeductedByAgency,
+                EmergencyPhone = "EmergencyPhone1",
+                EmergencyEmail = "EmergencyEmail1",
+                AgencyContacts =
                 {
-                    new(1,
-                        "Contact1",
-                        "Email1",
-                        "Phone1",
-                        "Address1",
-                        "City1",
-                        "Zip1",
-                        true),
-                    new(2,
-                        "Contact2",
-                        "Email2",
-                        "Phone2",
-                        "Address2",
-                        "City2",
-                        "Zip2",
-                        true)
-                }),
-            new(
-                2, 
-                "Agency2", 
-                decimal.Zero, 
-                decimal.Zero,
-                CommissionMethod.DeductedByProvider, 
-                "EmergencyPhone2", 
-                "EmergencyEmail2", 
-                new List<AgencyContactDTO>())
+                    new AgencyContact()
+                    {
+                        Id = 1,
+                        ContactName = "Contact1",
+                        Email = "Email1",
+                        Phone = "Phone1",
+                        Address = "Address1",
+                        City = "City1",
+                        ZipCode = "Zip1",
+                        IsFrequentVendor = true
+                    },
+                    new AgencyContact
+                    {
+                        Id = 2,
+                        ContactName = "Contact2",
+                        Email = "Email2",
+                        Phone = "Phone2",
+                        Address = "Address2",
+                        City = "City2",
+                        ZipCode = "Zip2",
+                        IsFrequentVendor = true
+                    }
+                },
+            },
+            new()
+            {
+                Id = 2,
+                LegalName = "Agency2",
+                DefaultCommissionRate = decimal.Zero,
+                DefaultCommissionOnExtras = decimal.Zero,
+                CommissionMethod = CommissionMethod.DeductedByProvider,
+                EmergencyPhone = "EmergencyPhone2",
+                EmergencyEmail = "EmergencyEmail2",
+            }
         };
     }
 
@@ -68,32 +80,32 @@ public static class AgencyMockData
 
     public static IEnumerable<AgencySummaryDTO> GetAgencySummaries()
     {
-        return Mapper.Map<List<AgencyDetailDTO>, List<AgencySummaryDTO>>(GetAgencyDetails());
+        return Mapper.Map<List<Agency>, List<AgencySummaryDTO>>(GetAgencies());
     }
 
     public static AgencyDetailDTO GetAgencyDetail()
     {
-        return GetAgencyDetails().First();
+        return Mapper.Map<Agency, AgencyDetailDTO>(GetAgencies().First());
     }
 
     public static CreateAgencyDTO GetCreateAgencyDTO()
     {
-        return Mapper.Map<AgencyDetailDTO, CreateAgencyDTO>(GetAgencyDetails().First());
+        return Mapper.Map<Agency, CreateAgencyDTO>(GetAgencies().First());
     }
 
     public static AgencySummaryDTO GetCreatedAgencySummary()
     {
-        return Mapper.Map<AgencyDetailDTO, AgencySummaryDTO>(GetAgencyDetails().First());
+        return Mapper.Map<Agency, AgencySummaryDTO>(GetAgencies().First());
     }
 
     public static UpdateAgencyDTO GetUpdateAgencyDTO()
     {
-        return Mapper.Map<AgencyDetailDTO, UpdateAgencyDTO>(GetAgencyDetails().First());
+        return Mapper.Map<Agency, UpdateAgencyDTO>(GetAgencies().First());
     }
 
     public static AgencySummaryDTO GetUpdatedAgencySummary()
     {
-        return Mapper.Map<AgencyDetailDTO, AgencySummaryDTO>(GetAgencyDetails().First());
+        return Mapper.Map<Agency, AgencySummaryDTO>(GetAgencies().First());
     }
 
     public static IEnumerable<AgencyContactDTO> GetEmptyAgencyContacts()
@@ -103,12 +115,14 @@ public static class AgencyMockData
 
     public static IEnumerable<AgencyContactDTO> GetAgencyContacts()
     {
-        return GetAgencyDetails().First().AgencyContacts;
+        return Mapper.Map<IEnumerable<AgencyContact>, IEnumerable<AgencyContactDTO>>(
+            GetAgencies().First().AgencyContacts);
     }
 
     public static AgencyContactDTO GetAgencyContact()
     {
-        return GetAgencyDetails().First().AgencyContacts.First();
+        return Mapper.Map<AgencyContact, AgencyContactDTO>(
+            GetAgencies().First().AgencyContacts.First());
     }
 
     public static CreateAgencyContactDTO GetCreateAgencyContactDTO()
@@ -125,7 +139,7 @@ public static class AgencyMockData
     {
         return Mapper.Map<AgencyContactDTO, UpdateAgencyContactDTO>(GetAgencyContact());
     }
-    
+
     public static AgencyContactDTO GetUpdatedAgencyContactDTO()
     {
         return Mapper.Map<AgencyContactDTO, AgencyContactDTO>(GetAgencyContact());
