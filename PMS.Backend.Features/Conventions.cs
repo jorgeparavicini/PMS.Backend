@@ -30,6 +30,18 @@ public static class Conventions
         object id)
     {
     }
+    
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
+    public static void FindAll(
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+        [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+        object id)
+    {
+    }
 
     #endregion
 
