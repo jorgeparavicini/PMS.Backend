@@ -1,36 +1,46 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace PMS.Backend.Service;
 
-builder.Services.AddControllers();
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
-
-// Add Swagger
-builder.Services.AddSwaggerGen(c =>
-    c.SwaggerDoc("v1",
-        new OpenApiInfo { Title = "PMS.Backend.Service", Version = "v1" }));
-
-// Add Database
-builder.Services.AddDbContext<PmsDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")));
-
-builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
-builder.Services.AddAPI();
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+public static class Program
 {
-    app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    [ExcludeFromCodeCoverage]
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.UseRouting();
-app.MapControllers();
-app.Run();
+        builder.Services.AddControllers();
+        builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+        // Add Swagger
+        builder.Services.AddSwaggerGen(c =>
+            c.SwaggerDoc("v1",
+                new OpenApiInfo { Title = "PMS.Backend.Service", Version = "v1" }));
+
+        // Add Database
+        builder.Services.AddDbContext<PmsDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")));
+
+        builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
+        builder.Services.AddAPI();
+
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.UseRouting();
+        app.MapControllers();
+        app.Run();
+    }
+}
