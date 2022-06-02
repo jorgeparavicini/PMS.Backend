@@ -76,22 +76,22 @@ public static class AgencyMockData
         return GetAgencyDetails().First();
     }
 
-    public static CreateAgencyDTO CreateAgencyDTO()
+    public static CreateAgencyDTO GetCreateAgencyDTO()
     {
         return Mapper.Map<AgencyDetailDTO, CreateAgencyDTO>(GetAgencyDetails().First());
     }
 
-    public static AgencySummaryDTO CreatedAgencySummary()
+    public static AgencySummaryDTO GetCreatedAgencySummary()
     {
         return Mapper.Map<AgencyDetailDTO, AgencySummaryDTO>(GetAgencyDetails().First());
     }
 
-    public static UpdateAgencyDTO UpdateAgencyDTO()
+    public static UpdateAgencyDTO GetUpdateAgencyDTO()
     {
         return Mapper.Map<AgencyDetailDTO, UpdateAgencyDTO>(GetAgencyDetails().First());
     }
 
-    public static AgencySummaryDTO UpdatedAgencySummary()
+    public static AgencySummaryDTO GetUpdatedAgencySummary()
     {
         return Mapper.Map<AgencyDetailDTO, AgencySummaryDTO>(GetAgencyDetails().First());
     }
@@ -111,13 +111,23 @@ public static class AgencyMockData
         return GetAgencyDetails().First().AgencyContacts.First();
     }
 
-    public static CreateAgencyContactDTO CreateAgencyContactDTO()
+    public static CreateAgencyContactDTO GetCreateAgencyContactDTO()
     {
         return Mapper.Map<AgencyContactDTO, CreateAgencyContactDTO>(GetAgencyContact());
     }
 
-    public static UpdateAgencyContactDTO UpdateAgencyContactDTO()
+    public static AgencyContactDTO GetCreatedAgencyContactDTO()
+    {
+        return Mapper.Map<AgencyContactDTO, AgencyContactDTO>(GetAgencyContact());
+    }
+
+    public static UpdateAgencyContactDTO GetUpdateAgencyContactDTO()
     {
         return Mapper.Map<AgencyContactDTO, UpdateAgencyContactDTO>(GetAgencyContact());
+    }
+    
+    public static AgencyContactDTO GetUpdatedAgencyContactDTO()
+    {
+        return Mapper.Map<AgencyContactDTO, AgencyContactDTO>(GetAgencyContact());
     }
 }

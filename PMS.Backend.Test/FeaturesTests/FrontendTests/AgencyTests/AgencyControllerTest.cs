@@ -20,8 +20,10 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.GetAllAgenciesAsync())
+        agencyService
+            .Setup(x => x.GetAllAgenciesAsync())
             .ReturnsAsync(AgencyMockData.GetAgencySummaries);
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
@@ -39,8 +41,10 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.GetAllAgenciesAsync())
+        agencyService
+            .Setup(x => x.GetAllAgenciesAsync())
             .ReturnsAsync(AgencyMockData.GetEmptyAgencies());
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
@@ -58,12 +62,14 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.FindAgencyAsync(It.IsAny<int>()))
+        agencyService
+            .Setup(x => x.FindAgencyAsync(It.IsAny<int>()))
             .ReturnsAsync(AgencyMockData.GetAgencyDetail());
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.Find(1);
+        var result = await sut.Find(0);
 
         // Assert
         result.Result.Should()
@@ -77,12 +83,14 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.FindAgencyAsync(It.IsAny<int>()))
+        agencyService
+            .Setup(x => x.FindAgencyAsync(It.IsAny<int>()))
             .ReturnsAsync(null as AgencyDetailDTO);
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.Find(1);
+        var result = await sut.Find(0);
 
         // Assert
         result.Result.Should()
@@ -98,11 +106,12 @@ public class AgencyControllerTest
         var agencyService = new Mock<IAgencyService>();
         agencyService
             .Setup(x => x.CreateAgencyAsync(It.IsAny<CreateAgencyDTO>()))
-            .ReturnsAsync(AgencyMockData.CreatedAgencySummary);
+            .ReturnsAsync(AgencyMockData.GetCreatedAgencySummary);
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.Create(AgencyMockData.CreateAgencyDTO());
+        var result = await sut.Create(AgencyMockData.GetCreateAgencyDTO());
 
         // Assert
         var constraint = result.Result.Should()
@@ -114,7 +123,7 @@ public class AgencyControllerTest
 
         // Assert route values
         constraint.Which.RouteValues.Should()
-            .Contain(nameof(AgencySummaryDTO.Id), AgencyMockData.CreatedAgencySummary().Id);
+            .Contain(nameof(AgencySummaryDTO.Id), AgencyMockData.GetCreatedAgencySummary().Id);
 
         // Assert route name
         constraint.Which.ActionName.Should()
@@ -122,16 +131,18 @@ public class AgencyControllerTest
     }
 
     [Fact]
-    public async Task Create_ShouldReturn404BadRequest()
+    public async Task Create_ShouldReturn400BadRequest()
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.CreateAgencyAsync(It.IsAny<CreateAgencyDTO>()))
+        agencyService
+            .Setup(x => x.CreateAgencyAsync(It.IsAny<CreateAgencyDTO>()))
             .Throws<BadRequestException>();
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.Create(AgencyMockData.CreateAgencyDTO());
+        var result = await sut.Create(AgencyMockData.GetCreateAgencyDTO());
 
         // Assert
         result.Result.Should()
@@ -141,61 +152,20 @@ public class AgencyControllerTest
     }
 
     [Fact]
-    public async Task Update_ShouldReturn400BadRequest()
-    {
-        // Arrange
-        var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.UpdateAgencyAsync(It.IsAny<UpdateAgencyDTO>()))
-            .Throws<BadRequestException>();
-        var sut = new AgencyController(agencyService.Object);
-
-        // Act
-        var result = await sut.Update(AgencyMockData.UpdateAgencyDTO().Id - 1,
-            AgencyMockData.UpdateAgencyDTO());
-
-        // Assert
-        var constraint = result.Result.Should()
-            .BeOfType<BadRequestObjectResult>();
-
-        // Assert status code
-        constraint.Which.StatusCode.Should()
-            .Be(StatusCodes.Status400BadRequest);
-
-        // Assert message
-        constraint.Which.Value.Should()
-            .BeEquivalentTo("Agency Id mismatch");
-
-        // Act
-        result = await sut.Update(AgencyMockData.UpdateAgencyDTO().Id,
-            AgencyMockData.UpdateAgencyDTO());
-
-        // Assert
-        constraint = result.Result.Should()
-            .BeOfType<BadRequestObjectResult>();
-
-        // Assert status code
-        constraint.Which.StatusCode.Should()
-            .Be(StatusCodes.Status400BadRequest);
-
-        // Assert message
-        constraint.Which.Value.Should()
-            .BeOfType<string>()
-            .Which.Should()
-            .BeNullOrEmpty();
-    }
-
-    [Fact]
     public async Task Update_ShouldReturn200Ok()
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.UpdateAgencyAsync(It.IsAny<UpdateAgencyDTO>()))
-            .ReturnsAsync(AgencyMockData.UpdatedAgencySummary);
+        agencyService
+            .Setup(x => x.UpdateAgencyAsync(It.IsAny<UpdateAgencyDTO>()))
+            .ReturnsAsync(AgencyMockData.GetUpdatedAgencySummary);
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.Update(AgencyMockData.UpdateAgencyDTO().Id,
-            AgencyMockData.UpdateAgencyDTO());
+        var result = await sut.Update(
+            AgencyMockData.GetUpdateAgencyDTO().Id,
+            AgencyMockData.GetUpdateAgencyDTO());
 
         // Assert
         result.Result.Should()
@@ -205,17 +175,54 @@ public class AgencyControllerTest
     }
 
     [Fact]
+    public async Task Update_ShouldReturn400BadRequest()
+    {
+        // Arrange
+        var agencyService = new Mock<IAgencyService>();
+        agencyService
+            .Setup(x => x.UpdateAgencyAsync(It.IsAny<UpdateAgencyDTO>()))
+            .Throws<BadRequestException>();
+
+        var sut = new AgencyController(agencyService.Object);
+
+        // Act - bad request: distinct objects referred
+        var result = await sut.Update(
+            AgencyMockData.GetUpdateAgencyDTO().Id - 1,
+            AgencyMockData.GetUpdateAgencyDTO());
+
+        // Assert
+        result.Result.Should()
+            .BeOfType<BadRequestObjectResult>()
+            .Which.StatusCode.Should()
+            .Be(StatusCodes.Status400BadRequest);
+
+        // Act - bad request: exception thrown
+        result = await sut.Update(
+            AgencyMockData.GetUpdateAgencyDTO().Id,
+            AgencyMockData.GetUpdateAgencyDTO());
+
+        // Assert
+        result.Result.Should()
+            .BeOfType<BadRequestObjectResult>()
+            .Which.StatusCode.Should()
+            .Be(StatusCodes.Status400BadRequest);
+    }
+
+    [Fact]
     public async Task Update_ShouldReturn404NotFound()
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.UpdateAgencyAsync(It.IsAny<UpdateAgencyDTO>()))
+        agencyService
+            .Setup(x => x.UpdateAgencyAsync(It.IsAny<UpdateAgencyDTO>()))
             .Throws<NotFoundException>();
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.Update(AgencyMockData.UpdateAgencyDTO().Id,
-            AgencyMockData.UpdateAgencyDTO());
+        var result = await sut.Update(
+            AgencyMockData.GetUpdateAgencyDTO().Id,
+            AgencyMockData.GetUpdateAgencyDTO());
 
         // Assert
         result.Result.Should()
@@ -229,6 +236,7 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
@@ -250,12 +258,14 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.GetAllContactsForAgencyAsync(It.IsAny<int>()))
+        agencyService
+            .Setup(x => x.GetAllContactsForAgencyAsync(It.IsAny<int>()))
             .ReturnsAsync(AgencyMockData.GetAgencyContacts);
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.FindAllContactsForAgency(1);
+        var result = await sut.FindAllContactsForAgency(0);
 
         // Assert
         result.Result.Should()
@@ -269,12 +279,14 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.GetAllContactsForAgencyAsync(It.IsAny<int>()))
+        agencyService
+            .Setup(x => x.GetAllContactsForAgencyAsync(It.IsAny<int>()))
             .ReturnsAsync(AgencyMockData.GetEmptyAgencyContacts);
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.FindAllContactsForAgency(1);
+        var result = await sut.FindAllContactsForAgency(0);
 
         // Assert
         result.Result.Should()
@@ -288,12 +300,14 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x => x.GetAllContactsForAgencyAsync(It.IsAny<int>()))
+        agencyService
+            .Setup(x => x.GetAllContactsForAgencyAsync(It.IsAny<int>()))
             .Throws<NotFoundException>();
+
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.FindAllContactsForAgency(1);
+        var result = await sut.FindAllContactsForAgency(0);
 
         // Assert
         result.Result.Should()
@@ -307,13 +321,16 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x =>
-                x.FindContactForAgency(It.IsAny<int>(), It.IsAny<int>()))
+        agencyService
+            .Setup(x => x.FindContactForAgency(
+                It.IsAny<int>(),
+                It.IsAny<int>()))
             .ReturnsAsync(AgencyMockData.GetAgencyContact);
+        
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.FindContact(1, 1);
+        var result = await sut.FindContact(0, 0);
 
         // Assert
         result.Result.Should()
@@ -327,13 +344,16 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x =>
-                x.FindContactForAgency(It.IsAny<int>(), It.IsAny<int>()))
+        agencyService
+            .Setup(x => x.FindContactForAgency(
+                It.IsAny<int>(), 
+                It.IsAny<int>()))
             .ReturnsAsync(null as AgencyContactDTO);
+        
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.FindContact(1, 1);
+        var result = await sut.FindContact(0, 0);
 
         // Assert
         result.Result.Should()
@@ -347,15 +367,17 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x =>
+        agencyService
+            .Setup(x =>
                 x.CreateContactForAgencyAsync(
                     It.IsAny<int>(),
                     It.IsAny<CreateAgencyContactDTO>()))
             .ReturnsAsync(AgencyMockData.GetAgencyContact);
+        
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.CreateContact(1, AgencyMockData.CreateAgencyContactDTO());
+        var result = await sut.CreateContact(0, AgencyMockData.GetCreateAgencyContactDTO());
 
         // Assert
         var constraint = result.Result.Should()
@@ -364,10 +386,10 @@ public class AgencyControllerTest
         // Assert status code
         constraint.Which.StatusCode.Should()
             .Be(StatusCodes.Status201Created);
-
+        
         // Assert route values
         constraint.Which.RouteValues.Should()
-            .ContainKey("agencyId")
+            .HaveCount(2)
             .And
             .Contain(nameof(AgencyContactDTO.Id), AgencyMockData.GetAgencyContact().Id);
 
@@ -381,15 +403,17 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x =>
+        agencyService
+            .Setup(x =>
                 x.CreateContactForAgencyAsync(
                     It.IsAny<int>(),
                     It.IsAny<CreateAgencyContactDTO>()))
             .Throws<BadRequestException>();
+        
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.CreateContact(1, AgencyMockData.CreateAgencyContactDTO());
+        var result = await sut.CreateContact(0, AgencyMockData.GetCreateAgencyContactDTO());
 
         // Assert
         result.Result.Should()
@@ -403,15 +427,17 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x =>
+        agencyService
+            .Setup(x =>
                 x.CreateContactForAgencyAsync(
                     It.IsAny<int>(),
                     It.IsAny<CreateAgencyContactDTO>()))
             .Throws<NotFoundException>();
+        
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.CreateContact(1, AgencyMockData.CreateAgencyContactDTO());
+        var result = await sut.CreateContact(0, AgencyMockData.GetCreateAgencyContactDTO());
 
         // Assert
         result.Result.Should()
@@ -425,17 +451,19 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x =>
+        agencyService
+            .Setup(x =>
                 x.UpdateContactForAgencyAsync(
                     It.IsAny<int>(),
                     It.IsAny<UpdateAgencyContactDTO>()))
             .ReturnsAsync(AgencyMockData.GetAgencyContact);
+        
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.UpdateContact(1,
-            AgencyMockData.UpdateAgencyContactDTO().Id,
-            AgencyMockData.UpdateAgencyContactDTO());
+        var result = await sut.UpdateContact(0,
+            AgencyMockData.GetUpdateAgencyContactDTO().Id,
+            AgencyMockData.GetUpdateAgencyContactDTO());
 
         // Assert
         result.Result.Should()
@@ -443,34 +471,36 @@ public class AgencyControllerTest
             .Which.StatusCode.Should()
             .Be(StatusCodes.Status200OK);
     }
-    
+
     [Fact]
     public async Task UpdateContact_ShouldReturn400BadRequest()
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x =>
+        agencyService
+            .Setup(x =>
                 x.UpdateContactForAgencyAsync(
                     It.IsAny<int>(),
                     It.IsAny<UpdateAgencyContactDTO>()))
             .Throws<BadRequestException>();
+        
         var sut = new AgencyController(agencyService.Object);
 
-        // Act
-        var result = await sut.UpdateContact(1,
-            AgencyMockData.UpdateAgencyContactDTO().Id,
-            AgencyMockData.UpdateAgencyContactDTO());
+        // Act - bad request: distinct objects referred
+        var result = await sut.UpdateContact(0,
+            AgencyMockData.GetUpdateAgencyContactDTO().Id - 1,
+            AgencyMockData.GetUpdateAgencyContactDTO());
 
         // Assert
         result.Result.Should()
             .BeOfType<BadRequestObjectResult>()
             .Which.StatusCode.Should()
             .Be(StatusCodes.Status400BadRequest);
-        
-        // Act
-        result = await sut.UpdateContact(1,
-            AgencyMockData.UpdateAgencyContactDTO().Id - 1,
-            AgencyMockData.UpdateAgencyContactDTO());
+
+        // Act - bad request: exception thrown
+        result = await sut.UpdateContact(0,
+            AgencyMockData.GetUpdateAgencyContactDTO().Id,
+            AgencyMockData.GetUpdateAgencyContactDTO());
 
         // Assert
         result.Result.Should()
@@ -484,17 +514,19 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        agencyService.Setup(x =>
+        agencyService
+            .Setup(x =>
                 x.UpdateContactForAgencyAsync(
                     It.IsAny<int>(),
                     It.IsAny<UpdateAgencyContactDTO>()))
             .Throws<NotFoundException>();
+        
         var sut = new AgencyController(agencyService.Object);
 
         // Act
-        var result = await sut.UpdateContact(1,
-            AgencyMockData.UpdateAgencyContactDTO().Id,
-            AgencyMockData.UpdateAgencyContactDTO());
+        var result = await sut.UpdateContact(0,
+            AgencyMockData.GetUpdateAgencyContactDTO().Id,
+            AgencyMockData.GetUpdateAgencyContactDTO());
 
         // Assert
         result.Result.Should()
@@ -502,12 +534,13 @@ public class AgencyControllerTest
             .Which.StatusCode.Should()
             .Be(StatusCodes.Status404NotFound);
     }
-    
+
     [Fact]
     public async Task DeleteContact_ShouldReturn204NoContent()
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
+        
         var sut = new AgencyController(agencyService.Object);
 
         // Act
@@ -519,6 +552,6 @@ public class AgencyControllerTest
             .Which.StatusCode.Should()
             .Be(StatusCodes.Status204NoContent);
     }
-    
+
     #endregion
 }
