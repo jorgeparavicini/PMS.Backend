@@ -96,12 +96,20 @@ public class AgencyController : ControllerBase
     public async Task<ActionResult<IEnumerable<AgencyContactDTO>>> FindAllContactsForAgency(
         [FromRoute] int agencyId)
     {
-        var result = await _service.GetAllContactsForAgencyAsync(agencyId);
-        if (!result.Any())
+        try
         {
-            return NoContent();
+            var result = await _service.GetAllContactsForAgencyAsync(agencyId);
+            if (!result.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(result);
         }
-        return Ok(result);
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpGet("{agencyId:int}/contacts/{contactId:int}")]
@@ -118,7 +126,7 @@ public class AgencyController : ControllerBase
     }
 
     [HttpPost("{agencyId:int}/contacts")]
-    public async Task<IActionResult> CreateContact(
+    public async Task<ActionResult<AgencyContactDTO>> CreateContact(
         [FromRoute] int agencyId,
         [FromBody] CreateAgencyContactDTO contact)
     {
@@ -133,10 +141,14 @@ public class AgencyController : ControllerBase
         {
             return NotFound(e.Message);
         }
+        catch (BadRequestException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPut("{agencyId:int}/contacts/{contactId:int}")]
-    public async Task<ActionResult<AgencyContactDTO>> Update(
+    public async Task<ActionResult<AgencyContactDTO>> UpdateContact(
         [FromRoute] int agencyId,
         [FromRoute] int contactId,
         [FromBody] UpdateAgencyContactDTO contact)
@@ -154,6 +166,10 @@ public class AgencyController : ControllerBase
         catch (NotFoundException e)
         {
             return NotFound(e.Message);
+        }
+        catch (BadRequestException e)
+        {
+            return BadRequest(e.Message);
         }
     }
 

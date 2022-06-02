@@ -38,6 +38,12 @@ public class AgencyService : IAgencyService
     public async Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO agency)
     {
         var entity = _mapper.Map<Core.Entities.Agency.Agency>(agency);
+        var result = entity.Validate();
+        if (result.IsFailed)
+        {
+            throw new BadRequestException($"{result.Errors}");
+        }
+        
         await _context.Agencies.AddAsync(entity);
         await _context.SaveChangesAsync();
 
@@ -49,6 +55,12 @@ public class AgencyService : IAgencyService
         if (await _context.Agencies.FindAsync(agency.Id) is { } entity)
         {
             _mapper.Map(agency, entity);
+            var result = entity.Validate();
+            if (result.IsFailed)
+            {
+                throw new BadRequestException($"{result.Errors}");
+            }
+            
             await _context.SaveChangesAsync();
             return _mapper.Map<AgencySummaryDTO>(entity);
         }
@@ -67,10 +79,14 @@ public class AgencyService : IAgencyService
 
     public async Task<IEnumerable<AgencyContactDTO>> GetAllContactsForAgencyAsync(int agencyId)
     {
-        var contacts = await _context.AgencyContacts
-            .Where(x => x.AgencyId == agencyId)
-            .ToListAsync();
-        return _mapper.Map<List<AgencyContact>, List<AgencyContactDTO>>(contacts);
+        var agency = await _context.Agencies.FindAsync(agencyId);
+        if (agency is null)
+        {
+            throw new NotFoundException($"Agency with id {agencyId} not found.");
+        }
+
+        return _mapper.Map<IEnumerable<AgencyContact>, IEnumerable<AgencyContactDTO>>(
+            agency.AgencyContacts);
     }
 
     public async Task<AgencyContactDTO?> FindContactForAgency(int agencyId, int contactId)
@@ -92,7 +108,7 @@ public class AgencyService : IAgencyService
             {
                 throw new BadRequestException($"{result.Errors}");
             }
-            
+
             agency.AgencyContacts.Add(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<AgencyContactDTO>(entity);
@@ -110,6 +126,11 @@ public class AgencyService : IAgencyService
             is { } entity)
         {
             _mapper.Map(contact, entity);
+            var result = entity.Validate();
+            if (result.IsFailed)
+            {
+                throw new BadRequestException($"{result.Errors}");
+            }
             await _context.SaveChangesAsync();
             return _mapper.Map<AgencyContactDTO>(entity);
         }
