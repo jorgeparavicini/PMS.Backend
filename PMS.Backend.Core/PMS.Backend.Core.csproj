@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Migrations" />
+    <Folder Include="Validation" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PMS.Backend.Common\PMS.Backend.Common.csproj" />
