@@ -10,12 +10,15 @@ public class AgencyContact : Entity
     public int Id { get; set; }
 
     [MaxLength(255)]
+    [Required]
     public string ContactName { get; set; } = null!;
 
     [MaxLength(255)]
+    [EmailAddress]
     public string? Email { get; set; }
 
     [MaxLength(255)]
+    [Phone]
     public string? Phone { get; set; }
 
     [MaxLength(255)]
@@ -27,14 +30,14 @@ public class AgencyContact : Entity
     [MaxLength(255)]
     public string? ZipCode { get; set; }
 
+    [Required]
     public bool IsFrequentVendor { get; set; }
-    
-    public bool Hallo { get; set; }
 
     #endregion
 
     #region Relations
 
+    [Required]
     public int AgencyId { get; set; }
     public Agency Agency { get; set; } = null!;
 

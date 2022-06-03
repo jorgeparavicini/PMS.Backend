@@ -11,6 +11,7 @@ public class Agency : Entity
     public int Id { get; set; }
 
     [MaxLength(255)]
+    [Required]
     public string LegalName { get; set; } = null!;
 
     [Precision(5,4)]
@@ -19,12 +20,15 @@ public class Agency : Entity
     [Precision(5, 4)]
     public decimal? DefaultCommissionOnExtras { get; set; }
 
+    [Required]
     public CommissionMethod CommissionMethod { get; set; }
 
     [MaxLength(255)]
+    [Phone]
     public string? EmergencyPhone { get; set; }
 
     [MaxLength(255)]
+    [EmailAddress]
     public string? EmergencyEmail { get; set; }
 
     #endregion
