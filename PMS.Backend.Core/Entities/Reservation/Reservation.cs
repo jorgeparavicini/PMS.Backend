@@ -2,7 +2,7 @@
 
 namespace PMS.Backend.Core.Entities.Reservation;
 
-public class Reservation
+public class Reservation : Entity
 {
     #region Properties
 
@@ -18,7 +18,10 @@ public class Reservation
     public int GroupReservationId { get; set; }
     public GroupReservation GroupReservation { get; set; } = null!;
 
+    [MinLength(1)]
     public IList<ReservationDetail> ReservationDetails { get; } = new List<ReservationDetail>();
 
     #endregion
+    
+    // TODO: Booking type
 }

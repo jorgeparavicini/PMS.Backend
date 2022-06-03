@@ -1,6 +1,6 @@
 ﻿namespace PMS.Backend.Core.Entities.Reservation;
 
-public class ReservationDetail
+public class ReservationDetail : Entity
 {
     #region Properties
 

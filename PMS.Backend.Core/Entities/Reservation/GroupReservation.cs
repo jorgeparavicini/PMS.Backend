@@ -3,7 +3,7 @@ using PMS.Backend.Core.Entities.Agency;
 
 namespace PMS.Backend.Core.Entities.Reservation;
 
-public class GroupReservation
+public class GroupReservation : Entity
 {
     #region Properties
 
@@ -23,6 +23,7 @@ public class GroupReservation
     public int AgencyContactId { get; set; }
     public AgencyContact AgencyContact { get; set; } = null!;
 
+    [MinLength(1)]
     public IList<Reservation> Reservations { get; } = new List<Reservation>();
 
     #endregion

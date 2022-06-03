@@ -5,6 +5,7 @@ namespace PMS.Backend.Core.Entities;
 
 public class Entity
 {
+    // TODO: Audit 
     public Result Validate()
     {
         var validationResults = new List<ValidationResult>();
