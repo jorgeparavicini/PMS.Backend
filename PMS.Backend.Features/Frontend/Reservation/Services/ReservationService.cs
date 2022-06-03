@@ -49,6 +49,12 @@ public class ReservationService : IReservationService
             throw new BadRequestException($"{result.Errors.First().Message}");
         }
 
+        if (!await _context.AgencyContacts.AnyAsync(x => x.Id == entity.AgencyContactId))
+        {
+            throw new BadRequestException(
+                $"Could not find Agency Contact with id {entity.AgencyContactId}");
+        }
+
         await _context.GroupReservations.AddAsync(entity);
         await _context.SaveChangesAsync();
 
@@ -67,6 +73,12 @@ public class ReservationService : IReservationService
             if (result.IsFailed)
             {
                 throw new BadRequestException($"{result.Errors.First().Message}");
+            }
+            
+            if (!await _context.AgencyContacts.AnyAsync(x => x.Id == entity.AgencyContactId))
+            {
+                throw new BadRequestException(
+                    $"Could not find Agency Contact with id {entity.AgencyContactId}");
             }
             
             await _context.SaveChangesAsync();
