@@ -83,6 +83,11 @@ public static class AgencyMockData
         return Mapper.Map<List<Agency>, List<AgencySummaryDTO>>(GetAgencies());
     }
 
+    public static AgencySummaryDTO GetFoundAgencySummary()
+    {
+        return GetAgencySummaries().First();
+    }
+
     public static AgencyDetailDTO GetAgencyDetail()
     {
         return Mapper.Map<Agency, AgencyDetailDTO>(GetAgencies().First());
