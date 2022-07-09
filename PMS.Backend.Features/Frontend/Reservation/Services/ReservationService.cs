@@ -80,7 +80,7 @@ public class ReservationService : IReservationService
                 throw new BadRequestException(
                     $"Could not find Agency Contact with id {entity.AgencyContactId}");
             }
-            
+
             await _context.SaveChangesAsync();
             return _mapper.Map<GroupReservationSummaryDTO>(entity);
         }

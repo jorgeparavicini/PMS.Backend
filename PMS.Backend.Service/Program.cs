@@ -13,6 +13,17 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        var CorsPolicy = "Cors";
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: CorsPolicy,
+                policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                });
+        });
+
         builder.Services.AddControllers();
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -40,6 +51,7 @@ public static class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.UseRouting();
+        app.UseCors(CorsPolicy);
         app.MapControllers();
         app.Run();
     }
