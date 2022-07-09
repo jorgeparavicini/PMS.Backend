@@ -42,7 +42,7 @@ public class AgencyService : IAgencyService
         {
             throw new BadRequestException($"{result.Errors.First().Message}");
         }
-        
+
         await _context.Agencies.AddAsync(entity);
         await _context.SaveChangesAsync();
 
@@ -59,7 +59,7 @@ public class AgencyService : IAgencyService
             {
                 throw new BadRequestException($"{result.Errors.First().Message}");
             }
-            
+
             await _context.SaveChangesAsync();
             return _mapper.Map<AgencySummaryDTO>(entity);
         }
@@ -78,7 +78,8 @@ public class AgencyService : IAgencyService
 
     public async Task<IEnumerable<AgencyContactDTO>> GetAllContactsForAgencyAsync(int agencyId)
     {
-        var agency = await _context.Agencies.FindAsync(agencyId);
+        var agency = await _context.Agencies.Include(x => x.AgencyContacts)
+            .FirstAsync(x => x.Id == agencyId);
         if (agency is null)
         {
             throw new NotFoundException($"Agency with id {agencyId} not found.");
@@ -130,6 +131,7 @@ public class AgencyService : IAgencyService
             {
                 throw new BadRequestException($"{result.Errors.First().Message}");
             }
+
             await _context.SaveChangesAsync();
             return _mapper.Map<AgencyContactDTO>(entity);
         }

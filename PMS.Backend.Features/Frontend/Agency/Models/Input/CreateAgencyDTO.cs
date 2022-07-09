@@ -10,4 +10,5 @@ public record CreateAgencyDTO(
     decimal? DefaultCommissionOnExtras,
     CommissionMethod CommissionMethod,
     string? EmergencyPhone,
-    string? EmergencyEmail);
+    string? EmergencyEmail,
+    CreateAgencyContactDTO[] AgencyContacts);
