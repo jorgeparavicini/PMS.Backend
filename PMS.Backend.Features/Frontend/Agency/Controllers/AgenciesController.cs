@@ -7,7 +7,7 @@ using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 
 [ApiController]
-[Route("agencies")]
+[Route("{controller}")]
 public class AgencyController : ControllerBase
 {
     private readonly IAgencyService _service;

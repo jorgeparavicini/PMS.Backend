@@ -7,7 +7,7 @@ using PMS.Backend.Features.Frontend.Reservation.Services.Contracts;
 namespace PMS.Backend.Features.Frontend.Reservation.Controllers;
 
 [ApiController]
-[Route("reservations")]
+[Route("{controller}")]
 public class ReservationController : ControllerBase
 {
     private readonly IReservationService _service;
