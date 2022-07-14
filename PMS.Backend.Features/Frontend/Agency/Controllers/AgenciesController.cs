@@ -6,16 +6,30 @@ using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
 namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 
+/// <summary>
+/// A CRUD Controller for managing agencies and its contacts.
+/// </summary>
 [ApiController]
-[Route("{controller}")]
-public class AgencyController : ControllerBase
+[Route("[controller]")]
+public class AgenciesController : ControllerBase
 {
     private readonly IAgencyService _service;
 
-    public AgencyController(IAgencyService service) => _service = service;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AgenciesController" /> class.
+    /// </summary>
+    /// <param name="service">
+    /// An implementation of an agency service to be used as a datastore.
+    /// </param>
+    public AgenciesController(IAgencyService service) => _service = service;
 
     #region Agency
 
+    /// <summary>
+    /// Gets a summary of all agencies. The summary contains all properties of an agency except
+    /// the list of contacts.
+    /// </summary>
+    /// <returns>An action result with the HTTP status code and the appropriate content.</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AgencySummaryDTO>>> GetAll()
     {
@@ -27,6 +41,13 @@ public class AgencyController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Searches for an agency with a given unique ID. 
+    /// </summary>
+    /// <param name="id">The unique identifier of the agency.</param>
+    /// <returns>
+    /// An action result with the HTTP status code and the full agency if it was found.
+    /// </returns>
     [HttpGet("{id:int}")]
     public async Task<ActionResult<AgencyDetailDTO?>> Find(
         [FromRoute] int id)
@@ -39,6 +60,14 @@ public class AgencyController : ControllerBase
         return NotFound();
     }
 
+    /// <summary>
+    /// Creates a new agency.
+    /// </summary>
+    /// <param name="agency">The content of the new agency.</param>
+    /// <returns>
+    /// An action result with the HTTP status code, a header linking to the newly created resource
+    /// and the new resource as the body.
+    /// </returns>
     [HttpPost]
     public async Task<ActionResult<AgencySummaryDTO>> Create(
         [FromBody] CreateAgencyDTO agency)
@@ -54,6 +83,14 @@ public class AgencyController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Updates a given agency. To update its contacts use appropriate agency contacts CRUD methods.
+    /// </summary>
+    /// <param name="id">The id of the agency which should be updated.</param>
+    /// <param name="agency">The new content of the agency.</param>
+    /// <returns>
+    /// An action result with the HTTP status code and the updated resource as the body.
+    /// </returns>
     [HttpPut("{id:int}")]
     public async Task<ActionResult<AgencySummaryDTO>> Update(
         [FromRoute] int id,
@@ -79,6 +116,14 @@ public class AgencyController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Deletes an agency. Agencies will not be deleted if any other components rely on a contact
+    /// of the agency.
+    /// </summary>
+    /// <param name="id">The agency to be deleted.</param>
+    /// <returns>
+    /// An action result with the HTTP status code, and empty body.
+    /// </returns>
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
@@ -92,6 +137,13 @@ public class AgencyController : ControllerBase
 
     #region Agency Contact
 
+    /// <summary>
+    /// Gets a list of all contacts for a given agency.
+    /// </summary>
+    /// <param name="agencyId">The unique identifier of the agency.</param>
+    /// <returns>
+    /// An action result with the HTTP status code and the list of found contacts as the body.
+    /// </returns>
     [HttpGet("{agencyId:int}/contacts")]
     public async Task<ActionResult<IEnumerable<AgencyContactDTO>>> FindAllContactsForAgency(
         [FromRoute] int agencyId)
@@ -112,6 +164,17 @@ public class AgencyController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Finds a contact of a given agency.
+    /// </summary>
+    /// <param name="agencyId">The id of the agency.</param>
+    /// <param name="contactId">The id of the contact.</param>
+    /// <returns>
+    /// An action result with the HTTP status code and the contact as the body.
+    /// </returns>
+    /// <remarks>
+    /// This method should not rely on the agency id as the contact ids are globally unique.
+    /// </remarks>
     [HttpGet("{agencyId:int}/contacts/{contactId:int}")]
     public async Task<ActionResult<AgencyContactDTO>> FindContact(
         [FromRoute] int agencyId,
@@ -125,6 +188,15 @@ public class AgencyController : ControllerBase
         return NotFound();
     }
 
+    /// <summary>
+    /// Adds a new contact to the contact list of an agency.
+    /// </summary>
+    /// <param name="agencyId">The unique identifier of the agency.</param>
+    /// <param name="contact">The content of the new contact.</param>
+    /// <returns>
+    /// An action result with the HTTP status code, a header linking to the newly created resource
+    /// and the new resource as the body.
+    /// </returns>
     [HttpPost("{agencyId:int}/contacts")]
     public async Task<ActionResult<AgencyContactDTO>> CreateContact(
         [FromRoute] int agencyId,
@@ -147,6 +219,15 @@ public class AgencyController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Updates a contact for an agency.
+    /// </summary>
+    /// <param name="agencyId">The id of the agency.</param>
+    /// <param name="contactId">The id of the contact.</param>
+    /// <param name="contact">The new content of the contact.</param>
+    /// <returns>
+    /// An action result with the HTTP status code and the new resource as the body.
+    /// </returns>
     [HttpPut("{agencyId:int}/contacts/{contactId:int}")]
     public async Task<ActionResult<AgencyContactDTO>> UpdateContact(
         [FromRoute] int agencyId,
@@ -173,6 +254,16 @@ public class AgencyController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Deletes a contact for an agency if it is not referenced anywhere.
+    /// </summary>
+    /// <param name="agencyId">The id of the agency.</param>
+    /// <param name="contactId">The id of the contact.</param>
+    /// <returns>The HTTP status code.</returns>
+    /// <remarks>
+    /// If the contact is referenced in any other entity, the method will not delete the contact.
+    /// TODO: This check has to be created yet
+    /// </remarks>
     [HttpDelete("{agencyId:int}/contacts/{contactId:int}")]
     public async Task<IActionResult> DeleteAgencyContact(
         [FromRoute] int agencyId,

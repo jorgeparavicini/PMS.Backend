@@ -10,7 +10,7 @@ public static class Registrar
     public static void AddReservationAPI(this IServiceCollection services)
     {
         // Controllers
-        services.AddScoped<ReservationController>();
+        services.AddScoped<ReservationsController>();
         
         // Services
         services.AddScoped<IReservationService, ReservationService>();

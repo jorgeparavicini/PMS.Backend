@@ -15,6 +15,7 @@ public static class AgencyMockData
         cfg.CreateMap<Agency, CreateAgencyDTO>();
         cfg.CreateMap<Agency, UpdateAgencyDTO>();
         cfg.CreateMap<AgencyContact, AgencyContactDTO>();
+        cfg.CreateMap<AgencyContact, CreateAgencyContactDTO>();
         cfg.CreateMap<AgencyContactDTO, UpdateAgencyContactDTO>();
         cfg.CreateMap<AgencyContactDTO, CreateAgencyContactDTO>();
     });

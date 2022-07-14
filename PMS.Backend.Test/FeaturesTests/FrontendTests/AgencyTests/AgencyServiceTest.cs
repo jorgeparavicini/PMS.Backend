@@ -103,21 +103,22 @@ public class AgencyServiceTest : IDisposable
 
         var newAgency = new CreateAgencyDTO(
             null!,
-            null, 
-            null, 
+            null,
+            null,
             CommissionMethod.DeductedByAgency,
-            null, 
-            null);
-        
+            null,
+            null,
+            new List<CreateAgencyContactDTO>());
+
         var sut = new AgencyService(_context, _mapper);
 
         // Act
         var act = async () => await sut.CreateAgencyAsync(newAgency);
-        
+
         // Assert
         await act.Should().ThrowAsync<BadRequestException>();
     }
-    
+
     [Fact]
     public async Task CreateAgencyAsync_ShouldCreateNewAgency()
     {
@@ -127,17 +128,18 @@ public class AgencyServiceTest : IDisposable
 
         var newAgency = new CreateAgencyDTO(
             "Agency",
-            null, 
-            null, 
+            null,
+            null,
             CommissionMethod.DeductedByAgency,
-            null, 
-            null);
-        
+            null,
+            null,
+            new List<CreateAgencyContactDTO>());
+
         var sut = new AgencyService(_context, _mapper);
 
         // Act
         await sut.CreateAgencyAsync(newAgency);
-        
+
         // Assert
         var expectedRecordCount = AgencyMockData.GetAgencies().Count + 1;
         _context.Agencies.Count().Should().Be(expectedRecordCount);

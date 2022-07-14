@@ -7,12 +7,12 @@ using PMS.Backend.Features.Frontend.Reservation.Services.Contracts;
 namespace PMS.Backend.Features.Frontend.Reservation.Controllers;
 
 [ApiController]
-[Route("{controller}")]
-public class ReservationController : ControllerBase
+[Route("[controller]")]
+public class ReservationsController : ControllerBase
 {
     private readonly IReservationService _service;
 
-    public ReservationController(IReservationService service) => _service = service;
+    public ReservationsController(IReservationService service) => _service = service;
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GroupReservationDetailDTO>>> GetAll()

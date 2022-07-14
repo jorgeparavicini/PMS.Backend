@@ -12,7 +12,7 @@ public static class Registrar
     public static void AddAgencyAPI(this IServiceCollection services)
     {
         // Controllers
-        services.AddScoped<AgencyController>();
+        services.AddScoped<AgenciesController>();
         
         // Services
         services.AddScoped<IAgencyService, AgencyService>();
