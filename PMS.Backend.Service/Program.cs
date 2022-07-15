@@ -55,7 +55,7 @@ public static class Program
 
         // Add Database
         builder.Services.AddDbContext<PmsDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")!));
 
         builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
         builder.Services.AddAPI();

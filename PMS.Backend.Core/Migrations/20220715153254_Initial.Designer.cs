@@ -12,19 +12,20 @@ using PMS.Backend.Core.Database;
 namespace PMS.Backend.Core.Migrations
 {
     [DbContext(typeof(PmsDbContext))]
-    [Migration("20220525114838_Initial")]
+    [Migration("20220715153254_Initial")]
     partial class Initial
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "7.0.0-preview.6.22329.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.Agency", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Agency.Agency", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,10 +37,12 @@ namespace PMS.Backend.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("DefaultCommissionOnExtras")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(5, 4)
+                        .HasColumnType("decimal(5,4)");
 
                     b.Property<decimal?>("DefaultCommissionRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(5, 4)
+                        .HasColumnType("decimal(5,4)");
 
                     b.Property<string>("EmergencyEmail")
                         .HasMaxLength(255)
@@ -54,12 +57,18 @@ namespace PMS.Backend.Core.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.ToTable("Agencies");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.AgencyContact", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Agency.AgencyContact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,6 +103,12 @@ namespace PMS.Backend.Core.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("ZipCode")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -105,7 +120,7 @@ namespace PMS.Backend.Core.Migrations
                     b.ToTable("AgencyContacts");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.GroupReservation", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.GroupReservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,6 +141,12 @@ namespace PMS.Backend.Core.Migrations
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AgencyContactId");
@@ -133,7 +154,7 @@ namespace PMS.Backend.Core.Migrations
                     b.ToTable("GroupReservations");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -148,6 +169,12 @@ namespace PMS.Backend.Core.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupReservationId");
@@ -155,7 +182,7 @@ namespace PMS.Backend.Core.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.ReservationDetail", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.ReservationDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -178,6 +205,12 @@ namespace PMS.Backend.Core.Migrations
                     b.Property<int>("ReservationId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ReservationId");
@@ -185,9 +218,9 @@ namespace PMS.Backend.Core.Migrations
                     b.ToTable("ReservationDetails");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.AgencyContact", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Agency.AgencyContact", b =>
                 {
-                    b.HasOne("PMS.Backend.Core.Entities.Agency", "Agency")
+                    b.HasOne("PMS.Backend.Core.Entities.Agency.Agency", "Agency")
                         .WithMany("AgencyContacts")
                         .HasForeignKey("AgencyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -196,9 +229,9 @@ namespace PMS.Backend.Core.Migrations
                     b.Navigation("Agency");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.GroupReservation", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.GroupReservation", b =>
                 {
-                    b.HasOne("PMS.Backend.Core.Entities.AgencyContact", "AgencyContact")
+                    b.HasOne("PMS.Backend.Core.Entities.Agency.AgencyContact", "AgencyContact")
                         .WithMany("GroupReservations")
                         .HasForeignKey("AgencyContactId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -207,9 +240,9 @@ namespace PMS.Backend.Core.Migrations
                     b.Navigation("AgencyContact");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.Reservation", b =>
                 {
-                    b.HasOne("PMS.Backend.Core.Entities.GroupReservation", "GroupReservation")
+                    b.HasOne("PMS.Backend.Core.Entities.Reservation.GroupReservation", "GroupReservation")
                         .WithMany("Reservations")
                         .HasForeignKey("GroupReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -218,10 +251,10 @@ namespace PMS.Backend.Core.Migrations
                     b.Navigation("GroupReservation");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.ReservationDetail", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.ReservationDetail", b =>
                 {
-                    b.HasOne("PMS.Backend.Core.Entities.Reservation", "Reservation")
-                        .WithMany()
+                    b.HasOne("PMS.Backend.Core.Entities.Reservation.Reservation", "Reservation")
+                        .WithMany("ReservationDetails")
                         .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -229,19 +262,24 @@ namespace PMS.Backend.Core.Migrations
                     b.Navigation("Reservation");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.Agency", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Agency.Agency", b =>
                 {
                     b.Navigation("AgencyContacts");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.AgencyContact", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Agency.AgencyContact", b =>
                 {
                     b.Navigation("GroupReservations");
                 });
 
-            modelBuilder.Entity("PMS.Backend.Core.Entities.GroupReservation", b =>
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.GroupReservation", b =>
                 {
                     b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.Reservation", b =>
+                {
+                    b.Navigation("ReservationDetails");
                 });
 #pragma warning restore 612, 618
         }

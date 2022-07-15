@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Core", "PMS.Bac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Features", "PMS.Backend.Features\PMS.Backend.Features.csproj", "{C8B8D1A9-DDEB-43AC-8F79-25EDD40B7897}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Security", "PMS.Backend.Security\PMS.Backend.Security.csproj", "{EB11408B-D280-4F21-BDE9-30444A9CF274}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Common", "PMS.Backend.Common\PMS.Backend.Common.csproj", "{88C2B413-EBD8-4505-A547-9F89A4353ECA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Backend.Test", "PMS.Backend.Test\PMS.Backend.Test.csproj", "{2BD3F07A-8AE6-40B6-88E9-6041C8202F17}"
@@ -33,10 +31,6 @@ Global
 		{C8B8D1A9-DDEB-43AC-8F79-25EDD40B7897}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8B8D1A9-DDEB-43AC-8F79-25EDD40B7897}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8B8D1A9-DDEB-43AC-8F79-25EDD40B7897}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB11408B-D280-4F21-BDE9-30444A9CF274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB11408B-D280-4F21-BDE9-30444A9CF274}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB11408B-D280-4F21-BDE9-30444A9CF274}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB11408B-D280-4F21-BDE9-30444A9CF274}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88C2B413-EBD8-4505-A547-9F89A4353ECA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88C2B413-EBD8-4505-A547-9F89A4353ECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88C2B413-EBD8-4505-A547-9F89A4353ECA}.Release|Any CPU.ActiveCfg = Release|Any CPU

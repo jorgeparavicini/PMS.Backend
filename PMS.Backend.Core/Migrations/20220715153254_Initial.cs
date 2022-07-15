@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PMS.Backend.Core.Migrations
 {
+    /// <inheritdoc />
     public partial class Initial : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -16,11 +18,12 @@ namespace PMS.Backend.Core.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LegalName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    DefaultCommissionRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    DefaultCommissionOnExtras = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    DefaultCommissionRate = table.Column<decimal>(type: "decimal(5,4)", precision: 5, scale: 4, nullable: true),
+                    DefaultCommissionOnExtras = table.Column<decimal>(type: "decimal(5,4)", precision: 5, scale: 4, nullable: true),
                     CommissionMethod = table.Column<int>(type: "int", nullable: false),
                     EmergencyPhone = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    EmergencyEmail = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    EmergencyEmail = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    TimeStamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,7 +43,8 @@ namespace PMS.Backend.Core.Migrations
                     City = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     ZipCode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     IsFrequentVendor = table.Column<bool>(type: "bit", nullable: false),
-                    AgencyId = table.Column<int>(type: "int", nullable: false)
+                    AgencyId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,7 +66,8 @@ namespace PMS.Backend.Core.Migrations
                     Reference = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     ReservationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsQuote = table.Column<bool>(type: "bit", nullable: false),
-                    AgencyContactId = table.Column<int>(type: "int", nullable: false)
+                    AgencyContactId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,7 +87,8 @@ namespace PMS.Backend.Core.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    GroupReservationId = table.Column<int>(type: "int", nullable: false)
+                    GroupReservationId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,7 +111,8 @@ namespace PMS.Backend.Core.Migrations
                     CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FolioClosedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ReservationId = table.Column<int>(type: "int", nullable: false)
+                    ReservationId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,6 +146,7 @@ namespace PMS.Backend.Core.Migrations
                 column: "GroupReservationId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
