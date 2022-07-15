@@ -9,23 +9,33 @@ using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
 namespace PMS.Backend.Features.Frontend.Agency.Services;
 
+/// <inheritdoc/>
 public class AgencyService : IAgencyService
 {
     private readonly PmsDbContext _context;
     private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AgencyService"/> class.
+    /// </summary>
+    /// <param name="context">The database context.</param>
+    /// <param name="mapper">
+    /// The automapper mapper already loaded with the required profiles.
+    /// </param>
     public AgencyService(PmsDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync()
     {
         var agencies = await _context.Agencies.ToListAsync();
         return _mapper.Map<List<Core.Entities.Agency.Agency>, List<AgencySummaryDTO>>(agencies);
     }
 
+    /// <inheritdoc/>
     public async Task<AgencyDetailDTO?> FindAgencyAsync(int id)
     {
         var agency = await _context.Agencies
@@ -34,6 +44,7 @@ public class AgencyService : IAgencyService
         return _mapper.Map<AgencyDetailDTO?>(agency);
     }
 
+    /// <inheritdoc/>
     public async Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO agency)
     {
         var entity = _mapper.Map<Core.Entities.Agency.Agency>(agency);
@@ -49,6 +60,7 @@ public class AgencyService : IAgencyService
         return _mapper.Map<AgencySummaryDTO>(entity);
     }
 
+    /// <inheritdoc/>
     public async Task<AgencySummaryDTO> UpdateAgencyAsync(UpdateAgencyDTO agency)
     {
         if (await _context.Agencies.FindAsync(agency.Id) is { } entity)
@@ -67,6 +79,8 @@ public class AgencyService : IAgencyService
         throw new NotFoundException("Could not find agency");
     }
 
+    /// <inheritdoc/>
+    /// TODO: Prevent deletion if contacts are referenced.
     public async Task DeleteAgencyAsync(int id)
     {
         if (await _context.Agencies.FindAsync(id) is { } agency)
@@ -76,6 +90,7 @@ public class AgencyService : IAgencyService
         }
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<AgencyContactDTO>> GetAllContactsForAgencyAsync(int agencyId)
     {
         var agency = await _context.Agencies.Include(x => x.AgencyContacts)
@@ -89,6 +104,7 @@ public class AgencyService : IAgencyService
             agency.AgencyContacts);
     }
 
+    /// <inheritdoc/>
     public async Task<AgencyContactDTO?> FindContactForAgency(int agencyId, int contactId)
     {
         var contact = await _context.AgencyContacts
@@ -96,6 +112,7 @@ public class AgencyService : IAgencyService
         return _mapper.Map<AgencyContactDTO?>(contact);
     }
 
+    /// <inheritdoc/>
     public async Task<AgencyContactDTO> CreateContactForAgencyAsync(
         int agencyId,
         CreateAgencyContactDTO contact)
@@ -117,6 +134,7 @@ public class AgencyService : IAgencyService
         throw new NotFoundException("Could not find agency");
     }
 
+    /// <inheritdoc/>
     public async Task<AgencyContactDTO> UpdateContactForAgencyAsync(
         int agencyId,
         UpdateAgencyContactDTO contact)
@@ -139,6 +157,7 @@ public class AgencyService : IAgencyService
         throw new NotFoundException("Could not find agency contact");
     }
 
+    /// <inheritdoc/>
     public async Task DeleteAgencyContactAsync(int agencyId, int contactId)
     {
         if (await _context.AgencyContacts.FirstOrDefaultAsync(x =>

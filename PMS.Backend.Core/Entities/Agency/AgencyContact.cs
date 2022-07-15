@@ -19,7 +19,6 @@ public class AgencyContact : Entity
     /// The full name of the contact.
     /// </summary>
     [MaxLength(255)]
-    [Required]
     public string ContactName { get; set; } = null!;
 
     /// <summary>
@@ -57,7 +56,6 @@ public class AgencyContact : Entity
     /// <summary>
     /// Is the contact an agent that provides frequent sells. 
     /// </summary>
-    [Required]
     public bool IsFrequentVendor { get; set; }
 
     #endregion
@@ -68,8 +66,9 @@ public class AgencyContact : Entity
     /// The id of the associated agency.
     /// </summary>
     /// <remarks>
-    /// This is a EF-Core relation, hence both the Id and the agency are required.
+    /// This is an EF-Core relation, hence both the Id and the agency are required.
     /// </remarks>
+    /// <seealso cref="Agency"/>
     [Required]
     public int AgencyId { get; set; }
     
@@ -77,8 +76,9 @@ public class AgencyContact : Entity
     /// The associated agency.
     /// </summary>
     /// <remarks>
-    /// This is a EF-Core relation, hence both the Id and the agency are required.
+    /// This is an EF-Core relation, hence both the Id and the agency are required.
     /// </remarks>
+    /// <seealso cref="AgencyId"/>
     public Agency Agency { get; set; } = null!;
 
     /// <summary>

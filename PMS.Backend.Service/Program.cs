@@ -49,6 +49,7 @@ public static class Program
                 new OpenApiInfo { Title = "PMS.Backend.Service", Version = "v1" });
 
             AddXmlDocs(c);
+            c.SupportNonNullableReferenceTypes();
         });
 
 

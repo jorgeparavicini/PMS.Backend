@@ -29,7 +29,7 @@ public class AgenciesController : ControllerBase
     /// Gets a summary of all agencies. The summary contains all properties of an agency except
     /// the list of contacts.
     /// </summary>
-    /// <returns>An action result with the HTTP status code and the appropriate content.</returns>
+    /// <returns>An action result with the HTTP status code and the agencies in the body.</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AgencySummaryDTO>>> GetAll()
     {
@@ -46,7 +46,7 @@ public class AgenciesController : ControllerBase
     /// </summary>
     /// <param name="id">The unique identifier of the agency.</param>
     /// <returns>
-    /// An action result with the HTTP status code and the full agency if it was found.
+    /// An action result with the HTTP status code and the full agency in the body if it was found.
     /// </returns>
     [HttpGet("{id:int}")]
     public async Task<ActionResult<AgencyDetailDTO?>> Find(

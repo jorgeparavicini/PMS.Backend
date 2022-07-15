@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using PMS.Backend.Common.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
@@ -33,10 +34,23 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
 [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record AgencyDetailDTO(
     int Id,
+    
+    [property: MaxLength(255)]
     string LegalName,
+    
     decimal? DefaultCommissionRate,
+    
     decimal? DefaultCommissionOnExtras,
+    
     CommissionMethod CommissionMethod,
+    
+    [property: Phone]
+    [property: MaxLength(255)]
     string? EmergencyPhone,
+    
+    [property: EmailAddress]
+    [property: MaxLength(255)]
     string? EmergencyEmail,
+    
+    [property: MinLength(1)]
     IReadOnlyList<AgencyContactDTO> AgencyContacts);

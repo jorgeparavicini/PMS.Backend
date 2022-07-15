@@ -105,10 +105,10 @@ public class AgencyServiceTest : IDisposable
             null!,
             null,
             null,
-            CommissionMethod.DeductedByAgency,
             null,
             null,
-            new List<CreateAgencyContactDTO>());
+            new List<CreateAgencyContactDTO>(),
+            CommissionMethod.DeductedByAgency);
 
         var sut = new AgencyService(_context, _mapper);
 
@@ -130,10 +130,10 @@ public class AgencyServiceTest : IDisposable
             "Agency",
             null,
             null,
-            CommissionMethod.DeductedByAgency,
             null,
             null,
-            new List<CreateAgencyContactDTO>());
+            new List<CreateAgencyContactDTO>(),
+            CommissionMethod.DeductedByAgency);
 
         var sut = new AgencyService(_context, _mapper);
 

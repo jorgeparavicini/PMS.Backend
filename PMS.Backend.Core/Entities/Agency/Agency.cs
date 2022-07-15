@@ -20,25 +20,33 @@ public class Agency : Entity
     /// The legal name of the agency.
     /// </summary>
     [MaxLength(255)]
-    [Required]
     public string LegalName { get; set; } = null!;
 
     /// <summary>
-    /// The default commission rate for agents in this agency.
+    /// The default commission rate for agents in this agency as a fraction.
     /// <para>
     /// If the agent has not specified a commission rate, this default rate will be used.
     /// </para>
     /// </summary>
+    /// <remarks>
+    /// Max value is 9.9999 but semantically it does not make sense to have it more than 1.0.
+    /// <para>Min value is 0.0000.</para>
+    /// </remarks>
     [Precision(5,4)]
     public decimal? DefaultCommissionRate { get; set; }
 
     /// <summary>
-    /// The default commission rate for extra goods provided for agents in this agency.
+    /// The default commission rate for extra goods provided for agents in this agency as a
+    /// fraction.
     /// <para>
     /// If the agent has not specified a commission rate for extra good, this default rate will be
     /// used.
     /// </para>
     /// </summary>
+    /// <remarks>
+    /// Max value is 9.9999 but semantically it does not make sense to have it more than 1.0.
+    /// <para>Min value is 0.0000.</para>
+    /// </remarks>
     [Precision(5, 4)]
     public decimal? DefaultCommissionOnExtras { get; set; }
 
@@ -46,7 +54,6 @@ public class Agency : Entity
     /// The method to be used for commissions.
     /// </summary>
     /// <see cref="CommissionMethod"/>
-    [Required]
     public CommissionMethod CommissionMethod { get; set; }
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using PMS.Backend.Common.Models;
 
@@ -30,11 +31,15 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 /// </param>
 [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record CreateAgencyDTO(
-    [property: Required]
+    [property: Required] [property: MaxLength(255)]
     string LegalName,
-    decimal? DefaultCommissionRate,
-    decimal? DefaultCommissionOnExtras,
-    CommissionMethod CommissionMethod,
+    [property: DefaultValue(null)] decimal? DefaultCommissionRate,
+    [property: DefaultValue(null)] decimal? DefaultCommissionOnExtras,
+    [property: Phone] [property: MaxLength(255)] [property: DefaultValue(null)]
     string? EmergencyPhone,
+    [property: EmailAddress] [property: MaxLength(255)] [property: DefaultValue(null)]
     string? EmergencyEmail,
-    IReadOnlyList<CreateAgencyContactDTO> AgencyContacts);
+    [property: Required] [property: MinLength(1)]
+    IReadOnlyList<CreateAgencyContactDTO> AgencyContacts,
+    [property: DefaultValue(CommissionMethod.DeductedByProvider)]
+    CommissionMethod CommissionMethod = CommissionMethod.DeductedByProvider);

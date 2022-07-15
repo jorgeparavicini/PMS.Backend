@@ -9,17 +9,26 @@ using PMS.Backend.Features.Frontend.Reservation.Services.Contracts;
 
 namespace PMS.Backend.Features.Frontend.Reservation.Services;
 
+/// <inheritdoc />
 public class ReservationService : IReservationService
 {
     private readonly PmsDbContext _context;
     private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Initializes a new instance of teh <see cref="ReservationService"/> class.
+    /// </summary>
+    /// <param name="context">The database context.</param>
+    /// <param name="mapper">
+    /// The automapper mapper already loaded with the required profiles.
+    /// </param>
     public ReservationService(PmsDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<GroupReservationSummaryDTO>> GetAllGroupReservationsAsync()
     {
         var reservations = await _context.GroupReservations.ToListAsync();
@@ -28,6 +37,7 @@ public class ReservationService : IReservationService
             reservations);
     }
 
+    /// <inheritdoc />
     public async Task<GroupReservationDetailDTO?> FindGroupReservationAsync(int id)
     {
         var reservation = await _context.GroupReservations
@@ -39,6 +49,7 @@ public class ReservationService : IReservationService
         return _mapper.Map<GroupReservationDetailDTO>(reservation);
     }
 
+    /// <inheritdoc />
     public async Task<GroupReservationSummaryDTO> CreateGroupReservationAsync(
         CreateGroupReservationDTO reservation)
     {
@@ -61,6 +72,7 @@ public class ReservationService : IReservationService
         return _mapper.Map<GroupReservationSummaryDTO>(entity);
     }
 
+    /// <inheritdoc />
     public async Task<GroupReservationSummaryDTO> UpdateGroupReservationAsync(
         UpdateGroupReservationDTO reservation)
     {
@@ -88,6 +100,7 @@ public class ReservationService : IReservationService
         throw new NotFoundException("Could not find group reservation");
     }
 
+    /// <inheritdoc />
     public async Task DeleteGroupReservationAsync(int id)
     {
         if (await _context.GroupReservations.FindAsync(id) is { } reservation)

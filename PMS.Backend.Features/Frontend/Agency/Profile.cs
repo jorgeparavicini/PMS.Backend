@@ -5,10 +5,15 @@ using PMS.Backend.Features.Frontend.Agency.Models.Output;
 
 namespace PMS.Backend.Features.Frontend.Agency;
 
-// ReSharper disable once UnusedType.Global
+/// <summary>
+/// The automapper profile for all agency entities and models.
+/// </summary>
 [ExcludeFromCodeCoverage]
 public class Profile : AutoMapper.Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Profile"/> class.
+    /// </summary>
     public Profile()
     {
         CreateMap<Core.Entities.Agency.Agency, AgencyDetailDTO>();
