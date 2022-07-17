@@ -11,7 +11,7 @@ public class Entity
     /// A timestamp used for concurrency checking.
     /// </summary>
     [Timestamp]
-    public byte[] TimeStamp { get; set; } = null!;
+    public byte[] TimeStamp { get; set; } = Array.Empty<byte>();
 
     // TODO: Audit
 }
