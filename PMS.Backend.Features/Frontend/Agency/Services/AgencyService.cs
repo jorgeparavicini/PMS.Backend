@@ -51,7 +51,7 @@ public class AgencyService : IAgencyService
         var result = entity.Validate();
         if (result.IsFailed)
         {
-            throw new BadRequestException($"{result.Errors.First().Message}");
+            //throw new BadRequestException($"{result.Errors.First().Message}");
         }
 
         await _context.Agencies.AddAsync(entity);

@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 
@@ -31,19 +29,12 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 /// <param name="IsFrequentVendor">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.AgencyContact.IsFrequentVendor"/>
 /// </param>
-[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record UpdateAgencyContactDTO(
-    [property: Required] int Id,
-    [property: Required] [property: MaxLength(255)]
+    int Id,
     string ContactName,
-    [property: EmailAddress] [property: MaxLength(255)] [property: DefaultValue(null)]
-    string? Email,
-    [property: Phone] [property: MaxLength(255)] [property: DefaultValue(null)]
-    string? Phone,
-    [property: MaxLength(255)] [property: DefaultValue(null)]
-    string? Address,
-    [property: MaxLength(255)] [property: DefaultValue(null)]
-    string? City,
-    [property: MaxLength(255)] [property: DefaultValue(null)]
-    string? ZipCode,
+    [property: DefaultValue(null)] string? Email,
+    [property: DefaultValue(null)] string? Phone,
+    [property: DefaultValue(null)] string? Address,
+    [property: DefaultValue(null)] string? City,
+    [property: DefaultValue(null)] string? ZipCode,
     [property: DefaultValue(false)] bool IsFrequentVendor = false);

@@ -1,11 +1,16 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
+using PMS.Backend.Service.SchemaFilters;
+using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace PMS.Backend.Service;
@@ -31,14 +36,16 @@ public static class Program
             options.AddPolicy(name: CorsPolicy,
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                    policy.WithOrigins(builder.Configuration.GetValue<string>("CorsOrigin"))
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                 });
         });
 
         builder.Services.AddControllers()
-            .AddJsonOptions(options =>
+            .AddFluentValidation(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.RegisterValidatorsFromAssembly(Assembly.GetAssembly(typeof(Registrar)));
             });
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -51,6 +58,9 @@ public static class Program
             AddXmlDocs(c);
             c.SupportNonNullableReferenceTypes();
         });
+
+        // Adds FluentValidationRules staff to Swagger.
+        builder.Services.AddFluentValidationRulesToSwagger();
 
 
         // Add Database
@@ -110,7 +120,8 @@ public static class Program
         // Swagger doesn't support).
         foreach (var doc in xmlDocs)
         {
-            var pointerMembers = doc.XPathSelectElements("/doc/members/member/*[inheritdoc[@cref]]");
+            var pointerMembers =
+                doc.XPathSelectElements("/doc/members/member/*[inheritdoc[@cref]]");
 
             foreach (var pointerMember in pointerMembers)
             {
@@ -145,6 +156,7 @@ public static class Program
         foreach (var doc in xmlDocs)
         {
             options.IncludeXmlComments(() => new XPathDocument(doc.CreateReader()), true);
+            options.SchemaFilter<DescribeEnumMembersFilter>(doc);
         }
     }
 }

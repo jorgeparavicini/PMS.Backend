@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -23,8 +24,5 @@
   <ItemGroup>
     <ProjectReference Include="..\PMS.Backend.Core\PMS.Backend.Core.csproj" />
     <ProjectReference Include="..\PMS.Backend.Features\PMS.Backend.Features.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration" />
   </ItemGroup>
 </Project>
