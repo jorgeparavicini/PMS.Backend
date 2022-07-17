@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using FluentValidation.AspNetCore;
@@ -10,7 +9,6 @@ using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
 using PMS.Backend.Service.SchemaFilters;
-using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace PMS.Backend.Service;

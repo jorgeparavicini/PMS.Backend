@@ -1,9 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PMS.Backend.Features.Frontend.Agency.Controllers;
-using PMS.Backend.Features.Frontend.Agency.Models.Input;
-using PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
 using PMS.Backend.Features.Frontend.Agency.Services;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
@@ -24,7 +21,7 @@ public static class Registrar
     {
         // Controllers
         services.AddScoped<AgenciesController>();
-        
+
         // Services
         services.AddScoped<IAgencyService, AgencyService>();
     }

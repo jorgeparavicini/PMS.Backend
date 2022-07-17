@@ -22,7 +22,7 @@ public class NullableAttribute: Attribute
     /// <param name="flag">Is the associated property nullable.</param>
     public NullableAttribute(byte flag)
     {
-        NullableFlags = new byte[] { flag };
+        NullableFlags = new[] { flag };
     }
 
     /// <summary>
