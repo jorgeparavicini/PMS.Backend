@@ -12,7 +12,7 @@ namespace PMS.Backend.Test;
 
 public static class TestExtensions
 {
-    public static IList<IPropertyValidator> GetValidatorsForMember<T, TProperty>(
+    private static IList<IPropertyValidator> GetValidatorsForMember<T, TProperty>(
         this IValidator<T> validator,
         Expression<Func<T, TProperty>> expression)
     {
