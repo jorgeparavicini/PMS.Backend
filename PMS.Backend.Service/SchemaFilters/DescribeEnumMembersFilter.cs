@@ -16,7 +16,14 @@ public class DescribeEnumMembersFilter : ISchemaFilter
     private readonly XDocument _xmlComments;
     private readonly string _assemblyName;
 
+    /// <summary>
+    /// The prefix to add to before the enum members.
+    /// </summary>
     public static string Prefix { get; } = "<p>Possible values:</p>";
+
+    /// <summary>
+    /// The format of each enum member.
+    /// </summary>
     public static string Format { get; } = "<b>{0} - {1}</b>: {2}";
 
     /// <summary>
