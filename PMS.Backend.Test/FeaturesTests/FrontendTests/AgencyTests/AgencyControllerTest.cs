@@ -131,27 +131,6 @@ public class AgencyControllerTest
     }
 
     [Fact]
-    public async Task Create_ShouldReturn400BadRequest()
-    {
-        // Arrange
-        var agencyService = new Mock<IAgencyService>();
-        agencyService
-            .Setup(x => x.CreateAgencyAsync(It.IsAny<CreateAgencyDTO>()))
-            .Throws<BadRequestException>();
-
-        var sut = new AgenciesController(agencyService.Object);
-
-        // Act
-        var result = await sut.Create(AgencyMockData.GetCreateAgencyDTO());
-
-        // Assert
-        result.Result.Should()
-            .BeOfType<BadRequestObjectResult>()
-            .Which.StatusCode.Should()
-            .Be(StatusCodes.Status400BadRequest);
-    }
-
-    [Fact]
     public async Task Update_ShouldReturn200Ok()
     {
         // Arrange
@@ -172,40 +151,6 @@ public class AgencyControllerTest
             .BeOfType<OkObjectResult>()
             .Which.StatusCode.Should()
             .Be(StatusCodes.Status200OK);
-    }
-
-    [Fact]
-    public async Task Update_ShouldReturn400BadRequest()
-    {
-        // Arrange
-        var agencyService = new Mock<IAgencyService>();
-        agencyService
-            .Setup(x => x.UpdateAgencyAsync(It.IsAny<UpdateAgencyDTO>()))
-            .Throws<BadRequestException>();
-
-        var sut = new AgenciesController(agencyService.Object);
-
-        // Act - bad request: distinct objects referred
-        var result = await sut.Update(
-            AgencyMockData.GetUpdateAgencyDTO().Id - 1,
-            AgencyMockData.GetUpdateAgencyDTO());
-
-        // Assert
-        result.Result.Should()
-            .BeOfType<BadRequestObjectResult>()
-            .Which.StatusCode.Should()
-            .Be(StatusCodes.Status400BadRequest);
-
-        // Act - bad request: exception thrown
-        result = await sut.Update(
-            AgencyMockData.GetUpdateAgencyDTO().Id,
-            AgencyMockData.GetUpdateAgencyDTO());
-
-        // Assert
-        result.Result.Should()
-            .BeOfType<BadRequestObjectResult>()
-            .Which.StatusCode.Should()
-            .Be(StatusCodes.Status400BadRequest);
     }
 
     [Fact]
@@ -326,7 +271,7 @@ public class AgencyControllerTest
                 It.IsAny<int>(),
                 It.IsAny<int>()))
             .ReturnsAsync(AgencyMockData.GetAgencyContact);
-        
+
         var sut = new AgenciesController(agencyService.Object);
 
         // Act
@@ -346,10 +291,10 @@ public class AgencyControllerTest
         var agencyService = new Mock<IAgencyService>();
         agencyService
             .Setup(x => x.FindContactForAgency(
-                It.IsAny<int>(), 
+                It.IsAny<int>(),
                 It.IsAny<int>()))
             .ReturnsAsync(null as AgencyContactDTO);
-        
+
         var sut = new AgenciesController(agencyService.Object);
 
         // Act
@@ -373,7 +318,7 @@ public class AgencyControllerTest
                     It.IsAny<int>(),
                     It.IsAny<CreateAgencyContactDTO>()))
             .ReturnsAsync(AgencyMockData.GetAgencyContact);
-        
+
         var sut = new AgenciesController(agencyService.Object);
 
         // Act
@@ -386,7 +331,7 @@ public class AgencyControllerTest
         // Assert status code
         constraint.Which.StatusCode.Should()
             .Be(StatusCodes.Status201Created);
-        
+
         // Assert route values
         constraint.Which.RouteValues.Should()
             .HaveCount(2)
@@ -396,30 +341,6 @@ public class AgencyControllerTest
         // Assert route name
         constraint.Which.ActionName.Should()
             .BeEquivalentTo(nameof(AgenciesController.FindContact));
-    }
-
-    [Fact]
-    public async Task CreateContact_ShouldReturn400BadRequest()
-    {
-        // Arrange
-        var agencyService = new Mock<IAgencyService>();
-        agencyService
-            .Setup(x =>
-                x.CreateContactForAgencyAsync(
-                    It.IsAny<int>(),
-                    It.IsAny<CreateAgencyContactDTO>()))
-            .Throws<BadRequestException>();
-        
-        var sut = new AgenciesController(agencyService.Object);
-
-        // Act
-        var result = await sut.CreateContact(0, AgencyMockData.GetCreateAgencyContactDTO());
-
-        // Assert
-        result.Result.Should()
-            .BeOfType<BadRequestObjectResult>()
-            .Which.StatusCode.Should()
-            .Be(StatusCodes.Status400BadRequest);
     }
 
     [Fact]
@@ -433,7 +354,7 @@ public class AgencyControllerTest
                     It.IsAny<int>(),
                     It.IsAny<CreateAgencyContactDTO>()))
             .Throws<NotFoundException>();
-        
+
         var sut = new AgenciesController(agencyService.Object);
 
         // Act
@@ -457,7 +378,7 @@ public class AgencyControllerTest
                     It.IsAny<int>(),
                     It.IsAny<UpdateAgencyContactDTO>()))
             .ReturnsAsync(AgencyMockData.GetAgencyContact);
-        
+
         var sut = new AgenciesController(agencyService.Object);
 
         // Act
@@ -473,43 +394,6 @@ public class AgencyControllerTest
     }
 
     [Fact]
-    public async Task UpdateContact_ShouldReturn400BadRequest()
-    {
-        // Arrange
-        var agencyService = new Mock<IAgencyService>();
-        agencyService
-            .Setup(x =>
-                x.UpdateContactForAgencyAsync(
-                    It.IsAny<int>(),
-                    It.IsAny<UpdateAgencyContactDTO>()))
-            .Throws<BadRequestException>();
-        
-        var sut = new AgenciesController(agencyService.Object);
-
-        // Act - bad request: distinct objects referred
-        var result = await sut.UpdateContact(0,
-            AgencyMockData.GetUpdateAgencyContactDTO().Id - 1,
-            AgencyMockData.GetUpdateAgencyContactDTO());
-
-        // Assert
-        result.Result.Should()
-            .BeOfType<BadRequestObjectResult>()
-            .Which.StatusCode.Should()
-            .Be(StatusCodes.Status400BadRequest);
-
-        // Act - bad request: exception thrown
-        result = await sut.UpdateContact(0,
-            AgencyMockData.GetUpdateAgencyContactDTO().Id,
-            AgencyMockData.GetUpdateAgencyContactDTO());
-
-        // Assert
-        result.Result.Should()
-            .BeOfType<BadRequestObjectResult>()
-            .Which.StatusCode.Should()
-            .Be(StatusCodes.Status400BadRequest);
-    }
-
-    [Fact]
     public async Task UpdateContact_ShouldReturn404NotFound()
     {
         // Arrange
@@ -520,7 +404,7 @@ public class AgencyControllerTest
                     It.IsAny<int>(),
                     It.IsAny<UpdateAgencyContactDTO>()))
             .Throws<NotFoundException>();
-        
+
         var sut = new AgenciesController(agencyService.Object);
 
         // Act
@@ -540,7 +424,7 @@ public class AgencyControllerTest
     {
         // Arrange
         var agencyService = new Mock<IAgencyService>();
-        
+
         var sut = new AgenciesController(agencyService.Object);
 
         // Act

@@ -72,15 +72,8 @@ public class ReservationsController : ControllerBase
     public async Task<ActionResult<GroupReservationSummaryDTO>> Create(
         [FromBody] CreateGroupReservationDTO reservation)
     {
-        try
-        {
-            var summary = await _service.CreateGroupReservationAsync(reservation);
-            return CreatedAtAction(nameof(Find), new { summary.Id }, summary);
-        }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
-        }
+        var summary = await _service.CreateGroupReservationAsync(reservation);
+        return CreatedAtAction(nameof(Find), new { summary.Id }, summary);
     }
 
     /// <summary>
@@ -110,10 +103,6 @@ public class ReservationsController : ControllerBase
         {
             return NotFound(e.Message);
         }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
-        }
     }
 
     /// <summary>
@@ -125,7 +114,7 @@ public class ReservationsController : ControllerBase
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         await _service.DeleteGroupReservationAsync(id);
-        
+
         return NoContent();
     }
 }

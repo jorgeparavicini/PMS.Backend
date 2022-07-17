@@ -5,7 +5,6 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
 /// <summary>
 /// Validator for properties in the <see cref="UpdateAgencyContactDTO"/> class.
 /// </summary>
-// ReSharper disable once UnusedType.Global
 public class UpdateAgencyContactDTOValidator : AbstractValidator<UpdateAgencyContactDTO>
 {
     /// <summary>

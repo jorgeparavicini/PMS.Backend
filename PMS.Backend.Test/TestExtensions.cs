@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using AutoMapper.Execution;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Validators;
@@ -12,19 +10,7 @@ namespace PMS.Backend.Test;
 
 public static class TestExtensions
 {
-    private static IList<IPropertyValidator> GetValidatorsForMember<T, TProperty>(
-        this IValidator<T> validator,
-        Expression<Func<T, TProperty>> expression)
-    {
-        var descriptor = validator.CreateDescriptor();
-        var expressionMemberName = expression.GetMember()?.Name;
-
-        return descriptor.GetValidatorsForMember(expressionMemberName)
-            .Select(x => x.Validator)
-            .ToList();
-    }
-
-    public static void AssertEqualValidation<TEntity, TModel, TValidator>()
+    public static void AssertEqualValidation<TEntity, TModel, TValidator>(bool isOutput = false)
         where TEntity : Entity
         where TValidator : AbstractValidator<TModel>, new()
     {
@@ -53,22 +39,11 @@ public static class TestExtensions
             foreach (var entityAttribute in entityAttributes!)
             {
                 // If the entity has a nullable attribute it means it's a required property
-                if (entityAttribute.AttributeType == typeof(NullableAttribute))
+                // Output models do not have to be marked as required.
+                if (entityAttribute.AttributeType == typeof(NullableAttribute) && !isOutput)
                 {
-                    var notEmptyValidatorType =
-                        typeof(NotEmptyValidator<,>).MakeGenericType(
-                            typeof(TModel),
-                            modelProperty.PropertyType);
-
-                    var notNullValidatorType =
-                        typeof(NotNullValidator<,>).MakeGenericType(typeof(TModel),
-                            modelProperty.PropertyType);
-
-                    modelValidators.Should()
-                        .Contain(x =>
-                            x.GetType() == notEmptyValidatorType ||
-                            x.GetType() == notNullValidatorType,
-                            "because the entity is required");
+                    AssertModelProperty_IsNotNull<TModel>(modelProperty, modelValidators);
+                    continue;
                 }
 
                 // If the entity has a max length validator, the model should have one with the
@@ -76,19 +51,9 @@ public static class TestExtensions
                 if (entityAttribute.AttributeType == typeof(MaxLengthAttribute))
                 {
                     var maxLength = (int)entityAttribute.ConstructorArguments[0].Value!;
-                    var maxLengthValidator = modelValidators
-                        .OfType<MaximumLengthValidator<TModel>>()
-                        .FirstOrDefault();
-
-                    maxLengthValidator.Should()
-                        .NotBeNull(
-                            $"because the property {modelProperty.Name} of the entity has a" +
-                            " max length validator");
-
-                    maxLengthValidator!.Max.Should()
-                        .Be(maxLength,
-                            $"because the property {modelProperty.Name} of the entity declared" +
-                            " it as such");
+                    AssertModelProperty_HasSameMaxLength<TModel>(modelProperty, modelValidators,
+                        maxLength);
+                    continue;
                 }
 
                 // If the entity has a min length validator, the model should have on with the
@@ -96,29 +61,8 @@ public static class TestExtensions
                 if (entityAttribute.AttributeType == typeof(MinLengthAttribute))
                 {
                     var minLength = (int)entityAttribute.ConstructorArguments[0].Value!;
-                    var notEmptyValidatorType =
-                        typeof(NotEmptyValidator<,>).MakeGenericType(
-                            typeof(TModel),
-                            modelProperty.PropertyType);
-
-                    if (!(minLength == 1 &&
-                          modelValidators.Any(x => x.GetType() == notEmptyValidatorType)))
-                    {
-                        var minLengthValidator = modelValidators
-                            .OfType<MinimumLengthValidator<TModel>>()
-                            .FirstOrDefault();
-
-                        minLengthValidator.Should()
-                            .NotBeNull(
-                                $"because the property {modelProperty.Name} of the entity has a" +
-                                $" min length validator");
-
-
-                        minLengthValidator!.Min.Should()
-                            .Be(minLength,
-                                $"because the property {modelProperty.Name} of the entity declared" +
-                                $" it as such");
-                    }
+                    AssertModelProperty_HasSameMinLength<TModel>(modelProperty, modelValidators,
+                        minLength);
                 }
             }
         }
@@ -133,5 +77,99 @@ public static class TestExtensions
             .GetProperties()
             .Where(x => !omittedProperties.Contains(x.Name))
             .ToList();
+    }
+
+    private static void AssertModelProperty_IsNotNull<TModel>(
+        PropertyInfo modelProperty,
+        List<IPropertyValidator> modelValidators)
+    {
+        var notEmptyValidatorType =
+            typeof(NotEmptyValidator<,>).MakeGenericType(
+                typeof(TModel),
+                modelProperty.PropertyType);
+
+        var notNullValidatorType =
+            typeof(NotNullValidator<,>).MakeGenericType(typeof(TModel),
+                modelProperty.PropertyType);
+
+        modelValidators.Should()
+            .Contain(x =>
+                    x.GetType() == notEmptyValidatorType ||
+                    x.GetType() == notNullValidatorType,
+                "because the entity is required");
+    }
+
+    private static void AssertModelProperty_HasSameMaxLength<TModel>(
+        PropertyInfo modelProperty,
+        List<IPropertyValidator> modelValidators,
+        int maxLength)
+    {
+        var maxLengthValidator = modelValidators
+            .OfType<MaximumLengthValidator<TModel>>()
+            .FirstOrDefault();
+
+        if (modelValidators.Find(x => x.GetType() == typeof(LengthValidator<TModel>)) is
+            LengthValidator<TModel> lengthValidator)
+        {
+            lengthValidator.Max.Should()
+                .Be(maxLength,
+                    $"because the property {modelProperty.Name} of the entity " +
+                    "declared it as such");
+
+            return;
+        }
+
+        maxLengthValidator.Should()
+            .NotBeNull(
+                $"because the property {modelProperty.Name} of the entity has a" +
+                " max length validator");
+
+        maxLengthValidator!.Max.Should()
+            .Be(maxLength,
+                $"because the property {modelProperty.Name} of the entity declared" +
+                " it as such");
+    }
+
+    private static void AssertModelProperty_HasSameMinLength<TModel>(
+        PropertyInfo modelProperty,
+        List<IPropertyValidator> modelValidators,
+        int minLength)
+    {
+        var notEmptyValidatorType =
+            typeof(NotEmptyValidator<,>).MakeGenericType(
+                typeof(TModel),
+                modelProperty.PropertyType);
+
+        if (minLength == 1 &&
+            modelValidators.Any(x => x.GetType() == notEmptyValidatorType))
+        {
+            return;
+        }
+
+        if (minLength == 1 &&
+            modelValidators.Find(x => x.GetType() == typeof(LengthValidator<TModel>)) is
+                LengthValidator<TModel> lengthValidator)
+        {
+            lengthValidator.Min.Should()
+                .Be(minLength,
+                    $"because the property {modelProperty.Name} of the entity" +
+                    $" declared it as such");
+            return;
+        }
+
+        var minLengthValidator = modelValidators
+            .OfType<MinimumLengthValidator<TModel>>()
+            .FirstOrDefault();
+
+        minLengthValidator.Should()
+            .NotBeNull(
+                $"because the property {modelProperty.Name} of the entity has a" +
+                $" min length validator");
+
+
+        minLengthValidator!.Min.Should()
+            .Be(minLength,
+                $"because the property {modelProperty.Name} of the entity declared" +
+                $" it as such");
     }
 }

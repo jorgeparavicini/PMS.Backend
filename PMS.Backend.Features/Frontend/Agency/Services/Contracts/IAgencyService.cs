@@ -21,7 +21,7 @@ public interface IAgencyService
     /// </summary>
     /// <returns>An async enumerable containing all agencies.</returns>
     Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync();
-    
+
     /// <summary>
     /// Tries to find an agency with the given unique id.
     /// This will return the full agency containing all contacts.
@@ -35,11 +35,10 @@ public interface IAgencyService
     /// </summary>
     /// <param name="agency">The agency to be created.</param>
     /// <returns>An image of the new agency excluding the contacts.</returns>
-    /// <exception cref="BadRequestException">Thrown if the passed agency is invalid.</exception>
     /// <remarks>The changes are automatically saved.</remarks>
     Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO agency);
 
-    
+
     /// <summary>
     /// Updates an existing agency and saves the changes to the PMS database.
     /// If the agency does not exist it will not create it, an error is thrown instead.
@@ -49,9 +48,6 @@ public interface IAgencyService
     /// The id of this object will be used to look for the database entity.
     /// </param>
     /// <returns>An image of the updated agency excluding the contacts.</returns>
-    /// <exception cref="BadRequestException">
-    /// Thrown if the new agency object contained validation errors.
-    /// </exception>
     /// <exception cref="NotFoundException">
     /// Thrown if the agency was not found in the db.
     /// </exception>
@@ -76,7 +72,7 @@ public interface IAgencyService
     /// <returns>A list of all contacts for the agency.</returns>
     /// <exception cref="NotFoundException">Thrown if the agency was not found.</exception>
     Task<IEnumerable<AgencyContactDTO>> GetAllContactsForAgencyAsync(int agencyId);
-    
+
     /// <summary>
     /// Tries to find a contact for an agency.
     /// </summary>
@@ -96,9 +92,6 @@ public interface IAgencyService
     /// <param name="agencyId">The id of the agency.</param>
     /// <param name="contact">The content of the new contact.</param>
     /// <returns>The newly created contact with the db assigned id.</returns>
-    /// <exception cref="BadRequestException">
-    /// Thrown if there were validation errors on the contact object.
-    /// </exception>
     /// <exception cref="NotFoundException">Thrown if the agency was not found.</exception>
     /// <remarks>The changes are automatically saved.</remarks>
     Task<AgencyContactDTO> CreateContactForAgencyAsync(
@@ -114,7 +107,6 @@ public interface IAgencyService
     /// </param>
     /// <param name="contact">The new contact object.</param>
     /// <returns>The updated agency </returns>
-    /// <exception cref="BadRequestException"></exception>
     /// <exception cref="NotFoundException"></exception>
     /// <remarks>The changes are automatically saved.</remarks>
     Task<AgencyContactDTO> UpdateContactForAgencyAsync(

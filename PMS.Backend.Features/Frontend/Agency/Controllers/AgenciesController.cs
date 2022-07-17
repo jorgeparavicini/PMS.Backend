@@ -38,11 +38,12 @@ public class AgenciesController : ControllerBase
         {
             return NoContent();
         }
+
         return Ok(result);
     }
 
     /// <summary>
-    /// Searches for an agency with a given unique ID. 
+    /// Searches for an agency with a given unique ID.
     /// </summary>
     /// <param name="id">The unique identifier of the agency.</param>
     /// <returns>
@@ -72,15 +73,8 @@ public class AgenciesController : ControllerBase
     public async Task<ActionResult<AgencySummaryDTO>> Create(
         [FromBody] CreateAgencyDTO agency)
     {
-        try
-        {
-            var summary = await _service.CreateAgencyAsync(agency);
-            return CreatedAtAction(nameof(Find), new { summary.Id }, summary);
-        }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
-        }
+        var summary = await _service.CreateAgencyAsync(agency);
+        return CreatedAtAction(nameof(Find), new { summary.Id }, summary);
     }
 
     /// <summary>
@@ -109,10 +103,6 @@ public class AgenciesController : ControllerBase
         catch (NotFoundException e)
         {
             return NotFound(e.Message);
-        }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
         }
     }
 
@@ -213,10 +203,6 @@ public class AgenciesController : ControllerBase
         {
             return NotFound(e.Message);
         }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
-        }
     }
 
     /// <summary>
@@ -247,10 +233,6 @@ public class AgenciesController : ControllerBase
         catch (NotFoundException e)
         {
             return NotFound(e.Message);
-        }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
         }
     }
 

@@ -48,11 +48,6 @@ public class AgencyService : IAgencyService
     public async Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO agency)
     {
         var entity = _mapper.Map<Core.Entities.Agency.Agency>(agency);
-        var result = entity.Validate();
-        if (result.IsFailed)
-        {
-            //throw new BadRequestException($"{result.Errors.First().Message}");
-        }
 
         await _context.Agencies.AddAsync(entity);
         await _context.SaveChangesAsync();
@@ -66,12 +61,6 @@ public class AgencyService : IAgencyService
         if (await _context.Agencies.FindAsync(agency.Id) is { } entity)
         {
             _mapper.Map(agency, entity);
-            var result = entity.Validate();
-            if (result.IsFailed)
-            {
-                throw new BadRequestException($"{result.Errors.First().Message}");
-            }
-
             await _context.SaveChangesAsync();
             return _mapper.Map<AgencySummaryDTO>(entity);
         }
@@ -120,11 +109,6 @@ public class AgencyService : IAgencyService
         if (await _context.Agencies.FindAsync(agencyId) is { } agency)
         {
             var entity = _mapper.Map<AgencyContact>(contact);
-            var result = entity.Validate();
-            if (result.IsFailed)
-            {
-                throw new BadRequestException($"{result.Errors.First().Message}");
-            }
 
             agency.AgencyContacts.Add(entity);
             await _context.SaveChangesAsync();
@@ -144,11 +128,6 @@ public class AgencyService : IAgencyService
             is { } entity)
         {
             _mapper.Map(contact, entity);
-            var result = entity.Validate();
-            if (result.IsFailed)
-            {
-                throw new BadRequestException($"{result.Errors.First().Message}");
-            }
 
             await _context.SaveChangesAsync();
             return _mapper.Map<AgencyContactDTO>(entity);
