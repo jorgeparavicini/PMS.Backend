@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using PMS.Backend.Core.Entities;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Core.Entities.Reservation;
 
@@ -14,7 +17,7 @@ namespace PMS.Backend.Core.Database
         /// </summary>
         /// <seealso cref="Agency"/>
         public DbSet<Agency> Agencies => Set<Agency>();
-        
+
         /// <summary>
         /// The table containing all agencies contacts.
         /// </summary>
@@ -45,6 +48,24 @@ namespace PMS.Backend.Core.Database
         /// <param name="options">The EF core options to be passed along.</param>
         public PmsDbContext(DbContextOptions<PmsDbContext> options) : base(options)
         {
+        }
+
+        /// <inheritdoc />
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            Expression<Func<Entity, bool>> filterExpr = e => !e.IsDeleted;
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var isDeletedProperty = entityType.FindProperty(nameof(Entity.IsDeleted));
+                if (isDeletedProperty != null && isDeletedProperty.ClrType == typeof(bool))
+                {
+                    var parameter = Expression.Parameter(entityType.ClrType, "p");
+                    var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(),
+                        parameter, filterExpr.Body);
+                    var filter = Expression.Lambda(body, parameter);
+                    entityType.SetQueryFilter(filter);
+                }
+            }
         }
     }
 }
