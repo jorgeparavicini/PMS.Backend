@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# MVC1004: Rename model bound parameter
+dotnet_diagnostic.MVC1004.severity = none

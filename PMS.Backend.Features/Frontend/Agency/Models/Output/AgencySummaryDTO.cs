@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using PMS.Backend.Common.Models;
+﻿using PMS.Backend.Common.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
 
@@ -28,14 +26,11 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
 /// <param name="EmergencyEmail">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.EmergencyEmail"/>
 /// </param>
-[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record AgencySummaryDTO(
     int Id,
-    [property: MaxLength(255)] string LegalName,
+    string LegalName,
     decimal? DefaultCommissionRate,
     decimal? DefaultCommissionOnExtras,
     CommissionMethod CommissionMethod,
-    [property: Phone] [property: MaxLength(255)]
     string? EmergencyPhone,
-    [property: EmailAddress] [property: MaxLength(255)]
     string? EmergencyEmail);

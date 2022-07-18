@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-
-namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
+﻿namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
 
 /// <summary>
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.AgencyContact"/>
@@ -30,15 +27,12 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Output;
 /// <param name="IsFrequentVendor">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.AgencyContact.IsFrequentVendor"/>
 /// </param>
-[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record AgencyContactDTO(
     int Id,
-    [property: MaxLength(255)] string ContactName,
-    [property: EmailAddress] [property: MaxLength(255)]
+    string ContactName,
     string? Email,
-    [property: Phone] [property: MaxLength(255)]
     string? Phone,
-    [property: MaxLength(255)] string? Address,
-    [property: MaxLength(255)] string? City,
-    [property: MaxLength(255)] string? ZipCode,
+    string? Address,
+    string? City,
+    string? ZipCode,
     bool IsFrequentVendor);

@@ -54,15 +54,10 @@ public class ReservationService : IReservationService
         CreateGroupReservationDTO reservation)
     {
         var entity = _mapper.Map<GroupReservation>(reservation);
-        var result = entity.Validate();
-        if (result.IsFailed)
-        {
-            throw new BadRequestException($"{result.Errors.First().Message}");
-        }
 
         if (!await _context.AgencyContacts.AnyAsync(x => x.Id == entity.AgencyContactId))
         {
-            throw new BadRequestException(
+            throw new NotFoundException(
                 $"Could not find Agency Contact with id {entity.AgencyContactId}");
         }
 
@@ -81,15 +76,10 @@ public class ReservationService : IReservationService
                 .FirstOrDefaultAsync(x => x.Id == reservation.Id) is { } entity)
         {
             _mapper.Map(reservation, entity);
-            var result = entity.Validate();
-            if (result.IsFailed)
-            {
-                throw new BadRequestException($"{result.Errors.First().Message}");
-            }
-            
+
             if (!await _context.AgencyContacts.AnyAsync(x => x.Id == entity.AgencyContactId))
             {
-                throw new BadRequestException(
+                throw new NotFoundException(
                     $"Could not find Agency Contact with id {entity.AgencyContactId}");
             }
 

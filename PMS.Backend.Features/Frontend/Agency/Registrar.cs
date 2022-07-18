@@ -21,7 +21,7 @@ public static class Registrar
     {
         // Controllers
         services.AddScoped<AgenciesController>();
-        
+
         // Services
         services.AddScoped<IAgencyService, AgencyService>();
     }

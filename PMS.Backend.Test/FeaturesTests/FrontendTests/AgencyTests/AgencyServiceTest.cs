@@ -3,7 +3,6 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Common.Models;
 using PMS.Backend.Core.Database;
-using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Services;
 using PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests.Mock;
@@ -95,31 +94,6 @@ public class AgencyServiceTest : IDisposable
     }
 
     [Fact]
-    public async Task CreateAgencyAsync_ShouldReturnBadRequest()
-    {
-        // Arrange
-        _context.Agencies.AddRange(AgencyMockData.GetAgencies());
-        await _context.SaveChangesAsync();
-
-        var newAgency = new CreateAgencyDTO(
-            null!,
-            null,
-            null,
-            null,
-            null,
-            new List<CreateAgencyContactDTO>(),
-            CommissionMethod.DeductedByAgency);
-
-        var sut = new AgencyService(_context, _mapper);
-
-        // Act
-        var act = async () => await sut.CreateAgencyAsync(newAgency);
-
-        // Assert
-        await act.Should().ThrowAsync<BadRequestException>();
-    }
-
-    [Fact]
     public async Task CreateAgencyAsync_ShouldCreateNewAgency()
     {
         // Arrange
@@ -130,10 +104,10 @@ public class AgencyServiceTest : IDisposable
             "Agency",
             null,
             null,
+            CommissionMethod.DeductedByAgency,
             null,
             null,
-            new List<CreateAgencyContactDTO>(),
-            CommissionMethod.DeductedByAgency);
+            new List<CreateAgencyContactDTO>());
 
         var sut = new AgencyService(_context, _mapper);
 

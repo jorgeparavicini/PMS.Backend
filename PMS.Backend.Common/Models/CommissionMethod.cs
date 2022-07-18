@@ -10,7 +10,7 @@ public enum CommissionMethod
     /// </summary>
     /// <value>0</value>
     DeductedByAgency = 0,
-    
+
     /// <summary>
     /// The sale should be commissioned by the provider directly.
     /// </summary>

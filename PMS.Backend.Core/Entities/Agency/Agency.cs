@@ -19,6 +19,7 @@ public class Agency : Entity
     /// <summary>
     /// The legal name of the agency.
     /// </summary>
+    [MinLength(1)]
     [MaxLength(255)]
     public string LegalName { get; set; } = null!;
 
@@ -81,7 +82,6 @@ public class Agency : Entity
     /// At least one contact is required as relations are established through the contact
     /// and not the agency.
     /// </remarks>
-    [MinLength(1)]
     public IList<AgencyContact> AgencyContacts { get; } = new List<AgencyContact>();
 
     #endregion

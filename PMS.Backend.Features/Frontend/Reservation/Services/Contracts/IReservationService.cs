@@ -16,7 +16,7 @@ public interface IReservationService
     /// <summary>
     /// Gets all reservations from the database context.
     /// This will return a reduced image of the group reservations without the individual
-    /// reservations. 
+    /// reservations.
     /// </summary>
     /// <returns>An async enumerable containing all group reservations.</returns>
     Task<IEnumerable<GroupReservationSummaryDTO>> GetAllGroupReservationsAsync();
@@ -36,9 +36,6 @@ public interface IReservationService
     /// <returns>
     /// An image of the group reservation excluding the reservations and their details.
     /// </returns>
-    /// <exception cref="BadRequestException">
-    /// Thrown if the passed reservation is invalid.
-    /// </exception>
     /// <remarks>The changes are automatically saved.</remarks>
     Task<GroupReservationSummaryDTO> CreateGroupReservationAsync(
         CreateGroupReservationDTO reservation);
@@ -54,9 +51,6 @@ public interface IReservationService
     /// <returns>
     /// An image of the updated group reservation excluding the reservation and their details.
     /// </returns>
-    /// <exception cref="BadRequestException">
-    /// Thrown if the new group reservation object contained validation errors.
-    /// </exception>
     /// <exception cref="NotFoundException">
     /// Thrown if the group reservation was not found in the db.
     /// </exception>
