@@ -143,7 +143,7 @@ public class AgencyService : IAgencyService
                 x.AgencyId == agencyId && x.Id == contactId)
             is { } entity)
         {
-            _context.AgencyContacts.Remove(entity);
+            entity.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
     }
