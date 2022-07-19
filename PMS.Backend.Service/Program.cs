@@ -31,13 +31,10 @@ public static class Program
 
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(name: CorsPolicy,
-                policy =>
-                {
-                    policy.WithOrigins(builder.Configuration.GetValue<string>("CorsOrigin"))
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
+            options.AddPolicy(CorsPolicy,
+                x => x.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
         });
 
         builder.Services.AddControllers()
