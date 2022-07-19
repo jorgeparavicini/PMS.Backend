@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
@@ -6,6 +7,7 @@ using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
+using PMS.Backend.Features.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Services;
 
@@ -29,10 +31,11 @@ public class AgencyService : IAgencyService
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync()
+    public async Task<PagedList<AgencySummaryDTO>> GetAllAgenciesAsync(int page, int pageSize)
     {
-        var agencies = await _context.Agencies.ToListAsync();
-        return _mapper.Map<List<Core.Entities.Agency.Agency>, List<AgencySummaryDTO>>(agencies);
+        return await _context.Agencies.OrderBy(x => x.LegalName)
+            .ProjectTo<AgencySummaryDTO>(_mapper.ConfigurationProvider)
+            .ToPagedListAsync(page, pageSize);
     }
 
     /// <inheritdoc/>

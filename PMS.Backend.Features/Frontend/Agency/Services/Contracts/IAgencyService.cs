@@ -1,6 +1,7 @@
 ﻿using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
+using PMS.Backend.Features.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
@@ -20,7 +21,7 @@ public interface IAgencyService
     /// This will return a reduced image of the agencies without the contacts to preserve bandwidth.
     /// </summary>
     /// <returns>An async enumerable containing all agencies.</returns>
-    Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync();
+    Task<PagedList<AgencySummaryDTO>> GetAllAgenciesAsync(int page, int pageSize);
 
     /// <summary>
     /// Tries to find an agency with the given unique id.

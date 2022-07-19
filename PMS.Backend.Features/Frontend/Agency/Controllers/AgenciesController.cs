@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
+using PMS.Backend.Features.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 
@@ -31,13 +33,26 @@ public class AgenciesController : ControllerBase
     /// </summary>
     /// <returns>An action result with the HTTP status code and the agencies in the body.</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AgencySummaryDTO>>> GetAll()
+    public async Task<ActionResult<PagedList<AgencySummaryDTO>>> GetAll(
+        [FromQuery] ListQueryParams queryParams)
     {
-        var result = await _service.GetAllAgenciesAsync();
+        var result = await _service.GetAllAgenciesAsync(queryParams.Page, queryParams.PageSize);
         if (!result.Any())
         {
             return NoContent();
         }
+
+        var metadata = new
+        {
+            result.TotalCount,
+            result.PageSize,
+            result.CurrentPage,
+            result.TotalPages,
+            result.HasNext,
+            result.HasPrevious
+        };
+
+        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return Ok(result);
     }
