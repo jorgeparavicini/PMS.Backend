@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Detached.Mappers.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Reservation;
@@ -71,7 +72,10 @@ public class ReservationService : IReservationService
     public async Task<GroupReservationSummaryDTO> UpdateGroupReservationAsync(
         UpdateGroupReservationDTO reservation)
     {
-        if (await _context.GroupReservations
+        var entity = await _context.MapAsync<GroupReservation>(reservation);
+        await _context.SaveChangesAsync();
+        return _mapper.Map<GroupReservationSummaryDTO>(entity);
+        /*if (await _context.GroupReservations
                 .Include(x => x.Reservations)
                 .FirstOrDefaultAsync(x => x.Id == reservation.Id) is { } entity)
         {
@@ -87,7 +91,7 @@ public class ReservationService : IReservationService
             return _mapper.Map<GroupReservationSummaryDTO>(entity);
         }
 
-        throw new NotFoundException("Could not find group reservation");
+        throw new NotFoundException("Could not find group reservation");*/
     }
 
     /// <inheritdoc />

@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Detached.Mappers.EntityFramework;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,10 @@ public static class Program
 
         // Add Database
         builder.Services.AddDbContext<PmsDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")!));
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")!);
+            options.UseDetached();
+        });
 
         builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
         builder.Services.AddAPI();

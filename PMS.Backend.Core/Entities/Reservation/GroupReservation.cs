@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Detached.Annotations;
 using PMS.Backend.Core.Entities.Agency;
 
 namespace PMS.Backend.Core.Entities.Reservation;
@@ -48,7 +49,7 @@ public class GroupReservation : Entity
     /// </remarks>
     /// <seealso cref="AgencyContact"/>
     public int AgencyContactId { get; set; }
-    
+
     /// <summary>
     /// The contact who made this reservation.
     /// </summary>
@@ -56,12 +57,14 @@ public class GroupReservation : Entity
     /// This is an EF-Core relation, hence both the Id and the agency contact are required.
     /// </remarks>
     /// <seealso cref="AgencyContactId"/>
+    [Aggregation]
     public AgencyContact AgencyContact { get; set; } = null!;
 
     /// <summary>
     /// A list of all reservations in this group.
     /// </summary>
     [MinLength(1)]
+    [Aggregation]
     public IList<Reservation> Reservations { get; } = new List<Reservation>();
 
     #endregion
