@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Reservation;
 using PMS.Backend.Features.Exceptions;
+using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.Frontend.Reservation.Models.Input;
 using PMS.Backend.Features.Frontend.Reservation.Models.Output;
 using PMS.Backend.Features.Frontend.Reservation.Services.Contracts;
@@ -70,9 +71,29 @@ public class ReservationService : IReservationService
 
     /// <inheritdoc />
     public async Task<GroupReservationSummaryDTO> UpdateGroupReservationAsync(
-        UpdateGroupReservationDTO reservation)
+        UpdateGroupReservationDTO input)
     {
-        var entity = await _context.MapAsync<GroupReservation>(reservation);
+        var entity = await _context.MapAsync<GroupReservation>(input);
+        entity.ValidateIds(_context);
+        /*foreach (var reservation in entity.Reservations)
+        {
+            if (reservation.Id != 0 &&
+                !await _context.Reservations.AnyAsync(x => x.Id == reservation.Id))
+            {
+                throw new NotFoundException(
+                    $"Could not find reservation with id {reservation.Id}");
+            }
+
+            foreach (var reservationDetail in reservation.ReservationDetails)
+            {
+                if (reservationDetail.Id != 0 &&
+                    !await _context.ReservationDetails.AnyAsync(x => x.Id == reservationDetail.Id))
+                {
+                    throw new NotFoundException(
+                        $"Could not find reservation detail with id {reservationDetail.Id}");
+                }
+            }
+        }*/
         await _context.SaveChangesAsync();
         return _mapper.Map<GroupReservationSummaryDTO>(entity);
         /*if (await _context.GroupReservations

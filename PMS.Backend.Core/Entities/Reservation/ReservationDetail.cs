@@ -1,16 +1,14 @@
-﻿namespace PMS.Backend.Core.Entities.Reservation;
+﻿using Detached.Annotations;
+
+namespace PMS.Backend.Core.Entities.Reservation;
 
 /// <summary>
 /// A details object containing the information of a passenger stay.
 /// </summary>
+[Entity]
 public class ReservationDetail : Entity
 {
     #region Properties
-
-    /// <summary>
-    /// The unique identifier of the reservation detail.
-    /// </summary>
-    public int Id { get; set; }
 
     /// <summary>
     /// The date when this reservation was made.

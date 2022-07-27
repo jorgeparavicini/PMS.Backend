@@ -12,11 +12,6 @@ public class Agency : Entity
     #region Properties
 
     /// <summary>
-    /// A unique id for the agency.
-    /// </summary>
-    public int Id { get; set; }
-
-    /// <summary>
     /// The legal name of the agency.
     /// </summary>
     [MinLength(1)]

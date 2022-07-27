@@ -1,16 +1,15 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using Detached.Mappers.EntityFramework;
 using FluentValidation.AspNetCore;
+using Hellang.Middleware.ProblemDetails;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
-using PMS.Backend.Service.SchemaFilters;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using PMS.Backend.Features.Exceptions;
+using PMS.Backend.Service.Extensions;
 
 namespace PMS.Backend.Service;
 
@@ -28,11 +27,13 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var CorsPolicy = "Cors";
+        // Add exception handling middleware
+        builder.Services.AddProblemDetails(options => options.Configure());
 
+        const string corsPolicy = "Cors";
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(CorsPolicy,
+            options.AddPolicy(corsPolicy,
                 x => x.AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod());
@@ -51,7 +52,7 @@ public static class Program
             c.SwaggerDoc("v1",
                 new OpenApiInfo { Title = "PMS.Backend.Service", Version = "v1" });
 
-            AddXmlDocs(c);
+            c.AddXmlDocs();
             c.SupportNonNullableReferenceTypes();
         });
 
@@ -62,7 +63,8 @@ public static class Program
         // Add Database
         builder.Services.AddDbContext<PmsDbContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")!);
+            options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")!,
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
             options.UseDetached();
         });
 
@@ -70,11 +72,12 @@ public static class Program
         builder.Services.AddAPI();
 
         var app = builder.Build();
+
+        app.UseProblemDetails();
         app.UsePathBase(new PathString("/api"));
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI();
         }
@@ -82,80 +85,8 @@ public static class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.UseRouting();
-        app.UseCors(CorsPolicy);
+        app.UseCors(corsPolicy);
         app.MapControllers();
         app.Run();
-    }
-
-    private static void AddXmlDocs(SwaggerGenOptions options)
-    {
-        // Generate paths for the XML doc files in the assembly's directory.
-        var xmlDocPaths = Directory.GetFiles(
-            path: AppDomain.CurrentDomain.BaseDirectory,
-            searchPattern: "*.xml");
-
-        // Load the XML docs for processing.
-        var xmlDocs = (from docPath in xmlDocPaths select XDocument.Load(docPath))
-            .ToList();
-
-        // Need a map for looking up member elements by name.
-        var targetMemberElements = new Dictionary<string, XElement>();
-
-        // Add member elements across all XML docs to the look-up table. We want <member> elements
-        // that have a 'name' attribute but don't contain an <inheritdoc> child element.
-        foreach (var doc in xmlDocs)
-        {
-            var members = doc.XPathSelectElements("/doc/members/member[@name and not(inheritdoc)]");
-
-            foreach (var member in members)
-            {
-                targetMemberElements.Add(member.Attribute("name")!.Value, member);
-            }
-        }
-
-        // For each <member> element that has an <inheritdoc> child element which references another
-        // <member> element, replace the <inheritdoc> element with the nodes of the referenced
-        // <member> element (effectively this 'dereferences the pointer' which is something
-        // Swagger doesn't support).
-        foreach (var doc in xmlDocs)
-        {
-            var pointerMembers =
-                doc.XPathSelectElements("/doc/members/member/*[inheritdoc[@cref]]");
-
-            foreach (var pointerMember in pointerMembers)
-            {
-                var pointerElement = pointerMember.Element("inheritdoc");
-                var targetMemberName = pointerElement!.Attribute("cref")!.Value;
-
-                if (targetMemberElements.TryGetValue(targetMemberName, out var targetMember))
-                {
-                    pointerElement.ReplaceWith(targetMember.Nodes());
-                }
-            }
-        }
-
-        // Replace all <see> elements with the unqualified member name that they point to
-        // (Swagger uses the fully qualified name which makes no sense because the relevant classes
-        // and namespaces are not useful when calling an API over HTTP).
-        foreach (var doc in xmlDocs)
-        {
-            foreach (var seeElement in doc.XPathSelectElements("//see[@cref]"))
-            {
-                var targetMemberName = seeElement.Attribute("cref")!.Value;
-                var shortMemberName =
-                    targetMemberName.Substring(targetMemberName.LastIndexOf('.') + 1);
-
-                if (targetMemberName.StartsWith("M:")) shortMemberName += "()";
-
-                seeElement.ReplaceWith(shortMemberName);
-            }
-        }
-
-        // Add pre-processed XML docs to Swagger.
-        foreach (var doc in xmlDocs)
-        {
-            options.IncludeXmlComments(() => new XPathDocument(doc.CreateReader()), true);
-            options.SchemaFilter<DescribeEnumMembersFilter>(doc);
-        }
     }
 }
