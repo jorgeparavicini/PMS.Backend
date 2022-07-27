@@ -10,6 +10,7 @@ namespace PMS.Backend.Features.Extensions;
 /// <summary>
 /// Extensions for Entity types.
 /// </summary>
+/// TODO: Use source generators to improve performance.
 public static class EntityExtensions
 {
     private static readonly MethodInfo ValidateIdMethod = typeof(EntityExtensions)

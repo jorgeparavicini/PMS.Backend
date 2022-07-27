@@ -8,7 +8,7 @@ namespace PMS.Backend.Features.Frontend.Reservation.Models.Input;
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.Reservation"/>
 /// </summary>
 /// <param name="Id">
-/// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.Reservation.Id"/>
+/// <inheritdoc cref="PMS.Backend.Core.Entities.Entity.Id"/>
 /// </param>
 /// <param name="Name">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.Reservation.Name"/>

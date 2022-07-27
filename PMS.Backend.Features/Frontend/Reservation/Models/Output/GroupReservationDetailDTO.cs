@@ -7,7 +7,7 @@ namespace PMS.Backend.Features.Frontend.Reservation.Models.Output;
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation"/>
 /// </summary>
 /// <param name="Id">
-/// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation.Id"/>
+/// <inheritdoc cref="PMS.Backend.Core.Entities.Entity.Id"/>
 /// </param>
 /// <param name="Reference">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation.Reference"/>

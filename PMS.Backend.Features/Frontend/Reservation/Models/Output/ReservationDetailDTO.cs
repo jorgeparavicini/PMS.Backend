@@ -6,7 +6,7 @@ namespace PMS.Backend.Features.Frontend.Reservation.Models.Output;
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.ReservationDetail"/>
 /// </summary>
 /// <param name="Id">
-/// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.ReservationDetail.Id"/>
+/// <inheritdoc cref="PMS.Backend.Core.Entities.Entity.Id"/>
 /// </param>
 /// <param name="ReservationDate">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.ReservationDetail.ReservationDate"/>
