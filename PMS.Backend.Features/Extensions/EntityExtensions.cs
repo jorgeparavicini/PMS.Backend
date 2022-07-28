@@ -41,11 +41,6 @@ public static class EntityExtensions
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {
-                if (property.GetValue(entity) == null)
-                {
-                    continue;
-                }
-
                 if (property.PropertyType.IsSubclassOf(typeof(Entity)))
                 {
                     ValidateEntity(property, context, entity);
@@ -96,12 +91,15 @@ public static class EntityExtensions
     private static void ValidateComposite<TContext>(
         PropertyInfo property,
         TContext context,
-        Entity entity)
+        Entity parentEntity)
         where TContext : DbContext
     {
-        var id = (property.GetValue(entity) as Entity)!.Id;
-        ValidateIdMethod.MakeGenericMethod(property.PropertyType, context.GetType())
-            .Invoke(null, new[] { context, id as object });
+        if (property.GetValue(parentEntity) is Entity entity)
+        {
+            if (entity.Id == 0) return;
+            ValidateIdMethod.MakeGenericMethod(property.PropertyType, context.GetType())
+                .Invoke(null, new[] { context, entity.Id as object });
+        }
     }
 
     private static void ValidateEnumerable<TContext>(
@@ -144,7 +142,11 @@ public static class EntityExtensions
     {
         foreach (var entity in entities)
         {
-            ValidateId<T, TContext>(context, entity.Id);
+            if (entity.Id != 0)
+            {
+                ValidateId<T, TContext>(context, entity.Id);
+            }
+
             entity.ValidateIds(context);
         }
     }
@@ -153,7 +155,6 @@ public static class EntityExtensions
         where T : Entity
         where TContext : DbContext
     {
-        if (id == 0) return;
         if (!context.Set<T>().Any(x => x.Id == id))
         {
             throw new NotFoundException(
