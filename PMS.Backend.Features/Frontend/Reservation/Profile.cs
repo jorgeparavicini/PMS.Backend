@@ -19,15 +19,7 @@ public class Profile : AutoMapper.Profile
     {
         CreateMap<GroupReservation, GroupReservationSummaryDTO>();
         CreateMap<GroupReservation, GroupReservationDetailDTO>();
-        CreateMap<CreateGroupReservationDTO, GroupReservation>();
-        CreateMap<UpdateGroupReservationDTO, GroupReservation>();
-
         CreateMap<Core.Entities.Reservation.Reservation, ReservationDTO>();
-        CreateMap<CreateReservationDTO, Core.Entities.Reservation.Reservation>();
-        CreateMap<UpdateReservationDTO, Core.Entities.Reservation.Reservation>();
-
         CreateMap<ReservationDetail, ReservationDetailDTO>();
-        CreateMap<CreateReservationDetailDTO, ReservationDetail>();
-        CreateMap<UpdateReservationDetailDTO, ReservationDetail>();
     }
 }

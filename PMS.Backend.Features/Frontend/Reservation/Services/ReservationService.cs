@@ -3,7 +3,6 @@ using Detached.Mappers.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Reservation;
-using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.Frontend.Reservation.Models.Input;
 using PMS.Backend.Features.Frontend.Reservation.Models.Output;
@@ -18,11 +17,11 @@ public class ReservationService : IReservationService
     private readonly IMapper _mapper;
 
     /// <summary>
-    /// Initializes a new instance of teh <see cref="ReservationService"/> class.
+    /// Initializes a new instance of the <see cref="ReservationService"/> class.
     /// </summary>
     /// <param name="context">The database context.</param>
     /// <param name="mapper">
-    /// The automapper mapper already loaded with the required profiles.
+    /// An automapper <see cref="IMapper"/> loaded with the required profiles.
     /// </param>
     public ReservationService(PmsDbContext context, IMapper mapper)
     {
@@ -55,15 +54,8 @@ public class ReservationService : IReservationService
     public async Task<GroupReservationSummaryDTO> CreateGroupReservationAsync(
         CreateGroupReservationDTO reservation)
     {
-        var entity = _mapper.Map<GroupReservation>(reservation);
-
-        if (!await _context.AgencyContacts.AnyAsync(x => x.Id == entity.AgencyContactId))
-        {
-            throw new NotFoundException(
-                $"Could not find Agency Contact with id {entity.AgencyContactId}");
-        }
-
-        await _context.GroupReservations.AddAsync(entity);
+        var entity = await _context.MapAsync<GroupReservation>(reservation);
+        entity.ValidateIds(_context);
         await _context.SaveChangesAsync();
 
         return _mapper.Map<GroupReservationSummaryDTO>(entity);
@@ -75,44 +67,9 @@ public class ReservationService : IReservationService
     {
         var entity = await _context.MapAsync<GroupReservation>(input);
         entity.ValidateIds(_context);
-        /*foreach (var reservation in entity.Reservations)
-        {
-            if (reservation.Id != 0 &&
-                !await _context.Reservations.AnyAsync(x => x.Id == reservation.Id))
-            {
-                throw new NotFoundException(
-                    $"Could not find reservation with id {reservation.Id}");
-            }
-
-            foreach (var reservationDetail in reservation.ReservationDetails)
-            {
-                if (reservationDetail.Id != 0 &&
-                    !await _context.ReservationDetails.AnyAsync(x => x.Id == reservationDetail.Id))
-                {
-                    throw new NotFoundException(
-                        $"Could not find reservation detail with id {reservationDetail.Id}");
-                }
-            }
-        }*/
         await _context.SaveChangesAsync();
+
         return _mapper.Map<GroupReservationSummaryDTO>(entity);
-        /*if (await _context.GroupReservations
-                .Include(x => x.Reservations)
-                .FirstOrDefaultAsync(x => x.Id == reservation.Id) is { } entity)
-        {
-            _mapper.Map(reservation, entity);
-
-            if (!await _context.AgencyContacts.AnyAsync(x => x.Id == entity.AgencyContactId))
-            {
-                throw new NotFoundException(
-                    $"Could not find Agency Contact with id {entity.AgencyContactId}");
-            }
-
-            await _context.SaveChangesAsync();
-            return _mapper.Map<GroupReservationSummaryDTO>(entity);
-        }
-
-        throw new NotFoundException("Could not find group reservation");*/
     }
 
     /// <inheritdoc />
