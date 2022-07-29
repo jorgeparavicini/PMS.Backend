@@ -44,7 +44,6 @@ public class ReservationService : IReservationService
         var reservation = await _context.GroupReservations
             .Include(x => x.Reservations)
             .ThenInclude(x => x.ReservationDetails)
-            .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id);
 
         return _mapper.Map<GroupReservationDetailDTO>(reservation);
@@ -52,9 +51,9 @@ public class ReservationService : IReservationService
 
     /// <inheritdoc />
     public async Task<GroupReservationSummaryDTO> CreateGroupReservationAsync(
-        CreateGroupReservationDTO reservation)
+        CreateGroupReservationDTO input)
     {
-        var entity = await _context.MapAsync<GroupReservation>(reservation);
+        var entity = await _context.MapAsync<GroupReservation>(input);
         entity.ValidateIds(_context);
         await _context.SaveChangesAsync();
 

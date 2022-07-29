@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Detached.Annotations;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Common.Models;
 
@@ -77,6 +78,7 @@ public class Agency : Entity
     /// At least one contact is required as relations are established through the contact
     /// and not the agency.
     /// </remarks>
+    [Composition]
     public IList<AgencyContact> AgencyContacts { get; } = new List<AgencyContact>();
 
     #endregion

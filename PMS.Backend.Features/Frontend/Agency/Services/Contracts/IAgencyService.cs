@@ -14,14 +14,12 @@ namespace PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 /// </remarks>
 public interface IAgencyService
 {
-    #region Agency
-
     /// <summary>
     /// Gets all agencies from the database context.
     /// This will return a reduced image of the agencies without the contacts to preserve bandwidth.
     /// </summary>
     /// <returns>An async enumerable containing all agencies.</returns>
-    Task<PagedList<AgencySummaryDTO>> GetAllAgenciesAsync(int page, int pageSize);
+    Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync();
 
     /// <summary>
     /// Tries to find an agency with the given unique id.
@@ -61,72 +59,4 @@ public interface IAgencyService
     /// <param name="id">The id of the agency to be deleted.</param>
     /// <remarks>The changes are automatically saved.</remarks>
     Task DeleteAgencyAsync(int id);
-
-    #endregion
-
-    #region Agency Contact
-
-    /// <summary>
-    /// Gets all contacts for an agency.
-    /// </summary>
-    /// <param name="agencyId">The id of the agency.</param>
-    /// <returns>A list of all contacts for the agency.</returns>
-    /// <exception cref="NotFoundException">Thrown if the agency was not found.</exception>
-    Task<IEnumerable<AgencyContactDTO>> GetAllContactsForAgencyAsync(int agencyId);
-
-    /// <summary>
-    /// Tries to find a contact for an agency.
-    /// </summary>
-    /// <param name="agencyId">
-    /// The agency of the contact.
-    /// TODO: This param is redundant and should be removed.
-    /// </param>
-    /// <param name="contactId">
-    /// The id of the contact.
-    /// </param>
-    /// <returns>The agency contact or null if it was not found.</returns>
-    Task<AgencyContactDTO?> FindContactForAgency(int agencyId, int contactId);
-
-    /// <summary>
-    /// Creates a new contact for an existing agency.
-    /// </summary>
-    /// <param name="agencyId">The id of the agency.</param>
-    /// <param name="contact">The content of the new contact.</param>
-    /// <returns>The newly created contact with the db assigned id.</returns>
-    /// <exception cref="NotFoundException">Thrown if the agency was not found.</exception>
-    /// <remarks>The changes are automatically saved.</remarks>
-    Task<AgencyContactDTO> CreateContactForAgencyAsync(
-        int agencyId,
-        CreateAgencyContactDTO contact);
-
-    /// <summary>
-    /// Updates an existing contact for a agency.
-    /// </summary>
-    /// <param name="agencyId">
-    /// The id of the agency the contact belongs to.
-    /// TODO: This parameter is redundant and should be removed.
-    /// </param>
-    /// <param name="contact">The new contact object.</param>
-    /// <returns>The updated agency </returns>
-    /// <exception cref="NotFoundException"></exception>
-    /// <remarks>The changes are automatically saved.</remarks>
-    Task<AgencyContactDTO> UpdateContactForAgencyAsync(
-        int agencyId,
-        UpdateAgencyContactDTO contact);
-
-    /// <summary>
-    /// Deletes an agency contact.
-    /// This is only allowed if the contact is not referenced by any other entities.
-    /// </summary>
-    /// <param name="agencyId">
-    /// The id of the agency of the contact.
-    /// TODO: Redundant
-    /// </param>
-    /// <param name="contactId">The id of the contact.</param>
-    /// <remarks>The changes are automatically saved.</remarks>
-    Task DeleteAgencyContactAsync(int agencyId, int contactId);
-
-    #endregion
-
-
 }

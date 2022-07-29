@@ -45,7 +45,6 @@ public class Reservation : Entity
     /// This is an EF-Core relation, hence both the Id and the group reservation are required.
     /// </remarks>
     /// <seealso cref="GroupReservationId"/>
-    [Composition]
     public GroupReservation GroupReservation { get; set; } = null!;
 
     /// <summary>
