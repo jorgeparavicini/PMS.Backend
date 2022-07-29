@@ -7,7 +7,7 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency"/>
 /// </summary>
 /// <param name="Id">
-/// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.Id"/>
+/// <inheritdoc cref="PMS.Backend.Core.Entities.Entity.Id"/>
 /// </param>
 /// <param name="LegalName">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.LegalName"/>

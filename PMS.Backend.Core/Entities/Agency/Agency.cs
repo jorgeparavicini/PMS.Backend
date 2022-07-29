@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Detached.Annotations;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Common.Models;
 
@@ -10,11 +11,6 @@ namespace PMS.Backend.Core.Entities.Agency;
 public class Agency : Entity
 {
     #region Properties
-
-    /// <summary>
-    /// A unique id for the agency.
-    /// </summary>
-    public int Id { get; set; }
 
     /// <summary>
     /// The legal name of the agency.
@@ -82,6 +78,7 @@ public class Agency : Entity
     /// At least one contact is required as relations are established through the contact
     /// and not the agency.
     /// </remarks>
+    [Composition]
     public IList<AgencyContact> AgencyContacts { get; } = new List<AgencyContact>();
 
     #endregion

@@ -18,10 +18,6 @@ public class Profile : AutoMapper.Profile
     {
         CreateMap<Core.Entities.Agency.Agency, AgencyDetailDTO>();
         CreateMap<Core.Entities.Agency.Agency, AgencySummaryDTO>();
-        CreateMap<CreateAgencyDTO, Core.Entities.Agency.Agency>();
-        CreateMap<UpdateAgencyDTO, Core.Entities.Agency.Agency>();
-        
         CreateMap<AgencyContact, AgencyContactDTO>();
-        CreateMap<CreateAgencyContactDTO, AgencyContact>();
     }
 }

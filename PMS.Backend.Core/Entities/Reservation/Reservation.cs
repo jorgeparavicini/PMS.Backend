@@ -1,19 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Detached.Annotations;
 
 namespace PMS.Backend.Core.Entities.Reservation;
 
 /// <summary>
 /// An object that holds a list of all details regarding a reservation.
 /// </summary>
+[Entity]
 public class Reservation : Entity
 {
     #region Properties
 
-    /// <summary>
-    /// The unique identifier of this reservation.
-    /// </summary>
-    public int Id { get; set; }
-    
     /// <summary>
     /// An optional name for this reservation.
     /// </summary>
@@ -40,7 +37,7 @@ public class Reservation : Entity
     /// </remarks>
     /// <seealso cref="GroupReservation"/>
     public int GroupReservationId { get; set; }
-    
+
     /// <summary>
     /// The parent group reservation.
     /// </summary>
@@ -54,9 +51,10 @@ public class Reservation : Entity
     /// A list of all details in this reservation.
     /// </summary>
     [MinLength(1)]
-    public IList<ReservationDetail> ReservationDetails { get; } = new List<ReservationDetail>();
+    [Composition]
+    public IList<ReservationDetail> ReservationDetails { get; set; } = new List<ReservationDetail>();
 
     #endregion
-    
+
     // TODO: Booking type
 }

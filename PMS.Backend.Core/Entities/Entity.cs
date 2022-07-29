@@ -8,6 +8,11 @@ namespace PMS.Backend.Core.Entities;
 public class Entity
 {
     /// <summary>
+    /// A unique Identifier for this entity.
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
     /// A timestamp used for concurrency checking.
     /// </summary>
     [Timestamp]

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Reservation.Models.Input;
 using PMS.Backend.Features.Frontend.Reservation.Models.Output;
 using PMS.Backend.Features.Frontend.Reservation.Services.Contracts;
@@ -94,15 +93,8 @@ public class ReservationsController : ControllerBase
             return BadRequest("Group Reservation Id mismatch");
         }
 
-        try
-        {
-            var summary = await _service.UpdateGroupReservationAsync(reservation);
-            return Ok(summary);
-        }
-        catch (NotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
+        var summary = await _service.UpdateGroupReservationAsync(reservation);
+        return Ok(summary);
     }
 
     /// <summary>

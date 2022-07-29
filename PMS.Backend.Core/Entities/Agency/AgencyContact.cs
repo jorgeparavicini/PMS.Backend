@@ -11,11 +11,6 @@ public class AgencyContact : Entity
     #region Properties
 
     /// <summary>
-    /// The unique identifier of this contact.
-    /// </summary>
-    public int Id { get; set; }
-
-    /// <summary>
     /// The full name of the contact.
     /// </summary>
     [MinLength(1)]
