@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Detached.Mappers.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
-using PMS.Backend.Core.Entities.Agency;
-using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
-using PMS.Backend.Features.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Services;
 
