@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Detached.Mappers.EntityFramework;
-using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Database;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
-using PMS.Backend.Features.Frontend.Agency.Models.Output;
+using PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
 namespace PMS.Backend.Features.Frontend.Agency.Services;
@@ -29,42 +29,44 @@ public class AgencyService : IAgencyService
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync()
+    public IQueryable<Core.Entities.Agency.Agency> GetAllAgencies()
     {
-        var agencies = await _context.Agencies.ToListAsync();
-
-        return _mapper.Map<IEnumerable<Core.Entities.Agency.Agency>, IEnumerable<AgencySummaryDTO>>(
-            agencies);
+        return _context.Agencies;
     }
 
     /// <inheritdoc/>
-    public async Task<AgencyDetailDTO?> FindAgencyAsync(int id)
+    public IQueryable<Core.Entities.Agency.Agency> FindAgencyAsync(int id)
     {
-        var agency = await _context.Agencies
-            .Include(x => x.AgencyContacts)
-            .FirstOrDefaultAsync(x => x.Id == id);
-
-        return _mapper.Map<AgencyDetailDTO?>(agency);
+        return _context.Agencies.Where(x => x.Id == id);
     }
 
     /// <inheritdoc/>
-    public async Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO input)
+    public async Task<Core.Entities.Agency.Agency> CreateAgencyAsync(CreateAgencyDTO input)
     {
+        var entity = await _context
+            .ValidateAndMapAsync<
+                Core.Entities.Agency.Agency,
+                CreateAgencyDTO,
+                CreateAgencyDTOValidator>(input);
+
+        await _context.SaveChangesAsync();
+
+        return entity;
+    }
+
+    /// <inheritdoc/>
+    public async Task<Core.Entities.Agency.Agency> UpdateAgencyAsync(int id, UpdateAgencyDTO input)
+    {
+        if (id != input.Id)
+        {
+            throw new BadRequestException(
+                $"The query id {id} does not match the DTO id {input.Id}");
+        }
         var entity = await _context.MapAsync<Core.Entities.Agency.Agency>(input);
         entity.ValidateIds(_context);
         await _context.SaveChangesAsync();
 
-        return _mapper.Map<AgencySummaryDTO>(entity);
-    }
-
-    /// <inheritdoc/>
-    public async Task<AgencySummaryDTO> UpdateAgencyAsync(UpdateAgencyDTO input)
-    {
-        var entity = await _context.MapAsync<Core.Entities.Agency.Agency>(input);
-        entity.ValidateIds(_context);
-        await _context.SaveChangesAsync();
-
-        return _mapper.Map<AgencySummaryDTO>(entity);
+        return entity;
     }
 
     /// <inheritdoc/>

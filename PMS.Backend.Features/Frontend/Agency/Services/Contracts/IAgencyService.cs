@@ -1,7 +1,5 @@
 ﻿using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
-using PMS.Backend.Features.Frontend.Agency.Models.Output;
-using PMS.Backend.Features.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
@@ -19,7 +17,7 @@ public interface IAgencyService
     /// This will return a reduced image of the agencies without the contacts to preserve bandwidth.
     /// </summary>
     /// <returns>An async enumerable containing all agencies.</returns>
-    Task<IEnumerable<AgencySummaryDTO>> GetAllAgenciesAsync();
+    IQueryable<Core.Entities.Agency.Agency> GetAllAgencies();
 
     /// <summary>
     /// Tries to find an agency with the given unique id.
@@ -27,7 +25,7 @@ public interface IAgencyService
     /// </summary>
     /// <param name="id">The id of the agency to be found.</param>
     /// <returns>The agency or null if no agency with the id exists.</returns>
-    Task<AgencyDetailDTO?> FindAgencyAsync(int id);
+    IQueryable<Core.Entities.Agency.Agency> FindAgencyAsync(int id);
 
     /// <summary>
     /// Creates a new Agency in the PMS database context.
@@ -35,13 +33,14 @@ public interface IAgencyService
     /// <param name="agency">The agency to be created.</param>
     /// <returns>An image of the new agency excluding the contacts.</returns>
     /// <remarks>The changes are automatically saved.</remarks>
-    Task<AgencySummaryDTO> CreateAgencyAsync(CreateAgencyDTO agency);
+    Task<Core.Entities.Agency.Agency> CreateAgencyAsync(CreateAgencyDTO agency);
 
 
     /// <summary>
     /// Updates an existing agency and saves the changes to the PMS database.
     /// If the agency does not exist it will not create it, an error is thrown instead.
     /// </summary>
+    /// <param name="id">The id of the agency</param>
     /// <param name="agency">
     /// The agency to be updated.
     /// The id of this object will be used to look for the database entity.
@@ -51,7 +50,7 @@ public interface IAgencyService
     /// Thrown if the agency was not found in the db.
     /// </exception>
     /// <remarks>The changes are automatically saved.</remarks>
-    Task<AgencySummaryDTO> UpdateAgencyAsync(UpdateAgencyDTO agency);
+    Task<Core.Entities.Agency.Agency> UpdateAgencyAsync(int id, UpdateAgencyDTO agency);
 
     /// <summary>
     /// Deletes an agency from the database if and only if no other entities reference its contacts.

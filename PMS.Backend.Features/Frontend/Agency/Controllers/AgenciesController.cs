@@ -1,19 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using PMS.Backend.Features.Exceptions;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Results;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
 using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
-using PMS.Backend.Features.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 
 /// <summary>
 /// A CRUD Controller for managing agencies and its contacts.
 /// </summary>
-[ApiController]
-[Route("[controller]")]
-public class AgenciesController : ControllerBase
+public class AgenciesController : ODataController
 {
     private readonly IAgencyService _service;
 
@@ -30,16 +28,11 @@ public class AgenciesController : ControllerBase
     /// the list of contacts.
     /// </summary>
     /// <returns>An action result with the HTTP status code and the agencies in the body.</returns>
-    [HttpGet]
-    public async Task<ActionResult<PagedList<AgencySummaryDTO>>> GetAll()
+    [EnableQuery]
+    [HttpGet("agencies")]
+    public IQueryable<Core.Entities.Agency.Agency> GetAll()
     {
-        var result = await _service.GetAllAgenciesAsync();
-        if (!result.Any())
-        {
-            return NoContent();
-        }
-
-        return Ok(result);
+        return _service.GetAllAgencies();
     }
 
     /// <summary>
@@ -49,16 +42,11 @@ public class AgenciesController : ControllerBase
     /// <returns>
     /// An action result with the HTTP status code and the full agency in the body if it was found.
     /// </returns>
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<AgencyDetailDTO?>> Find(
-        [FromRoute] int id)
+    [EnableQuery]
+    [HttpGet("agencies({id:int})")]
+    public SingleResult<Core.Entities.Agency.Agency> Find([FromRoute] int id)
     {
-        if (await _service.FindAgencyAsync(id) is { } agency)
-        {
-            return Ok(agency);
-        }
-
-        return NotFound();
+        return SingleResult.Create(_service.FindAgencyAsync(id));
     }
 
     /// <summary>
@@ -69,12 +57,13 @@ public class AgenciesController : ControllerBase
     /// An action result with the HTTP status code, a header linking to the newly created resource
     /// and the new resource as the body.
     /// </returns>
-    [HttpPost]
+    [EnableQuery]
+    [HttpPost("agencies")]
     public async Task<ActionResult<AgencySummaryDTO>> Create(
         [FromBody] CreateAgencyDTO agency)
     {
-        var summary = await _service.CreateAgencyAsync(agency);
-        return CreatedAtAction(nameof(Find), new { summary.Id }, summary);
+        var entity = await _service.CreateAgencyAsync(agency);
+        return Created(entity);
     }
 
     /// <summary>
@@ -85,18 +74,14 @@ public class AgenciesController : ControllerBase
     /// <returns>
     /// An action result with the HTTP status code and the updated resource as the body.
     /// </returns>
-    [HttpPut("{id:int}")]
+    [EnableQuery]
+    [HttpPut("agencies({id:int})")]
     public async Task<ActionResult<AgencySummaryDTO>> Update(
         [FromRoute] int id,
         [FromBody] UpdateAgencyDTO agency)
     {
-        if (id != agency.Id)
-        {
-            return BadRequest("Agency Id mismatch");
-        }
-
-        var summary = await _service.UpdateAgencyAsync(agency);
-        return Ok(summary);
+        var entity = await _service.UpdateAgencyAsync(id, agency);
+        return Updated(entity);
     }
 
     /// <summary>
@@ -107,7 +92,7 @@ public class AgenciesController : ControllerBase
     /// <returns>
     /// An action result with the HTTP status code, and empty body.
     /// </returns>
-    [HttpDelete("{id:int}")]
+    [HttpDelete("agencies({id:int})")]
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {

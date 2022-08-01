@@ -79,7 +79,7 @@ public class Agency : Entity
     /// and not the agency.
     /// </remarks>
     [Composition]
-    public IList<AgencyContact> AgencyContacts { get; } = new List<AgencyContact>();
+    public IList<AgencyContact> AgencyContacts { get; set; } = new List<AgencyContact>();
 
     #endregion
 
