@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
-using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Service.Extensions;
 using DbContextExtensions = PMS.Backend.Service.Extensions.DbContextExtensions;
 
@@ -77,7 +76,6 @@ public static class Program
             options.UseDetached();
         });
 
-        builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
         builder.Services.AddAPI();
 
         var app = builder.Build();

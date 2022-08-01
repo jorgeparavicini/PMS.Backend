@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 using PMS.Backend.Features.Common;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
-using PMS.Backend.Features.Frontend.Agency.Models.Output;
 
 namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 
@@ -60,7 +59,7 @@ public class AgenciesController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpPost("agencies")]
-    public async Task<ActionResult<AgencySummaryDTO>> Create(
+    public async Task<IActionResult> Create(
         [FromBody] CreateAgencyDTO agency)
     {
         var entity = await _service.CreateAsync<CreateAgencyDTO, CreateAgencyDTOValidator>(agency);
@@ -77,7 +76,7 @@ public class AgenciesController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpPut("agencies({id:int})")]
-    public async Task<ActionResult<AgencySummaryDTO>> Update(
+    public async Task<IActionResult> Update(
         [FromRoute] int id,
         [FromBody] UpdateAgencyDTO agency)
     {

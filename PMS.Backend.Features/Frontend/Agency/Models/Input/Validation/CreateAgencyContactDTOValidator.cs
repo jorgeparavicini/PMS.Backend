@@ -3,12 +3,12 @@
 namespace PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
 
 /// <summary>
-/// Validator for properties in the <see cref="CreateAgencyContactDTO"/> class.
+/// Validator for properties of the <see cref="CreateAgencyContactDTO"/> class.
 /// </summary>
 public class CreateAgencyContactDTOValidator : AbstractValidator<CreateAgencyContactDTO>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateAgencyContactDTOValidator"/> class.
+    /// Initializes a new <see cref="CreateAgencyContactDTOValidator"/> instance.
     /// </summary>
     public CreateAgencyContactDTOValidator()
     {

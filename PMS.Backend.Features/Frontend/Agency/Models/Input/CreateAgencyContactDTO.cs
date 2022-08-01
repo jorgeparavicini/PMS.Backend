@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 
@@ -26,6 +27,7 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 /// <param name="IsFrequentVendor">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.AgencyContact.IsFrequentVendor"/>
 /// </param>
+[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record CreateAgencyContactDTO(
     string ContactName,
     [property: DefaultValue(null)] string? Email,

@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PMS.Backend.Core.Entities.Reservation;
+using PMS.Backend.Features.Common;
 using PMS.Backend.Features.Frontend.Reservation.Controllers;
 using PMS.Backend.Features.Frontend.Reservation.Services;
-using PMS.Backend.Features.Frontend.Reservation.Services.Contracts;
 
 namespace PMS.Backend.Features.Frontend.Reservation;
 
@@ -19,8 +20,8 @@ public static class Registrar
     {
         // Controllers
         services.AddScoped<ReservationsController>();
-        
+
         // Services
-        services.AddScoped<IReservationService, ReservationService>();
+        services.AddScoped<Service<GroupReservation>, ReservationService>();
     }
 }

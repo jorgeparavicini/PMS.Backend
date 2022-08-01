@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using PMS.Backend.Features.Common;
 
 namespace PMS.Backend.Features.Frontend.Reservation.Models.Input;
 
@@ -27,11 +27,10 @@ namespace PMS.Backend.Features.Frontend.Reservation.Models.Input;
 /// </param>
 [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record UpdateGroupReservationDTO(
-    [property: Required] int Id,
-    [property: MaxLength(255)] [property: DefaultValue(null)]
-    string? Reference,
-    [property: Required] DateTime ReservationDate,
-    [property: DefaultValue(false)] bool IsQuote,
-    [property: Required] int AgencyContactId,
-    [property: MinLength(1)] [property: Required]
-    IList<UpdateReservationDTO> Reservations);
+        int Id,
+        [property: DefaultValue(null)] string? Reference,
+        DateTime ReservationDate,
+        [property: DefaultValue(false)] bool IsQuote,
+        int AgencyContactId,
+        IList<UpdateReservationDTO> Reservations)
+    : UpdateDTO(Id);
