@@ -85,7 +85,7 @@ public abstract class Service<T>
         }
 
         var entity = await Context.ValidateAndMapAsync<T, TInput, TValidator>(input);
-        entity.ValidateIds(Context);
+        entity.ValidateIds(Context, true);
         await Context.SaveChangesAsync();
 
         return entity;

@@ -68,14 +68,26 @@ public static class EntityExtensions
     /// </summary>
     /// <param name="entity">The entity to validate.</param>
     /// <param name="context">The database context where this entity is part of.</param>
+    /// <param name="validateSelf">
+    /// Should the root entity itself be validated as well.
+    /// Useful when validating updated entities.
+    /// </param>
     /// <typeparam name="T">The type of the entity.</typeparam>
     /// <typeparam name="TContext">The type of the <see cref="DbContext"/>.</typeparam>
-    public static void ValidateIds<T, TContext>(this T entity, TContext context)
+    public static void ValidateIds<T, TContext>(
+        this T entity,
+        TContext context,
+        bool validateSelf = false)
         where T : Entity
         where TContext : DbContext
     {
         try
         {
+            if (validateSelf)
+            {
+                ValidateId<T, TContext>(context, entity.Id);
+            }
+
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {
