@@ -25,7 +25,7 @@ public class ReservationsController : ODataController
     public ReservationsController(Service<GroupReservation> service) => _service = service;
 
     /// <summary>
-    /// Gets a summary of all reservations. The summary contains only the topmost properties.
+    /// A list of all group reservations.
     /// </summary>
     /// <returns>
     /// An action result with the HTTP status code and the reservations in the body.
@@ -38,7 +38,7 @@ public class ReservationsController : ODataController
     }
 
     /// <summary>
-    /// Searches for a reservation with a given unique Id.
+    /// Searches for a group reservation with a given unique Id.
     /// </summary>
     /// <param name="id">The id of the reservation.</param>
     /// <returns>
@@ -53,7 +53,7 @@ public class ReservationsController : ODataController
     }
 
     /// <summary>
-    /// Creates a new reservation.
+    /// Creates a new group reservation.
     /// </summary>
     /// <param name="reservation">The content of the new reservation.</param>
     /// <returns>
@@ -73,7 +73,7 @@ public class ReservationsController : ODataController
     }
 
     /// <summary>
-    /// Updates a reservation and child entities.
+    /// Updates a group reservation.
     /// </summary>
     /// <param name="id">The id of the reservation to update.</param>
     /// <param name="reservation">The new content of the reservation.</param>
@@ -94,7 +94,7 @@ public class ReservationsController : ODataController
     }
 
     /// <summary>
-    /// Deletes a reservation if and only if there are no other entities relying on it.
+    /// Deletes a group reservation.
     /// </summary>
     /// <param name="id">The reservation to delete.</param>
     /// <returns>An action result with the HTTP status code and an empty body.</returns>

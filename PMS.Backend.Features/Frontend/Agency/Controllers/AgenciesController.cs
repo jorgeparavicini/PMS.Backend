@@ -24,8 +24,7 @@ public class AgenciesController : ODataController
     public AgenciesController(Service<Core.Entities.Agency.Agency> service) => _service = service;
 
     /// <summary>
-    /// Gets a summary of all agencies. The summary contains all properties of an agency except
-    /// the list of contacts.
+    /// A list of all agencies.
     /// </summary>
     /// <returns>An action result with the HTTP status code and the agencies in the body.</returns>
     [EnableQuery]
@@ -67,7 +66,7 @@ public class AgenciesController : ODataController
     }
 
     /// <summary>
-    /// Updates a given agency. To update its contacts use appropriate agency contacts CRUD methods.
+    /// Updates a given agency.
     /// </summary>
     /// <param name="id">The id of the agency which should be updated.</param>
     /// <param name="agency">The new content of the agency.</param>
@@ -86,8 +85,7 @@ public class AgenciesController : ODataController
     }
 
     /// <summary>
-    /// Deletes an agency. Agencies will not be deleted if any other components rely on a contact
-    /// of the agency.
+    /// Deletes an agency.
     /// </summary>
     /// <param name="id">The agency to be deleted.</param>
     /// <returns>
