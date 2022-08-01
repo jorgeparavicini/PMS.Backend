@@ -6,7 +6,6 @@ using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Frontend.Agency.Controllers;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
-using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 using PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests.Mock;
 
 namespace PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests;

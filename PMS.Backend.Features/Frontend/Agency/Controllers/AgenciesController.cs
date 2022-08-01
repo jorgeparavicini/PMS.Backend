@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using PMS.Backend.Features.Common;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
+using PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
 using PMS.Backend.Features.Frontend.Agency.Models.Output;
-using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
 namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 
@@ -13,7 +14,7 @@ namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 /// </summary>
 public class AgenciesController : ODataController
 {
-    private readonly IAgencyService _service;
+    private readonly Service<Core.Entities.Agency.Agency> _service;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AgenciesController" /> class.
@@ -21,7 +22,7 @@ public class AgenciesController : ODataController
     /// <param name="service">
     /// An implementation of an agency service to be used as a datastore.
     /// </param>
-    public AgenciesController(IAgencyService service) => _service = service;
+    public AgenciesController(Service<Core.Entities.Agency.Agency> service) => _service = service;
 
     /// <summary>
     /// Gets a summary of all agencies. The summary contains all properties of an agency except
@@ -32,7 +33,7 @@ public class AgenciesController : ODataController
     [HttpGet("agencies")]
     public IQueryable<Core.Entities.Agency.Agency> GetAll()
     {
-        return _service.GetAllAgencies();
+        return _service.GetAll();
     }
 
     /// <summary>
@@ -46,7 +47,7 @@ public class AgenciesController : ODataController
     [HttpGet("agencies({id:int})")]
     public SingleResult<Core.Entities.Agency.Agency> Find([FromRoute] int id)
     {
-        return SingleResult.Create(_service.FindAgencyAsync(id));
+        return SingleResult.Create(_service.Find(id));
     }
 
     /// <summary>
@@ -62,7 +63,7 @@ public class AgenciesController : ODataController
     public async Task<ActionResult<AgencySummaryDTO>> Create(
         [FromBody] CreateAgencyDTO agency)
     {
-        var entity = await _service.CreateAgencyAsync(agency);
+        var entity = await _service.CreateAsync<CreateAgencyDTO, CreateAgencyDTOValidator>(agency);
         return Created(entity);
     }
 
@@ -80,7 +81,8 @@ public class AgenciesController : ODataController
         [FromRoute] int id,
         [FromBody] UpdateAgencyDTO agency)
     {
-        var entity = await _service.UpdateAgencyAsync(id, agency);
+        var entity =
+            await _service.UpdateAsync<UpdateAgencyDTO, UpdateAgencyDTOValidator>(id, agency);
         return Updated(entity);
     }
 
@@ -96,7 +98,7 @@ public class AgenciesController : ODataController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        await _service.DeleteAgencyAsync(id);
+        await _service.DeleteAsync(id);
 
         return NoContent();
     }

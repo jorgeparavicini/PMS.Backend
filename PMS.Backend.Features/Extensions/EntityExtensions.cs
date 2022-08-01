@@ -38,7 +38,7 @@ public static class EntityExtensions
     /// <typeparam name="TValidator">The type of the validator for the input DTO.</typeparam>
     /// <returns>The mapped entity.</returns>
     /// <exception cref="BadRequestException">
-    /// Thrown if <see cref="TValidator"/> encountered validation errors.
+    /// Thrown if the <typeparamref name="TValidator"/> encountered validation errors.
     /// </exception>
     /// <remarks>
     /// The changes will not be saved automatically, however, the mapped entity will be added to
