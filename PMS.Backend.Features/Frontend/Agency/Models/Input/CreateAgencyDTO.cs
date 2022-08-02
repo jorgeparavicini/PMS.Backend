@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using PMS.Backend.Common.Models;
 
 namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
@@ -27,6 +28,7 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 /// <param name="AgencyContacts">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.AgencyContacts"/>
 /// </param>
+[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record CreateAgencyDTO(
     string LegalName,
     [property: DefaultValue(null)] decimal? DefaultCommissionRate,

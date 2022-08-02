@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using PMS.Backend.Common.Models;
 using PMS.Backend.Features.Common;
 
@@ -28,6 +29,10 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 /// <param name="EmergencyEmail">
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.EmergencyEmail"/>
 /// </param>
+/// <param name="AgencyContacts">
+/// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.AgencyContacts"/>
+/// </param>
+[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record UpdateAgencyDTO(
         int Id,
         string LegalName,
@@ -35,5 +40,6 @@ public record UpdateAgencyDTO(
         [property: DefaultValue(null)] decimal? DefaultCommissionOnExtras,
         [property: DefaultValue(null)] string? EmergencyPhone,
         [property: DefaultValue(null)] string? EmergencyEmail,
-        CommissionMethod CommissionMethod)
+        CommissionMethod CommissionMethod,
+        IReadOnlyList<UpdateAgencyContactDTO> AgencyContacts)
     : UpdateDTO(Id);
