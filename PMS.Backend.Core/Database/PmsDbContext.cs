@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using PMS.Backend.Core.Entities;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Core.Entities.Reservation;
+using PMS.Backend.Core.Extensions;
 
 namespace PMS.Backend.Core.Database
 {
@@ -61,11 +62,42 @@ namespace PMS.Backend.Core.Database
                 {
                     var parameter = Expression.Parameter(entityType.ClrType, "p");
                     var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(),
-                        parameter, filterExpr.Body);
+                        parameter,
+                        filterExpr.Body);
                     var filter = Expression.Lambda(body, parameter);
                     entityType.SetQueryFilter(filter);
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+        {
+            ChangeTracker.SetAuditProperties();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public override Task<int> SaveChangesAsync(
+            bool acceptAllChangesOnSuccess,
+            CancellationToken cancellationToken = new())
+        {
+            ChangeTracker.SetAuditProperties();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public override int SaveChanges()
+        {
+            ChangeTracker.SetAuditProperties();
+            return base.SaveChanges();
+        }
+
+        /// <inheritdoc />
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            ChangeTracker.SetAuditProperties();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
         }
     }
 }
