@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
-using PMS.Backend.Core.Entities;
-using PMS.Backend.Core.Entities.Agency;
 
 namespace PMS.Backend.Service.Extensions;
 
