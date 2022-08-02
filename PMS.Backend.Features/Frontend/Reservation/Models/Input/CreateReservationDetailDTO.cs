@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace PMS.Backend.Features.Frontend.Reservation.Models.Input;
@@ -21,7 +20,7 @@ namespace PMS.Backend.Features.Frontend.Reservation.Models.Input;
 /// </param>
 [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record CreateReservationDetailDTO(
-    [property: Required] DateTime ReservationDate,
-    [property: Required] DateTime CheckIn,
-    [property: Required] DateTime CheckOut,
+    DateTime ReservationDate,
+    DateTime CheckIn,
+    DateTime CheckOut,
     [property: DefaultValue(null)] DateTime? FolioClosedOn);

@@ -4,12 +4,13 @@ using Detached.Mappers.EntityFramework;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
-using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Service.Extensions;
+using DbContextExtensions = PMS.Backend.Service.Extensions.DbContextExtensions;
 
 namespace PMS.Backend.Service;
 
@@ -40,10 +41,17 @@ public static class Program
         });
 
         builder.Services.AddControllers()
+            .AddOData(opt => opt.Count()
+                .Filter()
+                .Expand()
+                .Select()
+                .OrderBy()
+                .AddRouteComponents(DbContextExtensions.GetModel<PmsDbContext>()))
             .AddFluentValidation(options =>
             {
                 options.RegisterValidatorsFromAssembly(Assembly.GetAssembly(typeof(Registrar)));
             });
+
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
         // Add Swagger
@@ -68,7 +76,6 @@ public static class Program
             options.UseDetached();
         });
 
-        builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
         builder.Services.AddAPI();
 
         var app = builder.Build();

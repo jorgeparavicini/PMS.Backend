@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Detached.Annotations;
+using Detached.Mappers.EntityFramework;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Core.Entities;
 using PMS.Backend.Features.Exceptions;
@@ -27,18 +29,65 @@ public static class EntityExtensions
         .First(x => x.Name == nameof(ValidateCompositeEnumerable));
 
     /// <summary>
+    /// Validates an input DTO and maps it to an entity stored in the context.
+    /// </summary>
+    /// <param name="context">The context where the entity should be added.</param>
+    /// <param name="input">The input DTO.</param>
+    /// <typeparam name="TEntity">The type of the Entity.</typeparam>
+    /// <typeparam name="TInput">The type of the input DTO.</typeparam>
+    /// <typeparam name="TValidator">The type of the validator for the input DTO.</typeparam>
+    /// <returns>The mapped entity.</returns>
+    /// <exception cref="BadRequestException">
+    /// Thrown if the <typeparamref name="TValidator"/> encountered validation errors.
+    /// </exception>
+    /// <remarks>
+    /// The changes will not be saved automatically, however, the mapped entity will be added to
+    /// the context. In order to persist the changes only a call to SaveChangesAsync is required.
+    /// </remarks>
+    public static async Task<TEntity> ValidateAndMapAsync<TEntity, TInput, TValidator>(
+        this DbContext context,
+        TInput input)
+        where TEntity : Entity
+        where TValidator : AbstractValidator<TInput>, new()
+    {
+        var validator = new TValidator();
+        var validationResult = await validator.ValidateAsync(input);
+
+        if (!validationResult.IsValid)
+        {
+            throw new BadRequestException(validationResult.ToString());
+        }
+
+        var entity = await context.MapAsync<TEntity>(input);
+        entity.ValidateIds(context);
+        return entity;
+    }
+
+    /// <summary>
     /// Validates the IDs for all aggregate and composite relations in a property.
     /// </summary>
     /// <param name="entity">The entity to validate.</param>
     /// <param name="context">The database context where this entity is part of.</param>
+    /// <param name="validateSelf">
+    /// Should the root entity itself be validated as well.
+    /// Useful when validating updated entities.
+    /// </param>
     /// <typeparam name="T">The type of the entity.</typeparam>
     /// <typeparam name="TContext">The type of the <see cref="DbContext"/>.</typeparam>
-    public static void ValidateIds<T, TContext>(this T entity, TContext context)
+    public static void ValidateIds<T, TContext>(
+        this T entity,
+        TContext context,
+        bool validateSelf = false)
         where T : Entity
         where TContext : DbContext
     {
         try
         {
+            if (validateSelf)
+            {
+                ValidateId<T, TContext>(context, entity.Id);
+            }
+
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {

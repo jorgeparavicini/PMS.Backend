@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using PMS.Backend.Common.Models;
+using PMS.Backend.Features.Common;
 
 namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 
@@ -28,10 +29,11 @@ namespace PMS.Backend.Features.Frontend.Agency.Models.Input;
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.EmergencyEmail"/>
 /// </param>
 public record UpdateAgencyDTO(
-    int Id,
-    string LegalName,
-    [property: DefaultValue(null)] decimal? DefaultCommissionRate,
-    [property: DefaultValue(null)] decimal? DefaultCommissionOnExtras,
-    [property: DefaultValue(null)] string? EmergencyPhone,
-    [property: DefaultValue(null)] string? EmergencyEmail,
-    CommissionMethod CommissionMethod);
+        int Id,
+        string LegalName,
+        [property: DefaultValue(null)] decimal? DefaultCommissionRate,
+        [property: DefaultValue(null)] decimal? DefaultCommissionOnExtras,
+        [property: DefaultValue(null)] string? EmergencyPhone,
+        [property: DefaultValue(null)] string? EmergencyEmail,
+        CommissionMethod CommissionMethod)
+    : UpdateDTO(Id);

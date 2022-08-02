@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
+using PMS.Backend.Features.Common;
 using PMS.Backend.Features.Frontend.Agency.Controllers;
 using PMS.Backend.Features.Frontend.Agency.Services;
-using PMS.Backend.Features.Frontend.Agency.Services.Contracts;
 
 namespace PMS.Backend.Features.Frontend.Agency;
 
@@ -23,6 +23,6 @@ public static class Registrar
         services.AddScoped<AgenciesController>();
 
         // Services
-        services.AddScoped<IAgencyService, AgencyService>();
+        services.AddScoped<Service<Core.Entities.Agency.Agency>, AgencyService>();
     }
 }

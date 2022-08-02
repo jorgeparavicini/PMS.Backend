@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.OData;
 using PMS.Backend.Features.Exceptions;
 
 namespace PMS.Backend.Service.Extensions;
@@ -19,6 +20,8 @@ public static class ProblemDetailsExtensions
 
         // Special Exceptions to handle
         options.MapToStatusCode<NotFoundException>(StatusCodes.Status404NotFound);
+        options.MapToStatusCode<BadRequestException>(StatusCodes.Status400BadRequest);
+        options.MapToStatusCode<ODataException>(StatusCodes.Status400BadRequest);
 
         // Finally catch all remaining exceptions
         options.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
