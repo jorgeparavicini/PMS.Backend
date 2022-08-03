@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -11,6 +12,7 @@ namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 /// <summary>
 /// A CRUD Controller for managing agencies and its contacts.
 /// </summary>
+[Authorize]
 public class AgenciesController : ODataController
 {
     private readonly Service<Core.Entities.Agency.Agency> _service;
