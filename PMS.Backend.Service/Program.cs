@@ -7,6 +7,7 @@ using Hellang.Middleware.ProblemDetails;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
 using PMS.Backend.Service.Extensions;
+using PMS.Backend.Service.Filters;
 using PMS.Backend.Service.Security;
 using DbContextExtensions = PMS.Backend.Service.Extensions.DbContextExtensions;
 
@@ -47,11 +49,10 @@ public static class Program
         });
 
         // Add auth0
-        var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.Authority = domain;
+                options.Authority = builder.Configuration["Auth0:Domain"];
                 options.Audience = builder.Configuration["Auth0:Audience"];
                 // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -63,11 +64,16 @@ public static class Program
         {
             options.AddPolicy("read:reservations",
                 policy => policy.Requirements.Add(
-                    new HasScopeRequirement("read:messages", domain)));
+                    new HasScopeRequirement("read:messages",
+                        builder.Configuration["Auth0:Domain"])));
         });
         builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
-        builder.Services.AddControllers()
+        builder.Services.AddControllers(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            })
             .AddOData(opt => opt.Count()
                 .Filter()
                 .Expand()
@@ -89,6 +95,28 @@ public static class Program
 
             c.AddXmlDocs();
             c.SupportNonNullableReferenceTypes();
+
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
+                {
+                    Implicit = new OpenApiOAuthFlow
+                    {
+                        AuthorizationUrl =
+                            new Uri(
+                                $"{builder.Configuration["Auth0:Domain"]}authorize?audience={builder.Configuration["Auth0:Audience"]}")
+                    }
+                }
+            };
+
+            c.AddSecurityDefinition("Auth0", securityScheme);
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                { securityScheme, new[] { "Auth0" } }
+            });
+
+            c.OperationFilter<SecurityRequirementsOperationFilter>();
         });
 
         // Adds FluentValidationRules staff to Swagger.
@@ -114,7 +142,10 @@ public static class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.OAuthClientId(builder.Configuration["Auth0:ClientId"]);
+            });
         }
 
         app.UseHttpsRedirection();

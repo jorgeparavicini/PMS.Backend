@@ -5,7 +5,7 @@ using System.Xml.XPath;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace PMS.Backend.Service.SchemaFilters;
+namespace PMS.Backend.Service.Filters;
 
 /// <summary>
 /// Swagger schema filter to modify description of enum types so they show the XML docs attached

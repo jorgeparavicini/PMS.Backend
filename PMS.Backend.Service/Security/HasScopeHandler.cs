@@ -2,8 +2,12 @@
 
 namespace PMS.Backend.Service.Security;
 
+/// <summary>
+/// An <see cref="AuthorizationHandler{T}"/> handling auth0 scope requirements.
+/// </summary>
 public class HasScopeHandler : AuthorizationHandler<HasScopeRequirement>
 {
+    /// <inheritdoc />
     protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
         HasScopeRequirement requirement)
