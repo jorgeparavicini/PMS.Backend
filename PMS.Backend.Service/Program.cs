@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
+using System.Xml;
 using Detached.Mappers.EntityFramework;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
@@ -12,6 +13,8 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PMS.Backend.Common.Extensions;
+using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
 using PMS.Backend.Service.Extensions;
@@ -38,22 +41,24 @@ public static class Program
         // Add exception handling middleware
         builder.Services.AddProblemDetails(options => options.Configure());
 
-        // TODO: Disable allow any origin
         const string corsPolicy = "Cors";
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(corsPolicy,
-                x => x.AllowAnyOrigin()
+                x => x.WithOrigins(builder.Configuration["CorsOrigin"])
+                    .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod());
         });
 
         // Add auth0
+        var domain = builder.Configuration["Auth0:Domain"];
+        var audience = builder.Configuration["Auth0:Audience"];
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.Authority = builder.Configuration["Auth0:Domain"];
-                options.Audience = builder.Configuration["Auth0:Audience"];
+                options.Authority = domain;
+                options.Audience = audience;
                 // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -62,10 +67,11 @@ public static class Program
             });
         builder.Services.AddAuthorization(options =>
         {
-            options.AddPolicy("read:reservations",
-                policy => policy.Requirements.Add(
-                    new HasScopeRequirement("read:messages",
-                        builder.Configuration["Auth0:Domain"])));
+            foreach (var policy in Enum.GetValues<Policy>())
+            {
+                options.AddPolicy(policy.ToString(),
+                    p => p.Requirements.Add(new HasScopeRequirement(policy.GetScope(), domain)));
+            }
         });
         builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
@@ -96,24 +102,42 @@ public static class Program
             c.AddXmlDocs();
             c.SupportNonNullableReferenceTypes();
 
+            var docPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory,
+                Assembly.GetAssembly(typeof(Policy))!.GetName().Name) + ".xml";
+
+            XmlDocument? doc = null;
+            if (File.Exists(docPath))
+            {
+                doc = new XmlDocument();
+                doc.Load(docPath);
+            }
+
             var securityScheme = new OpenApiSecurityScheme
             {
+                Name = "Authorization",
+                In = ParameterLocation.Header,
                 Type = SecuritySchemeType.OAuth2,
                 Flows = new OpenApiOAuthFlows
                 {
                     Implicit = new OpenApiOAuthFlow
                     {
-                        AuthorizationUrl =
-                            new Uri(
-                                $"{builder.Configuration["Auth0:Domain"]}authorize?audience={builder.Configuration["Auth0:Audience"]}")
+                        Scopes = Enum.GetValues<Policy>().ToDictionary(k => k.GetScope(),
+                            v =>
+                            {
+                                var memberPath = $"F:{typeof(Policy).FullName}.{v.ToString()}";
+                                var node = doc?.SelectSingleNode("//member[starts-with(@name, '" +
+                                                                memberPath + "')]");
+                                return node?.InnerText.Trim() ?? "";
+                            }),
+                        AuthorizationUrl = new Uri($"{domain}authorize?audience={audience}"),
                     }
                 }
             };
 
-            c.AddSecurityDefinition("Auth0", securityScheme);
+            c.AddSecurityDefinition("Bearer", securityScheme);
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                { securityScheme, new[] { "Auth0" } }
+                { securityScheme, new[] { "Bearer" } }
             });
 
             c.OperationFilter<SecurityRequirementsOperationFilter>();
@@ -142,10 +166,7 @@ public static class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.OAuthClientId(builder.Configuration["Auth0:ClientId"]);
-            });
+            app.UseSwaggerUI(c => { c.OAuthClientId(builder.Configuration["Auth0:ClientId"]); });
         }
 
         app.UseHttpsRedirection();
