@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using PMS.Backend.Common.Security;
 using PMS.Backend.Features.Common;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
@@ -29,6 +31,7 @@ public class AgenciesController : ODataController
     /// <returns>An action result with the HTTP status code and the agencies in the body.</returns>
     [EnableQuery]
     [HttpGet("agencies")]
+    [Authorize(Policy = nameof(Policy.ReadAgencies))]
     public IQueryable<Core.Entities.Agency.Agency> GetAll()
     {
         return _service.GetAll();
@@ -43,6 +46,7 @@ public class AgenciesController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpGet("agencies({id:int})")]
+    [Authorize(Policy = nameof(Policy.ReadAgencies))]
     public SingleResult<Core.Entities.Agency.Agency> Find([FromRoute] int id)
     {
         return SingleResult.Create(_service.Find(id));
@@ -58,6 +62,7 @@ public class AgenciesController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpPost("agencies")]
+    [Authorize(Policy = nameof(Policy.CreateAgencies))]
     public async Task<IActionResult> Create(
         [FromBody] CreateAgencyDTO agency)
     {
@@ -75,6 +80,7 @@ public class AgenciesController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpPut("agencies({id:int})")]
+    [Authorize(Policy = nameof(Policy.UpdateAgencies))]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
         [FromBody] UpdateAgencyDTO agency)
@@ -92,6 +98,7 @@ public class AgenciesController : ODataController
     /// An action result with the HTTP status code, and empty body.
     /// </returns>
     [HttpDelete("agencies({id:int})")]
+    [Authorize(Policy = nameof(Policy.DeleteAgencies))]
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {

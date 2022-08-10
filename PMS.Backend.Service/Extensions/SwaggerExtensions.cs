@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 using System.Xml.XPath;
-using PMS.Backend.Service.SchemaFilters;
+using PMS.Backend.Service.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace PMS.Backend.Service.Extensions;

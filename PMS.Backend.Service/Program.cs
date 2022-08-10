@@ -1,15 +1,25 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Security.Claims;
+using System.Xml;
 using Detached.Mappers.EntityFramework;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PMS.Backend.Common.Extensions;
+using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
 using PMS.Backend.Service.Extensions;
+using PMS.Backend.Service.Filters;
+using PMS.Backend.Service.Security;
 using DbContextExtensions = PMS.Backend.Service.Extensions.DbContextExtensions;
 
 namespace PMS.Backend.Service;
@@ -35,12 +45,41 @@ public static class Program
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(corsPolicy,
-                x => x.AllowAnyOrigin()
+                x => x.WithOrigins(builder.Configuration["CorsOrigin"])
+                    .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod());
         });
 
-        builder.Services.AddControllers()
+        // Add auth0
+        var domain = builder.Configuration["Auth0:Domain"];
+        var audience = builder.Configuration["Auth0:Audience"];
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = domain;
+                options.Audience = audience;
+                // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
+            });
+        builder.Services.AddAuthorization(options =>
+        {
+            foreach (var policy in Enum.GetValues<Policy>())
+            {
+                options.AddPolicy(policy.ToString(),
+                    p => p.Requirements.Add(new HasScopeRequirement(policy.GetScope(), domain)));
+            }
+        });
+        builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
+        builder.Services.AddControllers(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            })
             .AddOData(opt => opt.Count()
                 .Filter()
                 .Expand()
@@ -62,6 +101,46 @@ public static class Program
 
             c.AddXmlDocs();
             c.SupportNonNullableReferenceTypes();
+
+            var docPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory,
+                Assembly.GetAssembly(typeof(Policy))!.GetName().Name) + ".xml";
+
+            XmlDocument? doc = null;
+            if (File.Exists(docPath))
+            {
+                doc = new XmlDocument();
+                doc.Load(docPath);
+            }
+
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
+                {
+                    Implicit = new OpenApiOAuthFlow
+                    {
+                        Scopes = Enum.GetValues<Policy>().ToDictionary(k => k.GetScope(),
+                            v =>
+                            {
+                                var memberPath = $"F:{typeof(Policy).FullName}.{v.ToString()}";
+                                var node = doc?.SelectSingleNode("//member[starts-with(@name, '" +
+                                                                memberPath + "')]");
+                                return node?.InnerText.Trim() ?? "";
+                            }),
+                        AuthorizationUrl = new Uri($"{domain}authorize?audience={audience}"),
+                    }
+                }
+            };
+
+            c.AddSecurityDefinition("Bearer", securityScheme);
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                { securityScheme, new[] { "Bearer" } }
+            });
+
+            c.OperationFilter<SecurityRequirementsOperationFilter>();
         });
 
         // Adds FluentValidationRules staff to Swagger.
@@ -76,6 +155,7 @@ public static class Program
             options.UseDetached();
         });
 
+        // Add features
         builder.Services.AddAPI();
 
         var app = builder.Build();
@@ -86,12 +166,15 @@ public static class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c => { c.OAuthClientId(builder.Configuration["Auth0:ClientId"]); });
         }
 
         app.UseHttpsRedirection();
-        app.UseAuthorization();
         app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.UseCors(corsPolicy);
         app.MapControllers();
         app.Run();

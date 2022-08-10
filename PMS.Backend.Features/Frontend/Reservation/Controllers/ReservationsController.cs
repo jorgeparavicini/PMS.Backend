@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Entities.Reservation;
 using PMS.Backend.Features.Common;
 using PMS.Backend.Features.Frontend.Reservation.Models.Input;
@@ -32,6 +34,7 @@ public class ReservationsController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpGet("reservations")]
+    [Authorize(Policy = nameof(Policy.ReadReservations))]
     public IQueryable<GroupReservation> GetAll()
     {
         return _service.GetAll();
@@ -47,6 +50,7 @@ public class ReservationsController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpGet("reservations({id:int})")]
+    [Authorize(Policy = nameof(Policy.ReadReservations))]
     public SingleResult<GroupReservation> Find([FromRoute] int id)
     {
         return SingleResult.Create(_service.Find(id));
@@ -62,6 +66,7 @@ public class ReservationsController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpPost("reservations")]
+    [Authorize(Policy = nameof(Policy.CreateReservations))]
     public async Task<IActionResult> Create(
         [FromBody] CreateGroupReservationDTO reservation)
     {
@@ -82,6 +87,7 @@ public class ReservationsController : ODataController
     /// </returns>
     [EnableQuery]
     [HttpPut("reservations({id:int})")]
+    [Authorize(Policy = nameof(Policy.UpdateReservations))]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
         [FromBody] UpdateGroupReservationDTO reservation)
@@ -99,6 +105,7 @@ public class ReservationsController : ODataController
     /// <param name="id">The reservation to delete.</param>
     /// <returns>An action result with the HTTP status code and an empty body.</returns>
     [HttpDelete("reservations({id:int})")]
+    [Authorize(Policy = nameof(Policy.DeleteReservations))]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         await _service.DeleteAsync(id);
