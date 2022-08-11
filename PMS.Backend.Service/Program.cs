@@ -32,14 +32,16 @@ builder.Configuration.AddJsonFile($"appsettings.{env}.json", true, true);
 // Add exception handling middleware
 builder.Services.AddProblemDetails(options => options.Configure());
 
+// Cors
 const string corsPolicy = "Cors";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy,
         x => x.WithOrigins(builder.Configuration["CorsOrigin"])
-            .AllowCredentials()
             .AllowAnyHeader()
-            .AllowAnyMethod());
+            .AllowAnyMethod()
+            .AllowCredentials()
+    );
 });
 
 // Add auth0
@@ -163,11 +165,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors(corsPolicy);
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors(corsPolicy);
 app.MapControllers();
 app.Run();
 
@@ -175,4 +177,6 @@ app.Run();
 /// The entry point of the program.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public partial class Program {}
+public partial class Program
+{
+}
