@@ -1,17 +1,9 @@
-﻿using AutoMapper;
-using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using PMS.Backend.Common.Models;
-using PMS.Backend.Core.Database;
-using PMS.Backend.Features.Frontend.Agency.Models.Input;
-using PMS.Backend.Features.Frontend.Agency.Services;
-using PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests.Mock;
-using Profile = PMS.Backend.Features.Frontend.Agency.Profile;
-
+﻿
 namespace PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests;
 
 public class AgencyServiceTest : IDisposable
 {
+    /*
     private readonly PmsDbContext _context;
     private readonly IMapper _mapper;
 
@@ -117,11 +109,12 @@ public class AgencyServiceTest : IDisposable
         // Assert
         var expectedRecordCount = AgencyMockData.GetAgencies().Count + 1;
         _context.Agencies.Count().Should().Be(expectedRecordCount);
-    }
+    }*/
 
+    // TODO: MemberData Test Theory instead of inline data
     public void Dispose()
     {
-        _context.Database.EnsureDeleted();
-        _context.Dispose();
+        //_context.Database.EnsureDeleted();
+        //_context.Dispose();
     }
 }

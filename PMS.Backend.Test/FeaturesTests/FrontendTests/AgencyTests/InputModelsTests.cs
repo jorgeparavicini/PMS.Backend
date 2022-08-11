@@ -2,9 +2,9 @@
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
 
-namespace PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests.ModelsTests;
+namespace PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests;
 
-public class InputTests
+public class InputModelsTests
 {
     [Fact]
     public void CreateAgencyDTO_ShouldMatchEFModelConfiguration()
