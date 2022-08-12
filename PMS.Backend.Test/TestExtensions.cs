@@ -51,7 +51,8 @@ public static class TestExtensions
                 if (entityAttribute.AttributeType == typeof(MaxLengthAttribute))
                 {
                     var maxLength = (int)entityAttribute.ConstructorArguments[0].Value!;
-                    AssertModelProperty_HasSameMaxLength<TModel>(modelProperty, modelValidators,
+                    AssertModelProperty_HasSameMaxLength<TModel>(modelProperty,
+                        modelValidators,
                         maxLength);
                     continue;
                 }
@@ -61,14 +62,16 @@ public static class TestExtensions
                 if (entityAttribute.AttributeType == typeof(MinLengthAttribute))
                 {
                     var minLength = (int)entityAttribute.ConstructorArguments[0].Value!;
-                    AssertModelProperty_HasSameMinLength<TModel>(modelProperty, modelValidators,
+                    AssertModelProperty_HasSameMinLength<TModel>(modelProperty,
+                        modelValidators,
                         minLength);
                 }
             }
         }
     }
 
-    private static IList<PropertyInfo> GetProperties<T>() where T : Entity
+    private static IList<PropertyInfo> GetProperties<T>()
+        where T : Entity
     {
         // We don't want to compare the base entity properties as they are auto generated
         // and don't need to be validated.

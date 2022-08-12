@@ -56,4 +56,13 @@ public static class AgencyMockData
             }
         };
     }
+
+    public static IEnumerable<object[]> Endpoints => new List<object[]>()
+    {
+        new object[] { "agencies", HttpMethod.Get },
+        new object[] { "agencies", HttpMethod.Post },
+        new object[] { "agencies(1)", HttpMethod.Get },
+        new object[] { "agencies(1)", HttpMethod.Put },
+        new object[] { "agencies(1)", HttpMethod.Delete }
+    };
 }
