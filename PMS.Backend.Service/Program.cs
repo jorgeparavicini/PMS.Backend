@@ -135,6 +135,10 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     c.OperationFilter<SecurityRequirementsOperationFilter>();
+    c.OperationFilter<EnableQueryFilter>();
+
+    c.SchemaFilter<HideIgnoredDataMembersFilter>();
+    c.SchemaFilter<HideReverseLookupPropertiesFilter>();
 });
 
 // Adds FluentValidationRules staff to Swagger.

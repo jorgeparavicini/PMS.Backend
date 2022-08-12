@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PMS.Backend.Core.Attributes;
 using PMS.Backend.Core.Entities.Reservation;
 
 namespace PMS.Backend.Core.Entities.Agency;
@@ -79,6 +80,7 @@ public class AgencyContact : Entity
     /// <summary>
     /// A list of all reservations this contact is responsible for.
     /// </summary>
+    [ReverseLookup]
     public IList<GroupReservation> GroupReservations { get; } = new List<GroupReservation>();
 
     #endregion
