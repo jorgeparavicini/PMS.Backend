@@ -95,44 +95,7 @@ builder.Services.AddSwaggerGen(c =>
     c.AddXmlDocs();
     c.SupportNonNullableReferenceTypes();
 
-    var docPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory,
-        Assembly.GetAssembly(typeof(Policy))!.GetName().Name) + ".xml";
-
-    XmlDocument? doc = null;
-    if (File.Exists(docPath))
-    {
-        doc = new XmlDocument();
-        doc.Load(docPath);
-    }
-
-    var securityScheme = new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.OAuth2,
-        Flows = new OpenApiOAuthFlows
-        {
-            Implicit = new OpenApiOAuthFlow
-            {
-                Scopes = Enum.GetValues<Policy>()
-                    .ToDictionary(k => k.GetScope(),
-                        v =>
-                        {
-                            var memberPath = $"F:{typeof(Policy).FullName}.{v.ToString()}";
-                            var node = doc?.SelectSingleNode("//member[starts-with(@name, '" +
-                                                             memberPath + "')]");
-                            return node?.InnerText.Trim() ?? "";
-                        }),
-                AuthorizationUrl = new Uri($"{domain}authorize?audience={audience}"),
-            }
-        }
-    };
-
-    c.AddSecurityDefinition("Bearer", securityScheme);
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        { securityScheme, new[] { "Bearer" } }
-    });
+    c.AddSecurityScheme(domain, audience);
 
     c.OperationFilter<SecurityRequirementsOperationFilter>();
     c.OperationFilter<EnableQueryFilter>();

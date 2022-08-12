@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Detached.Annotations;
 using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Common.Models;
@@ -79,6 +81,7 @@ public class Agency : Entity
     /// and not the agency.
     /// </remarks>
     [Composition]
+    [SuppressMessage("ReSharper", "CollectionNeverQueried.Global")]
     public IList<AgencyContact> AgencyContacts { get; set; } = new List<AgencyContact>();
 
     #endregion

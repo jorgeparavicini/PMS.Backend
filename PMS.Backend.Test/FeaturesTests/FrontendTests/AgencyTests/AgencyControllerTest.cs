@@ -1,64 +1,20 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
-using Auth0.AuthenticationApi;
-using Auth0.AuthenticationApi.Models;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
-using Moq;
-using PMS.Backend.Core.Entities.Agency;
-using PMS.Backend.Features.Common;
-using PMS.Backend.Features.Frontend.Agency.Controllers;
+using PMS.Backend.Test.Collections;
 using PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests.Mock;
+using PMS.Backend.Test.Fixtures;
 
 namespace PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests;
 
-public class AgencyControllerTest : IClassFixture<WebApplicationFactory<Program>>
+[Collection(PMSCollection.Name)]
+public class AgencyControllerTest : ControllerTests
 {
-    private readonly HttpClient _httpClient;
-    private readonly IConfigurationSection _auth0Settings;
-
-    public AgencyControllerTest(WebApplicationFactory<Program> factory)
+    public AgencyControllerTest(
+        PMSServerFixture fixture,
+        AuthenticationSettingsFixture authFixture)
+        : base(fixture, authFixture)
     {
-        _httpClient = factory.CreateClient();
-
-        // TODO: Convert to fixture
-        _auth0Settings = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.Integration.json")
-            .Build()
-            .GetSection("auth0");
-    }
-
-    private async Task<string> GetAccessToken()
-    {
-        var auth0Client = new AuthenticationApiClient(_auth0Settings["Domain"]);
-        var tokenRequest = new ClientCredentialsTokenRequest()
-        {
-            ClientId = _auth0Settings["ClientId"],
-            ClientSecret = _auth0Settings["ClientSecret"],
-            Audience = _auth0Settings["Audience"]
-        };
-
-        var tokenResponse = await auth0Client.GetTokenAsync(tokenRequest);
-
-        return tokenResponse.AccessToken;
-    }
-
-    private async Task<string> GetAccessTokenWithNoPermissions()
-    {
-        var auth0Client = new AuthenticationApiClient(_auth0Settings["Domain"]);
-        var tokenRequest = new ClientCredentialsTokenRequest()
-        {
-            ClientId = _auth0Settings["ClientIdNoPermissions"],
-            ClientSecret = _auth0Settings["ClientSecretNoPermissions"],
-            Audience = _auth0Settings["Audience"]
-        };
-
-        var tokenResponse = await auth0Client.GetTokenAsync(tokenRequest);
-
-        return tokenResponse.AccessToken;
     }
 
     [Theory]
@@ -71,7 +27,7 @@ public class AgencyControllerTest : IClassFixture<WebApplicationFactory<Program>
         var request = new HttpRequestMessage(method, endpoint);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await Client.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -90,7 +46,7 @@ public class AgencyControllerTest : IClassFixture<WebApplicationFactory<Program>
             new AuthenticationHeaderValue("Bearer", "This is an invalid token");
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await Client.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -109,7 +65,7 @@ public class AgencyControllerTest : IClassFixture<WebApplicationFactory<Program>
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await Client.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
@@ -125,7 +81,7 @@ public class AgencyControllerTest : IClassFixture<WebApplicationFactory<Program>
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
         // Act
-        var response = await _httpClient.SendAsync(request);
+        var response = await Client.SendAsync(request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);

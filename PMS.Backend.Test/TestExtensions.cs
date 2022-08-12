@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using FluentAssertions;
@@ -10,7 +11,7 @@ namespace PMS.Backend.Test;
 
 public static class TestExtensions
 {
-    public static void AssertEqualValidation<TEntity, TModel, TValidator>(bool isOutput = false)
+    public static void AssertEqualValidation<TEntity, TModel, TValidator>()
         where TEntity : Entity
         where TValidator : AbstractValidator<TModel>, new()
     {
@@ -36,16 +37,14 @@ public static class TestExtensions
                 .Select(x => x.Validator)
                 .ToList();
 
+            // If the entity does not have a nullable attribute it means it's a required property
+            if (entityAttributes!.All(x => x.AttributeType != typeof(NullableAttribute)))
+            {
+                AssertModelProperty_IsNotNull<TModel>(modelProperty, modelValidators);
+            }
+
             foreach (var entityAttribute in entityAttributes!)
             {
-                // If the entity has a nullable attribute it means it's a required property
-                // Output models do not have to be marked as required.
-                if (entityAttribute.AttributeType == typeof(NullableAttribute) && !isOutput)
-                {
-                    AssertModelProperty_IsNotNull<TModel>(modelProperty, modelValidators);
-                    continue;
-                }
-
                 // If the entity has a max length validator, the model should have one with the
                 // same max size.
                 if (entityAttribute.AttributeType == typeof(MaxLengthAttribute))
@@ -74,8 +73,10 @@ public static class TestExtensions
         where T : Entity
     {
         // We don't want to compare the base entity properties as they are auto generated
-        // and don't need to be validated.
-        var omittedProperties = typeof(Entity).GetProperties().Select(x => x.Name);
+        // and don't need to be validated except the Id.
+        var omittedProperties = typeof(Entity).GetProperties()
+            .Select(x => x.Name)
+            .Where(x => x != nameof(Entity.Id));
         return typeof(T)
             .GetProperties()
             .Where(x => !omittedProperties.Contains(x.Name))
@@ -86,6 +87,12 @@ public static class TestExtensions
         PropertyInfo modelProperty,
         List<IPropertyValidator> modelValidators)
     {
+        // If a property has a default attribute value it is ok for the input to be null.
+        if (modelProperty.GetCustomAttribute<DefaultValueAttribute>() != null)
+        {
+            return;
+        }
+
         var notEmptyValidatorType =
             typeof(NotEmptyValidator<,>).MakeGenericType(
                 typeof(TModel),
@@ -99,7 +106,7 @@ public static class TestExtensions
             .Contain(x =>
                     x.GetType() == notEmptyValidatorType ||
                     x.GetType() == notNullValidatorType,
-                "because the entity is required");
+                $"because the entity {modelProperty.Name} is required");
     }
 
     private static void AssertModelProperty_HasSameMaxLength<TModel>(

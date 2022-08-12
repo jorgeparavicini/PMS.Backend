@@ -1,5 +1,10 @@
-﻿using System.Xml.Linq;
+﻿using System.Reflection;
+using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.OpenApi.Models;
+using PMS.Backend.Common.Extensions;
+using PMS.Backend.Common.Security;
 using PMS.Backend.Service.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -14,7 +19,7 @@ public static class SwaggerExtensions
     /// Add inheritdoc and see XML tags to swagger documentation.
     /// </summary>
     /// <param name="options">The swagger generation options which should be modified.</param>
-     public static void AddXmlDocs(this SwaggerGenOptions options)
+    public static void AddXmlDocs(this SwaggerGenOptions options)
     {
         // Generate paths for the XML doc files in the assembly's directory.
         var xmlDocPaths = Directory.GetFiles(
@@ -84,5 +89,56 @@ public static class SwaggerExtensions
             options.IncludeXmlComments(() => new XPathDocument(doc.CreateReader()), true);
             options.SchemaFilter<DescribeEnumMembersFilter>(doc);
         }
+    }
+
+    /// <summary>
+    /// Adds the auth0 security scheme to a <see cref="SwaggerGenOptions"/>.
+    /// </summary>
+    /// <param name="options">The swagger options to modify.</param>
+    /// <param name="domain">The auth0 domain.</param>
+    /// <param name="audience">The auth0 audience.</param>
+    public static void AddSecurityScheme(
+        this SwaggerGenOptions options,
+        string domain,
+        string audience)
+    {
+        var docPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory,
+            Assembly.GetAssembly(typeof(Policy))!.GetName().Name) + ".xml";
+
+        XmlDocument? doc = null;
+        if (File.Exists(docPath))
+        {
+            doc = new XmlDocument();
+            doc.Load(docPath);
+        }
+
+        var securityScheme = new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.OAuth2,
+            Flows = new OpenApiOAuthFlows
+            {
+                Implicit = new OpenApiOAuthFlow
+                {
+                    Scopes = Enum.GetValues<Policy>()
+                        .ToDictionary(k => k.GetScope(),
+                            v =>
+                            {
+                                var memberPath = $"F:{typeof(Policy).FullName}.{v.ToString()}";
+                                var node = doc?.SelectSingleNode("//member[starts-with(@name, '" +
+                                                                 memberPath + "')]");
+                                return node?.InnerText.Trim() ?? "";
+                            }),
+                    AuthorizationUrl = new Uri($"{domain}authorize?audience={audience}"),
+                }
+            }
+        };
+
+        options.AddSecurityDefinition("Bearer", securityScheme);
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            { securityScheme, new[] { "Bearer" } }
+        });
     }
 }
