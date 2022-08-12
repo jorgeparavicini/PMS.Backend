@@ -51,7 +51,7 @@ public class AgenciesController : ODataController
     /// An action result with the HTTP status code and the full agency in the body if it was found.
     /// </returns>
     /// <response code="200">If the operation completed successfully.</response>
-    /// <response code="404">If the agency was not found.</response>
+    /// <response code="404">If an entity was not found.</response>
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
     [HttpGet("agencies({id:int})")]
@@ -107,7 +107,7 @@ public class AgenciesController : ODataController
     /// </response>
     /// <response code="204">If the agency was updated successfully.</response>
     /// <response code="400">If the input data contained validation errors.</response>
-    /// <response code="404">If the agency was not found.</response>
+    /// <response code="404">If an entity was not found.</response>
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
     [DisableSwaggerQuery]
