@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -8,6 +9,7 @@ namespace PMS.Backend.Service.Filters;
 /// <summary>
 /// Hides properties of an entity that are marked with <see cref="IgnoreDataMemberAttribute"/>.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class HideIgnoredDataMembersFilter : ISchemaFilter
 {
     /// <inheritdoc />

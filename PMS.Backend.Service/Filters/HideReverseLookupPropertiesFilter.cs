@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Core.Attributes;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -8,6 +9,7 @@ namespace PMS.Backend.Service.Filters;
 /// <summary>
 /// Hides properties marked with <see cref="ReverseLookupAttribute"/>
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class HideReverseLookupPropertiesFilter : ISchemaFilter
 {
     /// <inheritdoc />

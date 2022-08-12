@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -11,6 +12,7 @@ namespace PMS.Backend.Service.Filters;
 /// Swagger schema filter to modify description of enum types so they show the XML docs attached
 /// to each member of the enum.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class DescribeEnumMembersFilter : ISchemaFilter
 {
     private readonly XDocument _xmlComments;

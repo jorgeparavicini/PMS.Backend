@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -13,6 +14,7 @@ namespace PMS.Backend.Service.Extensions;
 /// <summary>
 /// An extension class for swagger operations.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class SwaggerExtensions
 {
     /// <summary>

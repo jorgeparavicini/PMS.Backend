@@ -38,7 +38,13 @@ public static class TestExtensions
                 .ToList();
 
             // If the entity does not have a nullable attribute it means it's a required property
-            if (entityAttributes!.All(x => x.AttributeType != typeof(NullableAttribute)))
+            // If a property has a default attribute value it is ok for the input to be null.
+            // A property is nullable if it has the nullable attribute and its first
+            // constructor argument is 1.
+            if (entityAttributes!.Any(x =>
+                    x.AttributeType == typeof(NullableAttribute) &&
+                    x.ConstructorArguments[0].Value == (object)1) &&
+                entityAttributes!.All(x => x.AttributeType != typeof(DefaultValueAttribute)))
             {
                 AssertModelProperty_IsNotNull<TModel>(modelProperty, modelValidators);
             }
@@ -87,12 +93,6 @@ public static class TestExtensions
         PropertyInfo modelProperty,
         List<IPropertyValidator> modelValidators)
     {
-        // If a property has a default attribute value it is ok for the input to be null.
-        if (modelProperty.GetCustomAttribute<DefaultValueAttribute>() != null)
-        {
-            return;
-        }
-
         var notEmptyValidatorType =
             typeof(NotEmptyValidator<,>).MakeGenericType(
                 typeof(TModel),

@@ -31,7 +31,7 @@ public class Agency : Entity
     /// Max value is 9.9999 but semantically it does not make sense to have it more than 1.0.
     /// <para>Min value is 0.0000.</para>
     /// </remarks>
-    [Precision(5,4)]
+    [Precision(5, 4)]
     public decimal? DefaultCommissionRate { get; set; }
 
     /// <summary>
@@ -52,7 +52,7 @@ public class Agency : Entity
     /// <summary>
     /// The method to be used for commissions.
     /// </summary>
-    /// <see cref="CommissionMethod"/>
+    [DefaultValue(CommissionMethod.DeductedByAgency)]
     public CommissionMethod CommissionMethod { get; set; }
 
     /// <summary>
