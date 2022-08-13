@@ -66,6 +66,7 @@ public class AgencyContact : Entity
     /// This is an EF-Core relation, hence both the Id and the agency are required.
     /// </remarks>
     /// <seealso cref="Agency"/>
+    [ReverseLookup]
     public int AgencyId { get; set; }
 
     /// <summary>
@@ -75,6 +76,7 @@ public class AgencyContact : Entity
     /// This is an EF-Core relation, hence both the Id and the agency are required.
     /// </remarks>
     /// <seealso cref="AgencyId"/>
+    [ReverseLookup]
     public Agency Agency { get; set; } = null!;
 
     /// <summary>

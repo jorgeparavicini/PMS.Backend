@@ -14,8 +14,8 @@ public class CreateAgencyDTOValidator : AbstractValidator<CreateAgencyDTO>
     {
         RuleFor(x => x.LegalName).NotEmpty().MaximumLength(255);
         RuleFor(x => x.CommissionMethod).IsInEnum();
-        RuleFor(x => x.EmergencyPhone).EmailAddress().MaximumLength(255);
-        RuleFor(x => x.EmergencyEmail).MaximumLength(255);
+        RuleFor(x => x.EmergencyPhone).MaximumLength(255);
+        RuleFor(x => x.EmergencyEmail).EmailAddress().MaximumLength(255);
         RuleFor(x => x.AgencyContacts).NotNull();
     }
 }

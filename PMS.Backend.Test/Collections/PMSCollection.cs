@@ -3,8 +3,7 @@
 namespace PMS.Backend.Test.Collections;
 
 [CollectionDefinition(Name)]
-public class PMSCollection : ICollectionFixture<PMSServerFixture>,
-    ICollectionFixture<AuthenticationSettingsFixture>
+public class PMSCollection : ICollectionFixture<PMSServerFixture>
 {
     public const string Name = "PMS Collection";
 }

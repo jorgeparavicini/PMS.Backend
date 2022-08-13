@@ -1,4 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using System.Diagnostics.CodeAnalysis;
+
+// ReSharper disable once CheckNamespace
 namespace System.Runtime.CompilerServices;
 
 /// <summary>
@@ -9,6 +11,7 @@ namespace System.Runtime.CompilerServices;
 /// Some tests, however, require it, therefore, it is added here which will replace the implicit
 /// compiler NullableAttribute.
 /// </remarks>
+[ExcludeFromCodeCoverage]
 public class NullableAttribute: Attribute
 {
     /// <summary>

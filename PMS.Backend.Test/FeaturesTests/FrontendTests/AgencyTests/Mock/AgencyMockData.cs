@@ -1,5 +1,7 @@
 ﻿using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Entities;
 using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Features.Frontend.Agency.Models.Input;
 
 namespace PMS.Backend.Test.FeaturesTests.FrontendTests.AgencyTests.Mock;
 
@@ -11,20 +13,18 @@ public static class AgencyMockData
         {
             new()
             {
-                Id = 1,
                 LegalName = "Agency1",
                 DefaultCommissionRate = decimal.One,
                 DefaultCommissionOnExtras = decimal.One,
                 CommissionMethod = CommissionMethod.DeductedByAgency,
                 EmergencyPhone = "EmergencyPhone1",
-                EmergencyEmail = "EmergencyEmail1",
+                EmergencyEmail = "mail@mail.com",
                 AgencyContacts =
                 {
                     new AgencyContact()
                     {
-                        Id = 1,
                         ContactName = "Contact1",
-                        Email = "Email1",
+                        Email = "mail@mail.com",
                         Phone = "Phone1",
                         Address = "Address1",
                         City = "City1",
@@ -33,9 +33,8 @@ public static class AgencyMockData
                     },
                     new AgencyContact
                     {
-                        Id = 2,
                         ContactName = "Contact2",
-                        Email = "Email2",
+                        Email = "mail@mail.com",
                         Phone = "Phone2",
                         Address = "Address2",
                         City = "City2",
@@ -46,16 +45,24 @@ public static class AgencyMockData
             },
             new()
             {
-                Id = 2,
                 LegalName = "Agency2",
                 DefaultCommissionRate = decimal.Zero,
                 DefaultCommissionOnExtras = decimal.Zero,
                 CommissionMethod = CommissionMethod.DeductedByProvider,
                 EmergencyPhone = "EmergencyPhone2",
-                EmergencyEmail = "EmergencyEmail2",
+                EmergencyEmail = "mail2@mail.com",
             }
         };
     }
+
+    public static CreateAgencyDTO GetCreateMockAgency() => new CreateAgencyDTO(
+        "Legal Name",
+        decimal.Zero,
+        decimal.Zero,
+        CommissionMethod.DeductedByAgency,
+        "Phone",
+        "mail@mail.com",
+        new List<CreateAgencyContactDTO>());
 
     public static IEnumerable<object[]> Endpoints => new List<object[]>()
     {

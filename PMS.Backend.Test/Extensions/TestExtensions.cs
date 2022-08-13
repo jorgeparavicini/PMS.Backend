@@ -7,8 +7,9 @@ using FluentValidation;
 using FluentValidation.Validators;
 using PMS.Backend.Core.Entities;
 
-namespace PMS.Backend.Test;
+namespace PMS.Backend.Test.Extensions;
 
+// TODO: Include Email adress check
 public static class TestExtensions
 {
     public static void AssertEqualValidation<TEntity, TModel, TValidator>()
