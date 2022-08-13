@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
-using System.Xml;
 using Detached.Mappers.EntityFramework;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
@@ -13,6 +12,7 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using PMS.Backend.Common.Extensions;
 using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
@@ -25,12 +25,11 @@ using DbContextExtensions = PMS.Backend.Service.Extensions.DbContextExtensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // TODO: Use Configuration.Get<Type> Syntax
-
-var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+var env = builder.Environment.EnvironmentName;
 builder.Configuration.AddJsonFile($"appsettings.{env}.json", true, true);
 
 // Add exception handling middleware
-builder.Services.AddProblemDetails(options => options.Configure());
+builder.Services.AddProblemDetails(options => options.Configure(env));
 
 // Cors
 const string corsPolicy = "Cors";
@@ -82,7 +81,9 @@ builder.Services.AddControllers(options =>
     .AddFluentValidation(options =>
     {
         options.RegisterValidatorsFromAssembly(Assembly.GetAssembly(typeof(Registrar)));
-    });
+    })
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -104,9 +105,9 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<HideReverseLookupPropertiesFilter>();
 });
 
-// Adds FluentValidationRules staff to Swagger.
+// Add Swagger extensions
 builder.Services.AddFluentValidationRulesToSwagger();
-
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 // Add Database
 builder.Services.AddDbContext<PmsDbContext>(options =>
