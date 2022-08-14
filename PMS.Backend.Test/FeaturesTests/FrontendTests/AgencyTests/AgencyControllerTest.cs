@@ -22,6 +22,7 @@ public class AgencyControllerTest : ControllerTests
 
     [Theory]
     [MemberData(nameof(AgencyMockData.Endpoints), MemberType = typeof(AgencyMockData))]
+    [Trait("Category", "Integration")]
     public async Task EndpointsWithoutAuthorization_ShouldReturn401Unauthorized(
         string endpoint,
         HttpMethod method)
@@ -38,6 +39,7 @@ public class AgencyControllerTest : ControllerTests
 
     [Theory]
     [MemberData(nameof(AgencyMockData.Endpoints), MemberType = typeof(AgencyMockData))]
+    [Trait("Category", "Integration")]
     public async Task EndpointsWithInvalidBearerToken_ShouldReturn401Unauthorized(
         string endpoint,
         HttpMethod method)
@@ -57,6 +59,7 @@ public class AgencyControllerTest : ControllerTests
 
     [Theory]
     [MemberData(nameof(AgencyMockData.Endpoints), MemberType = typeof(AgencyMockData))]
+    [Trait("Category", "Integration")]
     public async Task EndpointsWithNoPermissionsBearerToken_ShouldReturn403Forbidden(
         string endpoint,
         HttpMethod method)
@@ -75,6 +78,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task GetAll_ShouldReturn200Ok()
     {
         // Arrange
@@ -91,6 +95,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Find_ShouldReturn200OkAndContainSingleEntity()
     {
         // Arrange
@@ -110,6 +115,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Find_ShouldReturn404NotFound()
     {
         // Arrange
@@ -126,6 +132,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Create_ShouldReturn201Created()
     {
         // Arrange
@@ -144,6 +151,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Create_ShouldReturn204NoContent()
     {
         // Arrange
@@ -163,6 +171,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Create_ShouldReturn400BadRequest()
     {
         // Arrange
@@ -181,6 +190,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Update_ShouldReturn200Ok()
     {
         // Arrange
@@ -203,6 +213,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Update_ShouldReturn204NoContent()
     {
         // Arrange
@@ -224,6 +235,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Update_ShouldReturn400BadRequest()
     {
         // Arrange
@@ -245,23 +257,19 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task Update_ShouldReturn404NotFound()
     {
         // Arrange
-        var entity = await Context.MapAsync<Agency>(AgencyMockData.GetCreateMockAgency());
-        await Context.SaveChangesAsync();
+        var agency = AgencyMockData.GetAgencies()[0];
+        agency.Id = int.MaxValue;
 
-        // Ef core does not allow changing IDs of tracked entities.
-        // As we just added the entity we must disable tracking for this entity.
-        Context.ChangeTracker.Entries().First(x => x.Entity == entity).State = EntityState.Detached;
-        entity.Id = int.MaxValue;
-
-        var request = new HttpRequestMessage(HttpMethod.Put, $"agencies({entity.Id})");
+        var request = new HttpRequestMessage(HttpMethod.Put, $"agencies({agency.Id})");
 
         var accessToken = await GetAccessToken();
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-        request.Content = SerializeObject(entity);
+        request.Content = SerializeObject(agency);
 
         // Act
         var response = await Client.SendAsync(request);
@@ -271,6 +279,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task DeleteWithInvalidId_ShouldReturn204NoContent()
     {
         // Arrange
@@ -287,6 +296,7 @@ public class AgencyControllerTest : ControllerTests
     }
 
     [Fact]
+    [Trait("Category", "Integration")]
     public async Task DeleteWithValidId_ShouldReturn204NoContent()
     {
         // Arrange

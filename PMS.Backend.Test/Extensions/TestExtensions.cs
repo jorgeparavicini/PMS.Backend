@@ -6,10 +6,12 @@ using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Validators;
 using PMS.Backend.Core.Entities;
+using PMS.Backend.Test.Assertions;
 
 namespace PMS.Backend.Test.Extensions;
 
-// TODO: Include Email adress check
+// TODO: Include Email address check
+// TODO: Move to assertions
 public static class TestExtensions
 {
     public static void AssertEqualValidation<TEntity, TModel, TValidator>()
@@ -23,7 +25,7 @@ public static class TestExtensions
         foreach (var modelProperty in modelProperties)
         {
             // Get all the attributes for the entity property
-            var entityAttributes = GetProperties<TEntity>()
+            var entityAttributes = EntityAssertions<TEntity>.GetProperties()
                 .Where(x => x.Name == modelProperty.Name)
                 .Select(x => x.CustomAttributes.ToList())
                 .FirstOrDefault();
@@ -74,20 +76,6 @@ public static class TestExtensions
                 }
             }
         }
-    }
-
-    private static IList<PropertyInfo> GetProperties<T>()
-        where T : Entity
-    {
-        // We don't want to compare the base entity properties as they are auto generated
-        // and don't need to be validated except the Id.
-        var omittedProperties = typeof(Entity).GetProperties()
-            .Select(x => x.Name)
-            .Where(x => x != nameof(Entity.Id));
-        return typeof(T)
-            .GetProperties()
-            .Where(x => !omittedProperties.Contains(x.Name))
-            .ToList();
     }
 
     private static void AssertModelProperty_IsNotNull<TModel>(
