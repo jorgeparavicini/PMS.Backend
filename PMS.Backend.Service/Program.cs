@@ -24,6 +24,7 @@ using DbContextExtensions = PMS.Backend.Service.Extensions.DbContextExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // TODO: Use Configuration.Get<Type> Syntax
 var env = builder.Environment.EnvironmentName;
 builder.Configuration.AddJsonFile($"appsettings.{env}.json", true, true);
