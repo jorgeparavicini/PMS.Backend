@@ -57,7 +57,6 @@ public abstract class Service<T>
         where TValidator : AbstractValidator<TInput>, new()
     {
         var entity = await Context.ValidateAndMapAsync<T, TInput, TValidator>(input);
-        entity.ValidateIds(Context);
         await Context.SaveChangesAsync();
         return entity;
     }
@@ -84,8 +83,12 @@ public abstract class Service<T>
                 $"The query id {id} does not match the DTO id {input.Id}");
         }
 
+        if (!Context.Set<T>().Any(x => x.Id == id))
+        {
+            throw new NotFoundException($"Could not find entity with id {id}");
+        }
+
         var entity = await Context.ValidateAndMapAsync<T, TInput, TValidator>(input);
-        entity.ValidateIds(Context, true);
         await Context.SaveChangesAsync();
 
         return entity;

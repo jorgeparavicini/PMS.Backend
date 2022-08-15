@@ -15,6 +15,7 @@ namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 /// <summary>
 /// A CRUD Controller for managing agencies and its contacts.
 /// </summary>
+[ApiController]
 public class AgenciesController : ODataController
 {
     private readonly Service<Core.Entities.Agency.Agency> _service;

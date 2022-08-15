@@ -1,21 +1,27 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.OData;
 using PMS.Backend.Features.Exceptions;
+using Environment = PMS.Backend.Common.Models.Environment;
 
 namespace PMS.Backend.Service.Extensions;
 
 /// <summary>
 /// Contains extensions for setting up Problem Details exception handling.
 /// </summary>
+[ExcludeFromCodeCoverage] // xUnit catches exceptions before they get converted.
 public static class ProblemDetailsExtensions
 {
     /// <summary>
     /// Default configuration for the <see cref="ProblemDetailsMiddleware"/>.
     /// </summary>
     /// <param name="options">The options of the problem details middleware to configure.</param>
-    public static void Configure(this ProblemDetailsOptions options)
+    /// <param name="environment">The environment of the current <see cref="HttpClient"/></param>
+    public static void Configure(this ProblemDetailsOptions options, string environment)
     {
+        options.IncludeExceptionDetails = (_, _) =>
+            environment == Environment.Development || environment == Environment.Staging;
         options.MapFluentValidationException();
 
         // Special Exceptions to handle

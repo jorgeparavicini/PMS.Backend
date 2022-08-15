@@ -16,6 +16,7 @@ namespace PMS.Backend.Features.Frontend.Reservation.Controllers;
 /// <summary>
 /// A CRUD Controller for managing reservations.
 /// </summary>
+[ApiController]
 public class ReservationsController : ODataController
 {
     private readonly Service<GroupReservation> _service;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.OData.Query;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Features.Attributes;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -8,6 +9,7 @@ namespace PMS.Backend.Service.Filters;
 /// <summary>
 /// Adds the OData operations to the swagger endpoints.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class EnableQueryFilter : IOperationFilter
 {
     private static readonly List<OpenApiParameter> Parameters =

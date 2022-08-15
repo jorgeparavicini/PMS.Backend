@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -11,6 +12,7 @@ namespace PMS.Backend.Service.Filters;
 /// Swagger schema filter to modify description of enum types so they show the XML docs attached
 /// to each member of the enum.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class DescribeEnumMembersFilter : ISchemaFilter
 {
     private readonly XDocument _xmlComments;
@@ -24,7 +26,7 @@ public class DescribeEnumMembersFilter : ISchemaFilter
     /// <summary>
     /// The format of each enum member.
     /// </summary>
-    public static string Format { get; } = "<b>{0} - {1}</b>: {2}";
+    public static string Format { get; } = "<b>{0}</b>: {1}";
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DescribeEnumMembersFilter"/> class.
@@ -68,12 +70,11 @@ public class DescribeEnumMembersFilter : ISchemaFilter
         foreach (var name in Enum.GetValues(type))
         {
             // Allows for large enums
-            var value = Convert.ToInt64(name);
             var fullName = $"F:{type.FullName}.{name}";
 
             var description = _xmlComments.XPathEvaluate(
                 $"normalize-space(//member[@name = '{fullName}']/summary/text())") as string;
-            sb.AppendLine(string.Format($"<li>{Format}</li>", value, name, description));
+            sb.AppendLine(string.Format($"<li>{Format}</li>", name, description));
         }
 
         sb.AppendLine("</ul>");

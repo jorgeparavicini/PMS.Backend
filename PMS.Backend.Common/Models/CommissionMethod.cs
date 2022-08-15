@@ -2,6 +2,7 @@
 
 /// <summary>
 /// A commission method dictates how sales should be commissioned.
+/// <para>Default value: <code>DeductedByAgency</code></para>
 /// </summary>
 public enum CommissionMethod
 {

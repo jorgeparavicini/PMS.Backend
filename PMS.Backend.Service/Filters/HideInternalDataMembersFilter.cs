@@ -1,6 +1,8 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.OpenApi.Models;
+using PMS.Backend.Core.Attributes;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace PMS.Backend.Service.Filters;
@@ -8,8 +10,12 @@ namespace PMS.Backend.Service.Filters;
 /// <summary>
 /// Hides properties of an entity that are marked with <see cref="IgnoreDataMemberAttribute"/>.
 /// </summary>
-public class HideIgnoredDataMembersFilter : ISchemaFilter
+[ExcludeFromCodeCoverage]
+public class HideInternalDataMembersFilter : ISchemaFilter
 {
+    private static readonly Type[] IgnoredTypes = new Type[]
+        { typeof(IgnoreDataMemberAttribute), typeof(ReverseLookupAttribute) };
+
     /// <inheritdoc />
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
@@ -19,7 +25,7 @@ public class HideIgnoredDataMembersFilter : ISchemaFilter
         }
 
         var ignoreDataMemberProperties = context.Type.GetProperties()
-            .Where(x => x.GetCustomAttribute<IgnoreDataMemberAttribute>() != null);
+            .Where(x => x.GetCustomAttributes().Any(attr => IgnoredTypes.Contains(attr.GetType())));
 
         foreach (var ignoreDataMemberProperty in ignoreDataMemberProperties)
         {

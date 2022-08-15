@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
-using System.Xml;
 using Detached.Mappers.EntityFramework;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
@@ -13,6 +12,7 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using PMS.Backend.Common.Extensions;
 using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
@@ -25,12 +25,11 @@ using DbContextExtensions = PMS.Backend.Service.Extensions.DbContextExtensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // TODO: Use Configuration.Get<Type> Syntax
-
-var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+var env = builder.Environment.EnvironmentName;
 builder.Configuration.AddJsonFile($"appsettings.{env}.json", true, true);
 
 // Add exception handling middleware
-builder.Services.AddProblemDetails(options => options.Configure());
+builder.Services.AddProblemDetails(options => options.Configure(env));
 
 // Cors
 const string corsPolicy = "Cors";
@@ -82,7 +81,9 @@ builder.Services.AddControllers(options =>
     .AddFluentValidation(options =>
     {
         options.RegisterValidatorsFromAssembly(Assembly.GetAssembly(typeof(Registrar)));
-    });
+    })
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -95,55 +96,17 @@ builder.Services.AddSwaggerGen(c =>
     c.AddXmlDocs();
     c.SupportNonNullableReferenceTypes();
 
-    var docPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory,
-        Assembly.GetAssembly(typeof(Policy))!.GetName().Name) + ".xml";
-
-    XmlDocument? doc = null;
-    if (File.Exists(docPath))
-    {
-        doc = new XmlDocument();
-        doc.Load(docPath);
-    }
-
-    var securityScheme = new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.OAuth2,
-        Flows = new OpenApiOAuthFlows
-        {
-            Implicit = new OpenApiOAuthFlow
-            {
-                Scopes = Enum.GetValues<Policy>()
-                    .ToDictionary(k => k.GetScope(),
-                        v =>
-                        {
-                            var memberPath = $"F:{typeof(Policy).FullName}.{v.ToString()}";
-                            var node = doc?.SelectSingleNode("//member[starts-with(@name, '" +
-                                                             memberPath + "')]");
-                            return node?.InnerText.Trim() ?? "";
-                        }),
-                AuthorizationUrl = new Uri($"{domain}authorize?audience={audience}"),
-            }
-        }
-    };
-
-    c.AddSecurityDefinition("Bearer", securityScheme);
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        { securityScheme, new[] { "Bearer" } }
-    });
+    c.AddSecurityScheme(domain, audience);
 
     c.OperationFilter<SecurityRequirementsOperationFilter>();
     c.OperationFilter<EnableQueryFilter>();
 
-    c.SchemaFilter<HideIgnoredDataMembersFilter>();
-    c.SchemaFilter<HideReverseLookupPropertiesFilter>();
+    c.SchemaFilter<HideInternalDataMembersFilter>();
 });
 
-// Adds FluentValidationRules staff to Swagger.
+// Add Swagger extensions
 builder.Services.AddFluentValidationRulesToSwagger();
-
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 // Add Database
 builder.Services.AddDbContext<PmsDbContext>(options =>

@@ -1,16 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Validators;
 using PMS.Backend.Core.Entities;
+using PMS.Backend.Test.Assertions;
 
-namespace PMS.Backend.Test;
+namespace PMS.Backend.Test.Extensions;
 
+// TODO: Include Email address check
+// TODO: Move to assertions
 public static class TestExtensions
 {
-    public static void AssertEqualValidation<TEntity, TModel, TValidator>(bool isOutput = false)
+    public static void AssertEqualValidation<TEntity, TModel, TValidator>()
         where TEntity : Entity
         where TValidator : AbstractValidator<TModel>, new()
     {
@@ -21,7 +25,7 @@ public static class TestExtensions
         foreach (var modelProperty in modelProperties)
         {
             // Get all the attributes for the entity property
-            var entityAttributes = GetProperties<TEntity>()
+            var entityAttributes = EntityAssertions<TEntity>.GetProperties()
                 .Where(x => x.Name == modelProperty.Name)
                 .Select(x => x.CustomAttributes.ToList())
                 .FirstOrDefault();
@@ -36,22 +40,27 @@ public static class TestExtensions
                 .Select(x => x.Validator)
                 .ToList();
 
+            // If the entity does not have a nullable attribute it means it's a required property
+            // If a property has a default attribute value it is ok for the input to be null.
+            // A property is nullable if it has the nullable attribute and its first
+            // constructor argument is 1.
+            if (entityAttributes!.Any(x =>
+                    x.AttributeType == typeof(NullableAttribute) &&
+                    x.ConstructorArguments[0].Value == (object)1) &&
+                entityAttributes!.All(x => x.AttributeType != typeof(DefaultValueAttribute)))
+            {
+                AssertModelProperty_IsNotNull<TModel>(modelProperty, modelValidators);
+            }
+
             foreach (var entityAttribute in entityAttributes!)
             {
-                // If the entity has a nullable attribute it means it's a required property
-                // Output models do not have to be marked as required.
-                if (entityAttribute.AttributeType == typeof(NullableAttribute) && !isOutput)
-                {
-                    AssertModelProperty_IsNotNull<TModel>(modelProperty, modelValidators);
-                    continue;
-                }
-
                 // If the entity has a max length validator, the model should have one with the
                 // same max size.
                 if (entityAttribute.AttributeType == typeof(MaxLengthAttribute))
                 {
                     var maxLength = (int)entityAttribute.ConstructorArguments[0].Value!;
-                    AssertModelProperty_HasSameMaxLength<TModel>(modelProperty, modelValidators,
+                    AssertModelProperty_HasSameMaxLength<TModel>(modelProperty,
+                        modelValidators,
                         maxLength);
                     continue;
                 }
@@ -61,22 +70,12 @@ public static class TestExtensions
                 if (entityAttribute.AttributeType == typeof(MinLengthAttribute))
                 {
                     var minLength = (int)entityAttribute.ConstructorArguments[0].Value!;
-                    AssertModelProperty_HasSameMinLength<TModel>(modelProperty, modelValidators,
+                    AssertModelProperty_HasSameMinLength<TModel>(modelProperty,
+                        modelValidators,
                         minLength);
                 }
             }
         }
-    }
-
-    private static IList<PropertyInfo> GetProperties<T>() where T : Entity
-    {
-        // We don't want to compare the base entity properties as they are auto generated
-        // and don't need to be validated.
-        var omittedProperties = typeof(Entity).GetProperties().Select(x => x.Name);
-        return typeof(T)
-            .GetProperties()
-            .Where(x => !omittedProperties.Contains(x.Name))
-            .ToList();
     }
 
     private static void AssertModelProperty_IsNotNull<TModel>(
@@ -96,7 +95,7 @@ public static class TestExtensions
             .Contain(x =>
                     x.GetType() == notEmptyValidatorType ||
                     x.GetType() == notNullValidatorType,
-                "because the entity is required");
+                $"because the entity {modelProperty.Name} is required");
     }
 
     private static void AssertModelProperty_HasSameMaxLength<TModel>(

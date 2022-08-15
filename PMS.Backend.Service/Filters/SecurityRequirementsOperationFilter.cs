@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -10,6 +11,7 @@ namespace PMS.Backend.Service.Filters;
 /// <remarks>
 /// The responses will be added to all endpoints unless they have an 'AllowAnonymous' attribute.
 /// </remarks>
+[ExcludeFromCodeCoverage]
 public class SecurityRequirementsOperationFilter : IOperationFilter
 {
     /// <inheritdoc />
