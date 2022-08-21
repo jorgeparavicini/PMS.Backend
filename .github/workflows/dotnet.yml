@@ -17,7 +17,7 @@ jobs:
         run: sudo service mysql stop
 
       - name: Set up MySQL
-      - uses: mirromutth/mysql-action@v1.1
+        uses: mirromutth/mysql-action@v1.1
         with:
           mysql database: 'PMS_Integration'
           mysql user: 'pms'
