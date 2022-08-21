@@ -53,7 +53,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/dev'
+        if: github.base_ref == 'refs/heads/dev'
         
       - name: Lint Code Base
         uses: github/super-linter@v4
@@ -61,4 +61,4 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/master'
+        if: github.base_ref == 'refs/heads/master'
