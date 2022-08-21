@@ -11,6 +11,8 @@ using PMS.Backend.Features.Common;
 using PMS.Backend.Features.Frontend.Reservation.Models.Input;
 using PMS.Backend.Features.Frontend.Reservation.Models.Input.Validators;
 
+using static PMS.Backend.Core.Entities.Reservation.GroupReservation;
+
 namespace PMS.Backend.Features.Frontend.Reservation.Controllers;
 
 /// <summary>
@@ -38,7 +40,7 @@ public class ReservationsController : ODataController
     /// <response code="200">If the operation completed successfully.</response>
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
-    [HttpGet("reservations")]
+    [HttpGet(BusinessObjectName)]
     [Authorize(Policy = nameof(Policy.ReadReservations))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
@@ -59,7 +61,7 @@ public class ReservationsController : ODataController
     /// <response code="404">If an entity was not found.</response>
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
-    [HttpGet("reservations({id:int})")]
+    [HttpGet($"{BusinessObjectName}({{id:int}})")]
     [Authorize(Policy = nameof(Policy.ReadReservations))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -85,7 +87,7 @@ public class ReservationsController : ODataController
     /// <response code="400">If the input data contained validation errors.</response>
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
-    [HttpPost("reservations")]
+    [HttpPost(BusinessObjectName)]
     [Authorize(Policy = nameof(Policy.CreateReservations))]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -119,7 +121,7 @@ public class ReservationsController : ODataController
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
     [DisableSwaggerQuery]
-    [HttpPut("reservations({id:int})")]
+    [HttpPut($"{BusinessObjectName}({{id:int}})")]
     [Authorize(Policy = nameof(Policy.UpdateReservations))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -144,7 +146,7 @@ public class ReservationsController : ODataController
     /// <returns>An action result with the HTTP status code and an empty body.</returns>
     /// <response code="204">If the group reservation was successfully deleted.</response>
     /// <response code="default">If an unknown error occurred.</response>
-    [HttpDelete("reservations({id:int})")]
+    [HttpDelete($"{BusinessObjectName}({{id:int}})")]
     [Authorize(Policy = nameof(Policy.DeleteReservations))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]

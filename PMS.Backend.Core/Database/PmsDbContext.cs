@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using PMS.Backend.Core.Attributes;
 using PMS.Backend.Core.Entities;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Core.Entities.Reservation;
@@ -17,6 +18,7 @@ public class PmsDbContext : DbContext
     /// The table containing all agencies.
     /// </summary>
     /// <seealso cref="Agency"/>
+    [BusinessObject(Agency.BusinessObjectName)]
     public DbSet<Agency> Agencies => Set<Agency>();
 
     /// <summary>
@@ -29,6 +31,7 @@ public class PmsDbContext : DbContext
     /// The table containing all group reservations..
     /// </summary>
     /// <seealso cref="GroupReservation"/>
+    [BusinessObject(GroupReservation.BusinessObjectName)]
     public DbSet<GroupReservation> GroupReservations => Set<GroupReservation>();
 
     /// <summary>

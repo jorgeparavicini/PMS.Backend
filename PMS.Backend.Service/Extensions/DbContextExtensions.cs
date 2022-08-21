@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using PMS.Backend.Core.Attributes;
 
 namespace PMS.Backend.Service.Extensions;
 
@@ -31,10 +32,15 @@ public static class DbContextExtensions
         {
             if (IsSubclassOfRawGeneric(typeof(DbSet<>), propertyInfo.PropertyType))
             {
-                var entityType = propertyInfo.PropertyType.GenericTypeArguments[0];
-                ModelBuilderEntitySetMethod
-                    .MakeGenericMethod(entityType)
-                    .Invoke(builder, new[] { propertyInfo.Name as object });
+                if (propertyInfo.GetCustomAttributes()
+                        .SingleOrDefault(x => x is BusinessObjectAttribute) is
+                    BusinessObjectAttribute attribute)
+                {
+                    var entityType = propertyInfo.PropertyType.GenericTypeArguments[0];
+                    ModelBuilderEntitySetMethod
+                        .MakeGenericMethod(entityType)
+                        .Invoke(builder, new[] { attribute.Name as object });
+                }
             }
         }
 

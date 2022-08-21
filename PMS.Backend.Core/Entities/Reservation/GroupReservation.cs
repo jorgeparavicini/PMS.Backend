@@ -14,6 +14,12 @@ namespace PMS.Backend.Core.Entities.Reservation;
 [Entity]
 public class GroupReservation : Entity
 {
+    /// <summary>
+    /// The name of this entity as a business object.
+    /// </summary>
+    /// <remarks>This is used to define the endpoint and the odata metadata.</remarks>
+    public const string BusinessObjectName = "Reservations";
+
     #region Properties
 
     /// <summary>
