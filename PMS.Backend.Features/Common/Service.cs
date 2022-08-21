@@ -98,7 +98,7 @@ public abstract class Service<T>
     /// Deletes an entity.
     /// </summary>
     /// <param name="id">The id of the entity to be deleted.</param>
-    public virtual  async Task DeleteAsync(int id)
+    public virtual async Task DeleteAsync(int id)
     {
         if (await Context.Set<T>().FindAsync(id) is { } entity)
         {
