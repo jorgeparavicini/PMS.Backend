@@ -56,7 +56,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: contans(github.base_ref, 'dev')
+        if: contains(github.base_ref, 'dev')
         
       - name: Lint Code Base
         uses: github/super-linter@v4
