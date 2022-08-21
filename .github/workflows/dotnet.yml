@@ -36,7 +36,7 @@ jobs:
         with:
           files: '${{env.DOTNET_ROOT}}/PMS.Backend.Service/appsettings.Staging.json'
         env:
-          ConnectionStrings.PMS: "Server=localhost;Database=PMS_Integration;Uid=developer;Pwd${{secrets.DatabasePassword}}"
+          ConnectionStrings.PMS: "Server=localhost;Database=PMS_Integration;Uid=developer;Pwd=${{secrets.DatabasePassword}}"
 
       - name: Restore dependencies
         run: dotnet restore
