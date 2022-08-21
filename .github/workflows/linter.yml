@@ -16,13 +16,16 @@ name: Lint Code Base
 #############################
 on:
   pull_request:
-    branches: [dev]
+    branches:
+      - main
+      - master
+      - dev
 
 ###############
 # Set the Job #
 ###############
 jobs:
-  build:
+  lint:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on
@@ -50,3 +53,12 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.ref == 'refs/heads/dev'
+        
+      - name: Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.ref == 'refs/heads/master'
