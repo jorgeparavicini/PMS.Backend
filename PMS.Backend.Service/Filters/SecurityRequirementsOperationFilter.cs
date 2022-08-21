@@ -41,13 +41,18 @@ public class SecurityRequirementsOperationFilter : IOperationFilter
             {
                 operation.Responses.Add("403",
                     new OpenApiResponse
-                        { Description = "If user not authorized to perform requested action" });
+                    {
+                        Description = "If user not authorized to perform requested action"
+                    });
             }
 
             var jwtAuthScheme = new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
-                    { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
             };
 
             operation.Security = new List<OpenApiSecurityRequirement>

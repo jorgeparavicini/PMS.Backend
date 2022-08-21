@@ -93,7 +93,7 @@ public class EntityAssertions<TEntity> : ReferenceTypeAssertions<TEntity, Entity
                     .MakeGenericType(genericType)
                     .GetMethod(nameof(AssertEqualSubEntity),
                         BindingFlags.Static | BindingFlags.NonPublic)!
-                    .Invoke(null, new [] { compositeEntities[i]!, otherEntities[i]! });
+                    .Invoke(null, new[] { compositeEntities[i]!, otherEntities[i]! });
             }
 
             return;
