@@ -111,8 +111,9 @@ builder.Services.AddSwaggerGenNewtonsoftSupport();
 // Add Database
 builder.Services.AddDbContext<PmsDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PMS")!,
-        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+    var connectionString = builder.Configuration.GetConnectionString("PMS")!;
+    var serverVersion = ServerVersion.AutoDetect(connectionString);
+    options.UseMySql(connectionString, serverVersion);
     options.UseDetached();
 });
 
