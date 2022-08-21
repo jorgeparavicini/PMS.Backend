@@ -123,15 +123,6 @@ public static class SwaggerExtensions
             {
                 Implicit = new OpenApiOAuthFlow
                 {
-                    Scopes = Enum.GetValues<Policy>()
-                        .ToDictionary(k => k.GetScope(),
-                            v =>
-                            {
-                                var memberPath = $"F:{typeof(Policy).FullName}.{v.ToString()}";
-                                var node = doc?.SelectSingleNode("//member[starts-with(@name, '" +
-                                                                 memberPath + "')]");
-                                return node?.InnerText.Trim() ?? "";
-                            }),
                     AuthorizationUrl = new Uri($"{domain}authorize?audience={audience}"),
                 }
             }
