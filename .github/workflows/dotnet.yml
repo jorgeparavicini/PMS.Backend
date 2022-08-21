@@ -3,7 +3,7 @@ name: .NET
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -49,11 +49,15 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Generate coverage report
-        run: dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx 
+        run: dotnet test 
+          --no-build 
+          --collect:"XPlat Code Coverage" 
+          --logger trx 
           --results-directory coverage
 
       - name: Copy coverage report to predicatble location
-        run: cp coverage/*/coverage.cobertura.xml coverage/coverage.cobertura.xml
+        run: cp coverage/*/coverage.cobertura.xml 
+          coverage/coverage.cobertura.xml
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v2
