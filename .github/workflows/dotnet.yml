@@ -28,9 +28,11 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
+      - name: Log data
+        run: echo '${{env.DOTNET_ROOT}}'
+
       - name: Appt Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
-        run: echo '${{env.DOTNET_ROOT}}'
         with:
           files: '${{env.DOTNET_ROOT}}/PMS.Backend.Service/appsettings.Staging.json'
         env:
