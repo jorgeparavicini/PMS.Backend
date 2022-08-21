@@ -5,7 +5,7 @@ namespace PMS.Backend.Features.Frontend.Reservation.Models.Input.Validators;
 /// <summary>
 /// Validator for properties of the <see cref="UpdateGroupReservationDTO"/> class.
 /// </summary>
-public class UpdateGroupReservationDTOValidator: AbstractValidator<UpdateGroupReservationDTO>
+public class UpdateGroupReservationDTOValidator : AbstractValidator<UpdateGroupReservationDTO>
 {
     /// <summary>
     /// Initializes a new <see cref="UpdateGroupReservationDTOValidator"/> instance.

@@ -12,7 +12,7 @@ namespace System.Runtime.CompilerServices;
 /// compiler NullableAttribute.
 /// </remarks>
 [ExcludeFromCodeCoverage]
-public class NullableAttribute: Attribute
+public class NullableAttribute : Attribute
 {
     /// <summary>
     /// Flags indicating whether the property is nullable.

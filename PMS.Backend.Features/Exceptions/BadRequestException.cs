@@ -8,12 +8,16 @@ public class BadRequestException : Exception
     /// <summary>
     /// Initializes a new instance of <see cref="BadRequestException"/> class using an empty message.
     /// </summary>
-    public BadRequestException(): base(string.Empty) {}
+    public BadRequestException() : base(string.Empty)
+    {
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BadRequestException"/> class using the passed
     /// message.
     /// </summary>
     /// <param name="message">The message for the base exception.</param>
-    public BadRequestException(string message): base(message) {}
+    public BadRequestException(string message) : base(message)
+    {
+    }
 }
