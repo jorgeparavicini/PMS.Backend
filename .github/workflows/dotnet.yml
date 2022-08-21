@@ -29,7 +29,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Log data
-        run: echo '${{env.DOTNET_ROOT}}'
+        run: ls '${{GITHUB_WORKSPACE}}'
 
       - name: Appt Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
