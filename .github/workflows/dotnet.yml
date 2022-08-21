@@ -1,8 +1,6 @@
 name: .NET
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -12,44 +10,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Shutdown Ubuntu MySQL
-      run: sudo service mysql stop
+      - name: Shutdown Ubuntu MySQL
+        run: sudo service mysql stop
 
-    - name: Set up MySQL
-    - uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql database: 'PMS_Integration'
-        mysql user: 'pms'
-        mysql password: ${{ secrets.DatabasePassword }}
+      - name: Set up MySQL
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql database: 'PMS_Integration'
+          mysql user: 'pms'
+          mysql password: ${{ secrets.DatabasePassword }}
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Appt Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        run: echo '${{env.DOTNET_ROOT}}'
+        with:
+          files: '${{env.DOTNET_ROOT}}/PMS.Backend.Service/appsettings.Staging.json'
+        env:
+          ConnectionStrings.PMS: "Server=localhost;Database=PMS_Integration;Uid=developer;Pwd${{secrets.DatabasePassword}}"
 
-    - name: Build
-      run: dotnet build --no-restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Generate coverage report
-      run: dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      - name: Build
+        run: dotnet build --no-restore
 
-    - name: Copy coverage report to predicatble location
-      run: cp coverage/*/coverage.cobertura.xml coverage/coverage.cobertura.xml
+      - name: Generate coverage report
+        run: dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
 
-    - name: Upload coverage report
-      uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: coverage/coverage.cobertura.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: true
-        verbose: true
+      - name: Copy coverage report to predicatble location
+        run: cp coverage/*/coverage.cobertura.xml coverage/coverage.cobertura.xml
 
-    - name: Revert Directory
-      run: cd ..
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/coverage.cobertura.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Revert Directory
+        run: cd ..
