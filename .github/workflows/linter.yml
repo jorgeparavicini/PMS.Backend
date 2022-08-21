@@ -48,16 +48,13 @@ jobs:
       ################################
       # Run Linter against code base #
       ################################
-      - name: Show repo
-        run: echo '${{ toJSON(github) }}'
-      
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: contains(github.base_ref, 'dev')
+        if: github.base_ref == 'dev'
         
       - name: Lint Code Base
         uses: github/super-linter@v4
@@ -65,4 +62,4 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.base_ref == 'refs/heads/master'
+        if: github.base_ref == 'master'
