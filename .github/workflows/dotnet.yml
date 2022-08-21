@@ -36,7 +36,7 @@ jobs:
           ConnectionStrings.PMS: > 
             Server=localhost;
             Database=PMS_Integration;
-            Uid=developer;
+            Uid=pms;
             Pwd=${{secrets.DatabasePassword}}
 
       - name: Restore dependencies
