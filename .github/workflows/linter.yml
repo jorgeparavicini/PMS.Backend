@@ -47,13 +47,16 @@ jobs:
       ################################
       # Run Linter against code base #
       ################################
+      - name: Show repo
+        run: echo "$GITHUB_CONTEXT"
+      
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.base_ref == 'refs/heads/dev'
+        if: contans(github.base_ref, 'dev')
         
       - name: Lint Code Base
         uses: github/super-linter@v4
