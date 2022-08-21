@@ -9,6 +9,7 @@ using PMS.Backend.Features.Attributes;
 using PMS.Backend.Features.Common;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.Frontend.Agency.Models.Input.Validation;
+using static PMS.Backend.Core.Entities.Agency.Agency;
 
 namespace PMS.Backend.Features.Frontend.Agency.Controllers;
 
@@ -35,7 +36,7 @@ public class AgenciesController : ODataController
     /// <response code="200">If the operation completed successfully.</response>
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
-    [HttpGet("agencies")]
+    [HttpGet(BusinessObjectName)]
     [Authorize(Policy = nameof(Policy.ReadAgencies))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
@@ -55,7 +56,7 @@ public class AgenciesController : ODataController
     /// <response code="404">If an entity was not found.</response>
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
-    [HttpGet("agencies({id:int})")]
+    [HttpGet($"{BusinessObjectName}({{id:int}})")]
     [Authorize(Policy = nameof(Policy.ReadAgencies))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -81,7 +82,7 @@ public class AgenciesController : ODataController
     /// <response code="400">If the input data contained validation errors.</response>
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
-    [HttpPost("agencies")]
+    [HttpPost(BusinessObjectName)]
     [Authorize(Policy = nameof(Policy.CreateAgencies))]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -112,7 +113,7 @@ public class AgenciesController : ODataController
     /// <response code="default">If an unknown error occurred.</response>
     [EnableQuery]
     [DisableSwaggerQuery]
-    [HttpPut("agencies({id:int})")]
+    [HttpPut($"{BusinessObjectName}({{id:int}})")]
     [Authorize(Policy = nameof(Policy.UpdateAgencies))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -137,7 +138,7 @@ public class AgenciesController : ODataController
     /// </returns>
     /// <response code="204">If the agency was successfully deleted.</response>
     /// <response code="default">If an unknown error occurred.</response>
-    [HttpDelete("agencies({id:int})")]
+    [HttpDelete($"{BusinessObjectName}({{id:int}})")]
     [Authorize(Policy = nameof(Policy.DeleteAgencies))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]

@@ -12,6 +12,12 @@ namespace PMS.Backend.Core.Entities.Agency;
 /// </summary>
 public class Agency : Entity
 {
+    /// <summary>
+    /// The name of this entity as a business object.
+    /// </summary>
+    /// <remarks>This is used to define the endpoint and the odata metadata.</remarks>
+    public const string BusinessObjectName = "Agencies";
+
     #region Properties
 
     /// <summary>
