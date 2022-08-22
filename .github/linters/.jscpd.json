@@ -1,0 +1,11 @@
+﻿{
+  "threshold": 0,
+  "reporters": [
+    "consoleFull"
+  ],
+  "ignore": [
+    "**/__snapshots__/**",
+    "**/PMS.Backend.Test/**"
+  ],
+  "absolute": true
+}
