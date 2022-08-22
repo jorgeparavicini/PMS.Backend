@@ -2,7 +2,6 @@
 using System.Net.Http.Headers;
 using Detached.Mappers.EntityFramework;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Test.Collections;
