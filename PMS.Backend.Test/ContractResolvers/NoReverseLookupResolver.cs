@@ -1,7 +1,5 @@
-﻿using Detached.Annotations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using PMS.Backend.Core.Attributes;
 using PMS.Backend.Test.Utils;
 
 namespace PMS.Backend.Test.ContractResolvers;
