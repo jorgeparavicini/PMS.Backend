@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 using PMS.Backend.Core.Attributes;
 using PMS.Backend.Core.Entities;
@@ -100,6 +101,130 @@ public class PmsDbContext : DbContext
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
         ChangeTracker.SetAuditProperties();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    /// <summary>
+    /// <para>
+    /// Saves all changes made in this context to the database and hard deletes entities
+    /// marked for deletion.
+    /// </para>
+    /// <para>
+    /// This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
+    /// any changes to entity instances before saving to the underlying database.
+    /// This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
+    /// </para>
+    /// <para>
+    /// Entity Framework Core does not support multiple parallel
+    /// operations being run on the same DbContext instance.
+    /// This includes both parallel execution of async queries and any explicit
+    /// concurrent use from multiple threads. Therefore, always await async calls immediately,
+    /// or use separate DbContext instances for operations that execute in parallel.
+    /// </para>
+    /// </summary>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous save operation.
+    /// The task result contains the number of state entries written to the database.
+    /// </returns>
+    public Task<int> ForceSaveChangesAsync(CancellationToken cancellationToken = new())
+    {
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// <para>
+    /// Saves all changes made in this context to the database and hard deletes entities
+    /// marked for deletion.
+    /// </para>
+    /// <para>
+    /// This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
+    /// any changes to entity instances before saving to the underlying database.
+    /// This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
+    /// </para>
+    /// <para>
+    /// Entity Framework Core does not support multiple parallel
+    /// operations being run on the same DbContext instance.
+    /// This includes both parallel execution of async queries and any explicit
+    /// concurrent use from multiple threads. Therefore, always await async calls immediately,
+    /// or use separate DbContext instances for operations that execute in parallel.
+    /// </para>
+    /// </summary>
+    /// <param name="acceptAllChangesOnSuccess">
+    /// Indicates whether <see cref="ChangeTracker.AcceptAllChanges" /> is called after the changes
+    /// have been sent successfully to the database.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous save operation.
+    /// The task result contains the number of state entries written to the database.
+    /// </returns>
+    public Task<int> ForceSaveChangesAsync(
+        bool acceptAllChangesOnSuccess,
+        CancellationToken cancellationToken = new())
+    {
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    /// <summary>
+    /// <para>
+    /// Saves all changes made in this context to the database and hard deletes entities
+    /// marked for deletion.
+    /// </para>
+    /// <para>
+    /// This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
+    /// any changes to entity instances before saving to the underlying database.
+    /// This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
+    /// </para>
+    /// <para>
+    /// Entity Framework Core does not support multiple parallel
+    /// operations being run on the same DbContext instance.
+    /// This includes both parallel execution of async queries and any explicit
+    /// concurrent use from multiple threads. Therefore, always await async calls immediately,
+    /// or use separate DbContext instances for operations that execute in parallel.
+    /// </para>
+    /// </summary>
+    /// <returns>
+    /// A task that represents the asynchronous save operation.
+    /// The task result contains the number of state entries written to the database.
+    /// </returns>
+    public int ForceSaveChanges()
+    {
+        return base.SaveChanges();
+    }
+
+    /// <summary>
+    /// <para>
+    /// Saves all changes made in this context to the database and hard deletes entities
+    /// marked for deletion.
+    /// </para>
+    /// <para>
+    /// This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
+    /// any changes to entity instances before saving to the underlying database.
+    /// This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
+    /// </para>
+    /// <para>
+    /// Entity Framework Core does not support multiple parallel
+    /// operations being run on the same DbContext instance.
+    /// This includes both parallel execution of async queries and any explicit
+    /// concurrent use from multiple threads. Therefore, always await async calls immediately,
+    /// or use separate DbContext instances for operations that execute in parallel.
+    /// </para>
+    /// </summary>
+    /// <param name="acceptAllChangesOnSuccess">
+    /// Indicates whether <see cref="ChangeTracker.AcceptAllChanges" /> is called after the changes
+    /// have been sent successfully to the database.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous save operation.
+    /// The task result contains the number of state entries written to the database.
+    /// </returns>
+    public int ForceSaveChanges(bool acceptAllChangesOnSuccess)
+    {
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }
 }
