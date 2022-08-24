@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
 using Detached.Mappers.EntityFramework;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
@@ -78,13 +79,11 @@ builder.Services.AddControllers(options =>
         .Select()
         .OrderBy()
         .AddRouteComponents(DbContextExtensions.GetModel<PmsDbContext>()))
-    .AddFluentValidation(options =>
-    {
-        options.RegisterValidatorsFromAssembly(Assembly.GetAssembly(typeof(Registrar)));
-    })
     .AddNewtonsoftJson(options =>
         options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Registrar)));
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 // Add Swagger
