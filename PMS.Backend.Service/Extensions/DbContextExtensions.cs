@@ -27,6 +27,7 @@ public static class DbContextExtensions
         where T : DbContext
     {
         var builder = new ODataConventionModelBuilder();
+        builder.EnableLowerCamelCase();
 
         foreach (var propertyInfo in typeof(T).GetProperties())
         {
