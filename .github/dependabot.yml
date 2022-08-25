@@ -7,39 +7,7 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
-    directory: "/PMS.Backend.Common"
-    schedule:
-      interval: "weekly"
-    assignees:
-      - "jorgeparavicini"
-    target-branch: "dev"
-
-  - package-ecosystem: "nuget"
-    directory: "/PMS.Backend.Core"
-    schedule:
-      interval: "weekly"
-    assignees:
-      - "jorgeparavicini"
-    target-branch: "dev"
-
-  - package-ecosystem: "nuget"
-    directory: "/PMS.Backend.Features"
-    schedule:
-      interval: "weekly"
-    assignees:
-      - "jorgeparavicini"
-    target-branch: "dev"
-
-  - package-ecosystem: "nuget"
-    directory: "/PMS.Backend.Service"
-    schedule:
-      interval: "weekly"
-    assignees:
-      - "jorgeparavicini"
-    target-branch: "dev"
-
-  - package-ecosystem: "nuget"
-    directory: "/PMS.Backend.Test"
+    directory: "/"
     schedule:
       interval: "weekly"
     assignees:
