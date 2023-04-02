@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Detached.Mappers.EntityFramework" Version="6.2.2" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="13.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.11" />

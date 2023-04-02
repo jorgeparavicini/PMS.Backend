@@ -24,6 +24,7 @@ using PMS.Backend.Common.Extensions;
 using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
+using PMS.Backend.Features.Queries;
 using PMS.Backend.Service.Extensions;
 using PMS.Backend.Service.Filters;
 using PMS.Backend.Service.Security;
@@ -125,6 +126,9 @@ builder.Services.AddDbContext<PmsDbContext>(options =>
 // Add features
 builder.Services.AddAPI();
 
+builder.Services.AddGraphQLServer()
+    .AddQueryType<ReservationQuery>();
+
 var app = builder.Build();
 
 app.UseProblemDetails();
@@ -144,6 +148,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGraphQL();
 app.Run();
 
 /// <summary>
