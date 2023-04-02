@@ -1,9 +1,11 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace PMS.Backend.Common.Extensions;
 
 /// <summary>
-/// Extension methods for <see cref="String"/>.
+/// Extension methods for <see cref="string"/>.
 /// </summary>
 public static class StringExtensions
 {

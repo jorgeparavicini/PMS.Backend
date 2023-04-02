@@ -1,9 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Net.Http;
 using FluentValidation;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData;
 using PMS.Backend.Features.Exceptions;
 using Environment = PMS.Backend.Common.Models.Environment;
+using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
 
 namespace PMS.Backend.Service.Extensions;
 

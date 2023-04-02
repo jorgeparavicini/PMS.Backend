@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Detached.Annotations;
 
 namespace PMS.Backend.Core.Entities.Reservation;
