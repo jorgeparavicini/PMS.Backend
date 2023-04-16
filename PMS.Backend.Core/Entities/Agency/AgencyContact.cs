@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using PMS.Backend.Core.Attributes;
 using PMS.Backend.Core.Entities.Reservation;
 
@@ -9,7 +10,6 @@ namespace PMS.Backend.Core.Entities.Agency;
 /// </summary>
 public class AgencyContact : Entity
 {
-    #region Properties
 
     /// <summary>
     /// The full name of the contact.
@@ -55,9 +55,6 @@ public class AgencyContact : Entity
     /// </summary>
     public bool IsFrequentVendor { get; set; }
 
-    #endregion
-
-    #region Relations
 
     /// <summary>
     /// The id of the associated agency.
@@ -83,9 +80,8 @@ public class AgencyContact : Entity
     /// A list of all reservations this contact is responsible for.
     /// </summary>
     [ReverseLookup]
-    public IList<GroupReservation> GroupReservations { get; } = new List<GroupReservation>();
+    public IList<GroupReservation> GroupReservations { get; set; } = new List<GroupReservation>();
 
-    #endregion
 
     // TODO: Add Country of residence, Language
 }

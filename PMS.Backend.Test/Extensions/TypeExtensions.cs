@@ -1,4 +1,6 @@
-﻿namespace PMS.Backend.Test.Extensions;
+﻿using System;
+
+namespace PMS.Backend.Test.Extensions;
 
 public static class TypeExtensions
 {

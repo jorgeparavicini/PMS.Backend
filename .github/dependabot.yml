@@ -10,6 +10,4 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    assignees:
-      - "jorgeparavicini"
-    target-branch: "dev"
+    target-branch: "main"

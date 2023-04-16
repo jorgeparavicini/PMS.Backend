@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PMS.Backend.Core.Entities;
 
@@ -9,7 +10,6 @@ namespace PMS.Backend.Core.Extensions;
 /// </summary>
 public static class ChangeTrackerExtensions
 {
-
     /// <summary>
     /// Sets all audit properties on a modified entry and converts hard deleted entries to soft
     /// deletions.
@@ -19,7 +19,7 @@ public static class ChangeTrackerExtensions
     {
         changeTracker.DetectChanges();
         var entries = changeTracker.Entries()
-            .Where(x => x.Entity is Entity && x.State == EntityState.Deleted);
+            .Where(x => x is { Entity: Entity, State: EntityState.Deleted });
 
         foreach (var entry in entries)
         {

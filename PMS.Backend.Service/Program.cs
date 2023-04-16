@@ -1,3 +1,11 @@
+// -----------------------------------------------------------------------
+// <copyright file="Program.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
@@ -5,12 +13,18 @@ using Detached.Mappers.EntityFramework;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
+using HotChocolate.Data;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
@@ -18,6 +32,7 @@ using PMS.Backend.Common.Extensions;
 using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
+using PMS.Backend.Features.GraphQL;
 using PMS.Backend.Service.Extensions;
 using PMS.Backend.Service.Filters;
 using PMS.Backend.Service.Security;
@@ -52,6 +67,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.Authority = domain;
         options.Audience = audience;
+
         // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -108,16 +124,28 @@ builder.Services.AddFluentValidationRulesToSwagger();
 builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 // Add Database
-builder.Services.AddDbContext<PmsDbContext>(options =>
+builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("PMS")!;
-    var serverVersion = ServerVersion.AutoDetect(connectionString);
-    options.UseMySql(connectionString, serverVersion);
-    options.UseDetached();
+    options
+        .UseSqlServer(
+            connectionString,
+            serverOptions => serverOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+        .UseDetached();
 });
 
-// Add features
-builder.Services.AddAPI();
+builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
+
+builder.Services.AddGraphQLServer()
+    .AddMutationType<Mutation>()
+    .AddQueryType<Query>()
+    .AddFeatureTypes()
+    .RegisterDbContext<PmsDbContext>(DbContextKind.Pooled)
+    .AddFiltering()
+    .AddSorting()
+    .AddProjections()
+    .AddFairyBread()
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = builder.Environment.IsDevelopment());
 
 var app = builder.Build();
 
@@ -138,6 +166,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGraphQL();
 app.Run();
 
 /// <summary>

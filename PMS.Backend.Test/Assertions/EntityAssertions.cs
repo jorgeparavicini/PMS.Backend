@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Detached.Annotations;
 using FluentAssertions;
@@ -115,7 +117,7 @@ public class EntityAssertions<TEntity> : ReferenceTypeAssertions<TEntity, Entity
         return subject.Should().BeEquivalentTo(other);
     }
 
-    public static IList<PropertyInfo> GetProperties()
+    public static IEnumerable<PropertyInfo> GetProperties()
     {
         // We don't want to compare the base entity properties as they are auto generated
         // and don't need to be validated except the Id.

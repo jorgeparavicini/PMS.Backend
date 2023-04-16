@@ -1,8 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using PMS.Backend.Common.Security;
 using PMS.Backend.Service.Filters;
@@ -28,8 +33,7 @@ public static class SwaggerExtensions
             searchPattern: "*.xml");
 
         // Load the XML docs for processing.
-        var xmlDocs = (from docPath in xmlDocPaths select XDocument.Load(docPath))
-            .ToList();
+        var xmlDocs = xmlDocPaths.Select(XDocument.Load);
 
         // Need a map for looking up member elements by name.
         var targetMemberElements = new Dictionary<string, XElement>();
