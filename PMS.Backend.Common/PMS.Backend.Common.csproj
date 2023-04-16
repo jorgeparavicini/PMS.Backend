@@ -6,7 +6,7 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-		<CodeAnalysisRuleSet>stylecop.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,6 +25,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <CodeAnalysisDictionary Include="stylecop.ruleset" />
+      <AdditionalFiles Include="..\stylecop.ruleset">
+          <Link>stylecop.ruleset</Link>
+      </AdditionalFiles>
     </ItemGroup>
 </Project>

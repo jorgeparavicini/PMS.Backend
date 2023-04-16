@@ -85,7 +85,7 @@
         <Rule Id="SA1203"  Action="Warning" />          <!-- Constants should appear before fields -->
         <Rule Id="SA1204"  Action="Warning" />          <!-- Static elements should appear before instance elements -->
         <Rule Id="SA1205"  Action="Warning" />          <!-- Partial elements should declare access -->
-        <Rule Id="SA1206"  Action="Warning" />          <!-- Declaration keywords should follow order -->
+        <Rule Id="SA1206"  Action="Hidden" />           <!-- Declaration keywords should follow order -->
         <Rule Id="SA1207"  Action="Warning" />          <!-- Protected should come before internal -->
         <Rule Id="SA1208"  Action="Warning" />          <!-- System using directives should be placed before other using directives -->
         <Rule Id="SA1209"  Action="Warning" />          <!-- Using alias directives should be placed after other using directives -->
