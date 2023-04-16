@@ -7,7 +7,6 @@
 
 using System.Threading.Tasks;
 using AutoMapper;
-using Detached.Mappers.EntityFramework;
 using HotChocolate;
 using HotChocolate.Types;
 using PMS.Backend.Core.Database;
