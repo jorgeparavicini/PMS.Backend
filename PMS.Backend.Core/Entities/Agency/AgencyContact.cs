@@ -10,7 +10,6 @@ namespace PMS.Backend.Core.Entities.Agency;
 /// </summary>
 public class AgencyContact : Entity
 {
-    #region Properties
 
     /// <summary>
     /// The full name of the contact.
@@ -56,9 +55,6 @@ public class AgencyContact : Entity
     /// </summary>
     public bool IsFrequentVendor { get; set; }
 
-    #endregion
-
-    #region Relations
 
     /// <summary>
     /// The id of the associated agency.
@@ -86,7 +82,6 @@ public class AgencyContact : Entity
     [ReverseLookup]
     public IList<GroupReservation> GroupReservations { get; set; } = new List<GroupReservation>();
 
-    #endregion
 
     // TODO: Add Country of residence, Language
 }

@@ -10,7 +10,6 @@ namespace PMS.Backend.Core.Extensions;
 /// </summary>
 public static class ChangeTrackerExtensions
 {
-
     /// <summary>
     /// Sets all audit properties on a modified entry and converts hard deleted entries to soft
     /// deletions.

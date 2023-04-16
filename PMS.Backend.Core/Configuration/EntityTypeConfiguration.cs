@@ -9,7 +9,9 @@ public abstract class EntityTypeConfiguration<TEntity> : IEntityTypeConfiguratio
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        builder.Property(type => type.RowVersion)
+        builder.HasKey(entity => entity.Id);
+
+        builder.Property(entity => entity.RowVersion)
             .IsRowVersion();
     }
 }

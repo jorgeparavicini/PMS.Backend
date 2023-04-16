@@ -38,7 +38,7 @@
 
     <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.ReadabilityRules">
         <Rule Id="SA1100"  Action="Warning" />          <!-- Do not prefix calls with base unless local implementation exists -->
-        <Rule Id="SA1101"  Action="Warning" />          <!-- Prefix local calls with this -->
+        <Rule Id="SA1101"  Action="None" />             <!-- Prefix local calls with this -->
         <Rule Id="SA1102"  Action="Warning" />          <!-- Query clause should follow previous clause -->
         <Rule Id="SA1103"  Action="Warning" />          <!-- Query clauses should be on separate lines or all on one line -->
         <Rule Id="SA1104"  Action="Warning" />          <!-- Query clause should begin on new line when previous clause spans multiple lines -->
@@ -85,7 +85,7 @@
         <Rule Id="SA1203"  Action="Warning" />          <!-- Constants should appear before fields -->
         <Rule Id="SA1204"  Action="Warning" />          <!-- Static elements should appear before instance elements -->
         <Rule Id="SA1205"  Action="Warning" />          <!-- Partial elements should declare access -->
-        <Rule Id="SA1206"  Action="Hidden" />           <!-- Declaration keywords should follow order -->
+        <Rule Id="SA1206"  Action="None" />             <!-- Declaration keywords should follow order -->
         <Rule Id="SA1207"  Action="Warning" />          <!-- Protected should come before internal -->
         <Rule Id="SA1208"  Action="Warning" />          <!-- System using directives should be placed before other using directives -->
         <Rule Id="SA1209"  Action="Warning" />          <!-- Using alias directives should be placed after other using directives -->
@@ -200,7 +200,7 @@
         <Rule Id="SA1636"  Action="Warning" />          <!-- File header copyright text should match -->
         <Rule Id="SA1637"  Action="Warning" />          <!-- File header should contain file name -->
         <Rule Id="SA1638"  Action="Warning" />          <!-- File header file name documentation should match file name -->
-        <Rule Id="SA1639"  Action="Warning" />          <!-- File header should have summary -->
+        <Rule Id="SA1639"  Action="None" />             <!-- File header should have summary -->
         <Rule Id="SA1640"  Action="Warning" />          <!-- File header should have valid company text -->
         <Rule Id="SA1641"  Action="Warning" />          <!-- File header company name text should match -->
         <Rule Id="SA1642"  Action="Warning" />          <!-- Constructor summary documentation should begin with standard text -->

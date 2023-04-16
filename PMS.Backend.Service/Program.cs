@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------
+// <copyright file="Program.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -25,8 +32,7 @@ using PMS.Backend.Common.Extensions;
 using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
-using PMS.Backend.Features.Mutations;
-using PMS.Backend.Features.Queries;
+using PMS.Backend.Features.GraphQL;
 using PMS.Backend.Service.Extensions;
 using PMS.Backend.Service.Filters;
 using PMS.Backend.Service.Security;
@@ -61,6 +67,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.Authority = domain;
         options.Audience = audience;
+
         // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -120,18 +127,19 @@ builder.Services.AddSwaggerGenNewtonsoftSupport();
 builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("PMS")!;
-    options.UseSqlServer(connectionString);
-    options.UseDetached();
+    options
+        .UseSqlServer(
+            connectionString,
+            serverOptions => serverOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+        .UseDetached();
 });
 
-builder.Services.AddAutoMapper(typeof(Profile));
+builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
 
 builder.Services.AddGraphQLServer()
     .AddMutationType<Mutation>()
-    .AddTypeExtension<AddAgencyMutation>()
-    .AddTypeExtension<AddReservationMutation>()
     .AddQueryType<Query>()
-    .AddTypeExtension<AgencyQuery>()
+    .AddFeatureTypes()
     .RegisterDbContext<PmsDbContext>(DbContextKind.Pooled)
     .AddFiltering()
     .AddSorting()

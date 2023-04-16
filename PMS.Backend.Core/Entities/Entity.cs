@@ -5,10 +5,10 @@ namespace PMS.Backend.Core.Entities;
 /// <summary>
 /// The base class for all entities containing audit fields and helper methods.
 /// </summary>
-public class Entity
+public abstract class Entity
 {
     /// <summary>
-    /// A unique Identifier for this entity.
+    /// Gets or sets the unique Identifier of the entity.
     /// </summary>
     public int Id { get; set; }
 

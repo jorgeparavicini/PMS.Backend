@@ -19,14 +19,12 @@ public class Agency : Entity
     /// <remarks>This is used to define the endpoint and the odata metadata.</remarks>
     public const string BusinessObjectName = "Agencies";
 
-    #region Properties
-
     /// <summary>
     /// The legal name of the agency.
     /// </summary>
     [MinLength(1)]
     [MaxLength(255)]
-    public string LegalName { get; set; } = null!;
+    public required string LegalName { get; set; }
 
     /// <summary>
     /// The default commission rate for agents in this agency as a fraction.
@@ -76,10 +74,6 @@ public class Agency : Entity
     [EmailAddress]
     public string? EmergencyEmail { get; set; }
 
-    #endregion
-
-    #region Relations
-
     /// <summary>
     /// The agents known that work for this agency.
     /// </summary>
@@ -90,8 +84,6 @@ public class Agency : Entity
     [Composition]
     [SuppressMessage("ReSharper", "CollectionNeverQueried.Global")]
     public IList<AgencyContact> AgencyContacts { get; set; } = new List<AgencyContact>();
-
-    #endregion
 
     // TODO: Add Company, Association, Default Channel, Default Origination
 }
