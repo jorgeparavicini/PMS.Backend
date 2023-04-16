@@ -1,3 +1,7 @@
 version: "1.0"
 linter: jetbrains/qodana-dotnet:2023.1-eap
 failThreshold: 0
+exclude:
+  - name: All
+    paths:
+      - PMS.Backend.Core/Migrations
