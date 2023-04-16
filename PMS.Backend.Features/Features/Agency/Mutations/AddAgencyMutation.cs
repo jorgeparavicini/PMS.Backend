@@ -11,6 +11,7 @@ using Detached.Mappers.EntityFramework;
 using HotChocolate;
 using HotChocolate.Types;
 using PMS.Backend.Core.Database;
+using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.Features.Agency.Models;
 using PMS.Backend.Features.Frontend.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL;
@@ -22,8 +23,6 @@ public class AddAgencyMutation
 {
     public async Task<AgencyDTO> AddAgency(PmsDbContext dbContext, CreateAgencyDTO input, [Service] IMapper mapper)
     {
-        var agency = await dbContext.MapAsync<Core.Entities.Agency.Agency>(input);
-        await dbContext.SaveChangesAsync();
-        return mapper.Map<AgencyDTO>(agency);
+        return await dbContext.SaveSingle<CreateAgencyDTO, Core.Entities.Agency.Agency, AgencyDTO>(input, mapper);
     }
 }

@@ -14,7 +14,7 @@ namespace PMS.Backend.Features.Extensions;
 
 public static class DbContextExtensions
 {
-    public static async Task<TResult> SaveSingle<TInput, TEntity, TResult>(DbContext dbContext, TInput input, IMapper mapper)
+    public static async Task<TResult> SaveSingle<TInput, TEntity, TResult>(this DbContext dbContext, TInput input, IMapper mapper)
         where TEntity : class
     {
         var entity = await dbContext.MapAsync<TEntity>(input);
