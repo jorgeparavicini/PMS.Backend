@@ -1,5 +1,7 @@
 ﻿using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Detached.Mappers.EntityFramework;
 using FluentAssertions;
 using Newtonsoft.Json;

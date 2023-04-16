@@ -1,30 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
+﻿using System;
 
 namespace PMS.Backend.Core.Entities;
 
 /// <summary>
 /// The base class for all entities containing audit fields and helper methods.
 /// </summary>
-public class Entity
+public abstract class Entity
 {
     /// <summary>
-    /// A unique Identifier for this entity.
+    /// Gets or sets the unique Identifier of the entity.
     /// </summary>
     public int Id { get; set; }
 
     /// <summary>
     /// A timestamp used for concurrency checking.
     /// </summary>
-    [IgnoreDataMember]
-    [Timestamp]
-    public byte[] TimeStamp { get; set; } = Array.Empty<byte>();
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 
     /// <summary>
     /// A flag used to indicate that a entity is deleted and should not be used in any queries.
     /// </summary>
-    [IgnoreDataMember]
-    public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; }
 
     // TODO: Audit
 }

@@ -1,4 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
@@ -62,16 +67,18 @@ public class PmsDbContext : DbContext
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             var isDeletedProperty = entityType.FindProperty(nameof(Entity.IsDeleted));
-            if (isDeletedProperty != null && isDeletedProperty.ClrType == typeof(bool))
-            {
-                var parameter = Expression.Parameter(entityType.ClrType, "p");
-                var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(),
-                    parameter,
-                    filterExpr.Body);
-                var filter = Expression.Lambda(body, parameter);
-                entityType.SetQueryFilter(filter);
-            }
+            if (isDeletedProperty == null || isDeletedProperty.ClrType != typeof(bool)) continue;
+            
+            var parameter = Expression.Parameter(entityType.ClrType, "p");
+            var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(),
+                parameter,
+                filterExpr.Body);
+            var filter = Expression.Lambda(body, parameter);
+            entityType.SetQueryFilter(filter);
         }
+
+        // Apply fluent configurations from all entities
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PmsDbContext).Assembly);
     }
 
     /// <inheritdoc />

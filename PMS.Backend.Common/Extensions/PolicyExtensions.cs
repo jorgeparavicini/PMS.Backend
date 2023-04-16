@@ -1,4 +1,12 @@
-﻿using System.Diagnostics;
+﻿// -----------------------------------------------------------------------
+// <copyright file="PolicyExtensions.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System.Diagnostics;
+using System.Linq;
 using PMS.Backend.Common.Security;
 
 namespace PMS.Backend.Common.Extensions;
@@ -18,7 +26,8 @@ public static class PolicyExtensions
         var name = policy.ToString();
         var split = name.SplitCamelCase().Select(x => x.ToLower()).ToList();
 
-        Debug.Assert(split.Count >= 2,
+        Debug.Assert(
+            split.Count >= 2,
             "The name of policy must start with an operation followed by the name of the target.");
 
         return $"{split[0]}:{string.Join("-", split.Skip(1))}";
