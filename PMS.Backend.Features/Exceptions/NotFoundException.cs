@@ -1,4 +1,6 @@
-﻿namespace PMS.Backend.Features.Exceptions;
+﻿using System;
+
+namespace PMS.Backend.Features.Exceptions;
 
 /// <summary>
 /// An exception indicating that a request was not able to be performed because an entity was

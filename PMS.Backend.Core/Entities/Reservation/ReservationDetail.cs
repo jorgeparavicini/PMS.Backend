@@ -1,4 +1,5 @@
-﻿using Detached.Annotations;
+﻿using System;
+using Detached.Annotations;
 
 namespace PMS.Backend.Core.Entities.Reservation;
 

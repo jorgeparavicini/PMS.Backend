@@ -1,4 +1,6 @@
-﻿namespace PMS.Backend.Core.Attributes;
+﻿using System;
+
+namespace PMS.Backend.Core.Attributes;
 
 /// <summary>
 /// Marks a property as the parent of a business object.
