@@ -6,6 +6,7 @@ using Detached.Mappers.EntityFramework;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
+using HotChocolate.Data;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,7 @@ using PMS.Backend.Common.Extensions;
 using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
+using PMS.Backend.Features.Mutations;
 using PMS.Backend.Features.Queries;
 using PMS.Backend.Service.Extensions;
 using PMS.Backend.Service.Filters;
@@ -115,19 +117,27 @@ builder.Services.AddFluentValidationRulesToSwagger();
 builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 // Add Database
-builder.Services.AddDbContext<PmsDbContext>(options =>
+builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("PMS")!;
-    var serverVersion = ServerVersion.AutoDetect(connectionString);
-    options.UseMySql(connectionString, serverVersion);
+    options.UseSqlServer(connectionString);
     options.UseDetached();
 });
 
-// Add features
-builder.Services.AddAPI();
+builder.Services.AddAutoMapper(typeof(Profile));
 
 builder.Services.AddGraphQLServer()
-    .AddQueryType<ReservationQuery>();
+    .AddMutationType<Mutation>()
+    .AddTypeExtension<AddAgencyMutation>()
+    .AddTypeExtension<AddReservationMutation>()
+    .AddQueryType<Query>()
+    .AddTypeExtension<AgencyQuery>()
+    .RegisterDbContext<PmsDbContext>(DbContextKind.Pooled)
+    .AddFiltering()
+    .AddSorting()
+    .AddProjections()
+    .AddFairyBread()
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = builder.Environment.IsDevelopment());
 
 var app = builder.Build();
 

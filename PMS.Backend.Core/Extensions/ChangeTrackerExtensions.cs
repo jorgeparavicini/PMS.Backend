@@ -20,7 +20,7 @@ public static class ChangeTrackerExtensions
     {
         changeTracker.DetectChanges();
         var entries = changeTracker.Entries()
-            .Where(x => x.Entity is Entity && x.State == EntityState.Deleted);
+            .Where(x => x is { Entity: Entity, State: EntityState.Deleted });
 
         foreach (var entry in entries)
         {

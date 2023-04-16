@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace PMS.Backend.Core.Entities;
 
@@ -17,15 +15,12 @@ public class Entity
     /// <summary>
     /// A timestamp used for concurrency checking.
     /// </summary>
-    [IgnoreDataMember]
-    [Timestamp]
-    public byte[] TimeStamp { get; set; } = Array.Empty<byte>();
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 
     /// <summary>
     /// A flag used to indicate that a entity is deleted and should not be used in any queries.
     /// </summary>
-    [IgnoreDataMember]
-    public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; }
 
     // TODO: Audit
 }

@@ -9,17 +9,36 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Detached.Mappers.EntityFramework" Version="6.2.2" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageReference Include="Detached.Mappers.EntityFramework" Version="7.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.0.5" />
+    <PackageReference Include="HotChocolate.Data.AutoMapper" Version="13.0.5" />
+    <PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.0.5" />
+    <PackageReference Include="HotChocolate.Types.Selections" Version="10.5.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.11" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PMS.Backend.Core\PMS.Backend.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Frontend\Agency\Commands\" />
+    <Folder Include="Frontend\Agency\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
   </ItemGroup>
 
 </Project>

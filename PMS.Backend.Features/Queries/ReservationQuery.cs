@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Reservation;
 
@@ -9,10 +10,13 @@ namespace PMS.Backend.Features.Queries;
 
 public class ReservationQuery
 {
-    public async Task<GroupReservation?> GetReservation(
-        [Service(ServiceKind.Synchronized)] PmsDbContext dbContext,
-        int id)
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<GroupReservation> GetReservation(
+        [Service(ServiceKind.Synchronized)]
+        PmsDbContext dbContext)
     {
-        return await dbContext.Set<GroupReservation>().FirstOrDefaultAsync(reservation => reservation.Id == id);
+        return dbContext.GroupReservations;
     }
 }

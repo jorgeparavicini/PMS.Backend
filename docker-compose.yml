@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  pms.backend.service:
+    image: ${DOCKER_REGISTRY-}pmsbackendservice
+    build:
+      context: .
+      dockerfile: PMS.Backend.Service/Dockerfile
+    depends_on:
+    - pms.db
+
+  pms.db:
+    image: postgres

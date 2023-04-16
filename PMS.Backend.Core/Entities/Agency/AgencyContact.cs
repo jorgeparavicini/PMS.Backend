@@ -84,7 +84,7 @@ public class AgencyContact : Entity
     /// A list of all reservations this contact is responsible for.
     /// </summary>
     [ReverseLookup]
-    public IList<GroupReservation> GroupReservations { get; } = new List<GroupReservation>();
+    public IList<GroupReservation> GroupReservations { get; set; } = new List<GroupReservation>();
 
     #endregion
 
