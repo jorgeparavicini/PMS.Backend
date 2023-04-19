@@ -10,12 +10,12 @@ using PMS.Backend.Features.Features.Agency.Mutations;
 namespace PMS.Backend.Features.Features.Agency.Models.Payload;
 
 /// <summary>
-/// The payload for the <see cref="DeleteAgencyMutation"/>.
+///     Payload for the <see cref="DeleteAgencyMutation"/>.
 /// </summary>
 public record DeleteAgencyPayload
 {
     /// <summary>
-    /// Gets a unique identifier for the client performing the mutation.
+    ///     A unique identifier for the client performing the mutation.
     /// </summary>
     public required string ClientMutationId { get; init; }
 }

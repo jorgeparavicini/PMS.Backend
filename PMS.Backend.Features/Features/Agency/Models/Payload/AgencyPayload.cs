@@ -7,12 +7,12 @@
 
 using System.Collections.Generic;
 using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Features.Features.Agency.Queries;
 
 namespace PMS.Backend.Features.Features.Agency.Models.Payload;
 
-/// <summary>
-/// Payload for <see cref="PMS.Backend.Core.Entities.Agency.Agency"/> related queries.
-/// </summary>
+/// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency"/>
 public record AgencyPayload
 {
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.Id"/>
@@ -37,5 +37,5 @@ public record AgencyPayload
     public string? EmergencyEmail { get; init; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.AgencyContacts"/>
-    public required IList<AgencyContactPayload> AgencyContacts { get; init; }
+    public required IList<AgencyContact> AgencyContacts { get; init; }
 }

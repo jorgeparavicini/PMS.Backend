@@ -5,15 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.Features.Agency.Mutations;
 
 namespace PMS.Backend.Features.Features.Agency.Models.Input;
 
 /// <summary>
-/// The input data for a <see cref="DeleteAgencyContactMutation"/>.
+///     Input for the <see cref="DeleteAgencyContactMutation"/>.
 /// </summary>
 public record DeleteAgencyContactInput
 {
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.AgencyContact.Id"/>
-    public required int Id { get; set; }
+    /// <inheritdoc cref="AgencyContact.Id"/>
+    public required int Id { get; init; }
 }

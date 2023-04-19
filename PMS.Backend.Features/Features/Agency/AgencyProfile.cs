@@ -18,6 +18,5 @@ public class AgencyProfile : Profile
     {
         CreateMap<Core.Entities.Agency.Agency, AgencyPayload>();
         CreateMap<AgencyContact, AgencyContactPayload>();
-        CreateMap<AgencyContact, UpsertAgencyContactPayload>();
     }
 }

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="UpsertAgencyPayload.cs" company="Vira Vira">
+// <copyright file="EditAgencyInput.cs" company="Vira Vira">
 // Copyright (c) Vira Vira. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,34 +7,35 @@
 
 using HotChocolate.Types;
 using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.Features.Agency.Mutations;
 
-namespace PMS.Backend.Features.Features.Agency.Models.Payload;
+namespace PMS.Backend.Features.Features.Agency.Models.Input;
 
 /// <summary>
-/// Payload for the <see cref="UpsertAgencyMutation"/>.
+///     Input for the <see cref="EditAgencyMutation"/>.
 /// </summary>
-public class UpsertAgencyPayload
+public record EditAgencyInput
 {
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.Id"/>
-    public int? Id { get; init; }
+    /// <inheritdoc cref="Agency.Id"/>
+    public required int Id { get; init; }
 
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.LegalName"/>
+    /// <inheritdoc cref="Agency.LegalName"/>
     public required string LegalName { get; init; }
 
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.DefaultCommissionRate"/>
+    /// <inheritdoc cref="Agency.DefaultCommissionRate"/>
     public decimal? DefaultCommissionRate { get; init; }
 
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.DefaultCommissionOnExtras"/>
+    /// <inheritdoc cref="Agency.DefaultCommissionOnExtras"/>
     public decimal? DefaultCommissionOnExtras { get; init; }
 
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.CommissionMethod"/>
+    /// <inheritdoc cref="Agency.CommissionMethod"/>
     [DefaultValue(CommissionMethod.DeductedByAgency)]
     public CommissionMethod CommissionMethod { get; init; }
 
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.EmergencyPhone"/>
+    /// <inheritdoc cref="Agency.EmergencyPhone"/>
     public string? EmergencyPhone { get; init; }
 
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.EmergencyEmail"/>
+    /// <inheritdoc cref="Agency.EmergencyEmail"/>
     public string? EmergencyEmail { get; init; }
 }

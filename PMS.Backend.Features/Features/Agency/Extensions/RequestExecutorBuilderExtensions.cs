@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IRequestExecutorBuilderExtensions.cs" company="Vira Vira">
+// <copyright file="RequestExecutorBuilderExtensions.cs" company="Vira Vira">
 // Copyright (c) Vira Vira. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,7 +15,7 @@ namespace PMS.Backend.Features.Features.Agency.Extensions;
 /// <summary>
 /// Provides extension methods for <see cref="IRequestExecutorBuilder"/> to add Agency-related functionality.
 /// </summary>
-public static class IRequestExecutorBuilderExtensions
+public static class RequestExecutorBuilderExtensions
 {
     /// <summary>
     /// Adds Agency-related types to the <see cref="IRequestExecutorBuilder"/>.
@@ -27,8 +27,11 @@ public static class IRequestExecutorBuilderExtensions
         return builder
 
             // Mutations
-            .AddTypeExtension<UpsertAgencyMutation>()
-            .AddTypeExtension<UpsertAgencyContactMutation>()
+            .AddTypeExtension<CreateAgencyWithContactsMutation>()
+            .AddTypeExtension<CreateAgencyContactMutation>()
+            .AddTypeExtension<EditAgencyMutation>()
+            .AddTypeExtension<EditAgencyContactMutation>()
+            .AddTypeExtension<MoveAgencyContactToAgencyMutation>()
             .AddTypeExtension<DeleteAgencyMutation>()
             .AddTypeExtension<DeleteAgencyContactMutation>()
 
