@@ -1,4 +1,5 @@
-﻿[*.cs]
+﻿# Top-most EditorConfig file
+root = true
 
-# MVC1004: Rename model bound parameter
-dotnet_diagnostic.MVC1004.severity = none
+[**/{Mutations,Queries}/*.cs]
+dotnet_diagnostic.CA1822.severity = none

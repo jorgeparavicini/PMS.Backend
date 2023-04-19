@@ -8,7 +8,6 @@ using FluentAssertions.Execution;
 using FluentAssertions.Primitives;
 using PMS.Backend.Core.Entities;
 using PMS.Backend.Test.Extensions;
-using PMS.Backend.Test.Utils;
 
 namespace PMS.Backend.Test.Assertions;
 
@@ -25,7 +24,7 @@ public class EntityAssertions<TEntity> : ReferenceTypeAssertions<TEntity, Entity
 
     protected override string Identifier => "entity";
 
-    public AndConstraint<EntityAssertions<TEntity>> BeEquivalentTo(
+    /*public AndConstraint<EntityAssertions<TEntity>> BeEquivalentTo(
         TEntity other,
         string because = "",
         params object[] becauseArgs)
@@ -54,8 +53,8 @@ public class EntityAssertions<TEntity> : ReferenceTypeAssertions<TEntity, Entity
         }
 
         return constraint;
-    }
-
+    }*/
+/*
     private void CompositeTypeShouldBeEquivalent(
         PropertyInfo propertyInfo,
         TEntity other,
@@ -108,14 +107,14 @@ public class EntityAssertions<TEntity> : ReferenceTypeAssertions<TEntity, Entity
                 "Entity{reason}, but found {1}",
                 propertyInfo.Name,
                 propertyInfo.PropertyType.Name);
-    }
+    }*/
 
-    private static AndConstraint<EntityAssertions<TEntity>> AssertEqualSubEntity(
+    /*private static AndConstraint<EntityAssertions<TEntity>> AssertEqualSubEntity(
         TEntity subject,
         TEntity other)
     {
         return subject.Should().BeEquivalentTo(other);
-    }
+    }*/
 
     public static IEnumerable<PropertyInfo> GetProperties()
     {

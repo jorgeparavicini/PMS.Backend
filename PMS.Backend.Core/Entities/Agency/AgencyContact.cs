@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using PMS.Backend.Core.Attributes;
+﻿// -----------------------------------------------------------------------
+// <copyright file="AgencyContact.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using PMS.Backend.Core.Entities.Reservation;
 
 namespace PMS.Backend.Core.Entities.Agency;
@@ -10,78 +15,63 @@ namespace PMS.Backend.Core.Entities.Agency;
 /// </summary>
 public class AgencyContact : Entity
 {
+    /// <summary>
+    /// Gets or sets the full name of the contact.
+    /// </summary>
+    public required string ContactName { get; set; }
 
     /// <summary>
-    /// The full name of the contact.
+    /// Gets or sets an optional email address for the contact.
     /// </summary>
-    [MinLength(1)]
-    [MaxLength(255)]
-    public string ContactName { get; set; } = null!;
-
-    /// <summary>
-    /// An optional email address for the contact.
-    /// </summary>
-    [MaxLength(255)]
-    [EmailAddress]
     public string? Email { get; set; }
 
     /// <summary>
-    /// An optional phone number for the contact.
+    /// Gets or sets an optional phone number for the contact.
     /// </summary>
-    [MaxLength(255)]
-    [Phone]
     public string? Phone { get; set; }
 
     /// <summary>
-    /// An optional address for the contact.
+    /// Gets or sets an optional address for the contact.
     /// </summary>
-    [MaxLength(255)]
     public string? Address { get; set; }
 
     /// <summary>
-    /// An optional city of residence for the contact.
+    /// Gets or sets an optional city of residence for the contact.
     /// </summary>
-    [MaxLength(255)]
     public string? City { get; set; }
 
     /// <summary>
-    /// An optional ZipCode where the contact resides.
+    /// Gets or sets an optional ZipCode where the contact resides.
     /// </summary>
-    [MaxLength(255)]
     public string? ZipCode { get; set; }
 
     /// <summary>
-    /// Is the contact an agent that provides frequent sells.
+    /// Gets or sets a value indicating whether is the contact an agent that provides frequent sells.
     /// </summary>
     public bool IsFrequentVendor { get; set; }
 
-
     /// <summary>
-    /// The id of the associated agency.
+    /// Gets or sets the id of the associated agency.
     /// </summary>
     /// <remarks>
     /// This is an EF-Core relation, hence both the Id and the agency are required.
     /// </remarks>
     /// <seealso cref="Agency"/>
-    [ReverseLookup]
     public int AgencyId { get; set; }
 
     /// <summary>
-    /// The associated agency.
+    /// Gets or sets the associated agency.
     /// </summary>
     /// <remarks>
     /// This is an EF-Core relation, hence both the Id and the agency are required.
     /// </remarks>
     /// <seealso cref="AgencyId"/>
-    [ReverseLookup]
-    public Agency Agency { get; set; } = null!;
+    public required Agency Agency { get; set; }
 
     /// <summary>
-    /// A list of all reservations this contact is responsible for.
+    /// Gets or sets a list of all reservations this contact is responsible for.
     /// </summary>
-    [ReverseLookup]
-    public IList<GroupReservation> GroupReservations { get; set; } = new List<GroupReservation>();
-
+    public required IList<GroupReservation> GroupReservations { get; set; }
 
     // TODO: Add Country of residence, Language
 }

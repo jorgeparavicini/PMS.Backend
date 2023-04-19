@@ -13,5 +13,7 @@ public abstract class EntityTypeConfiguration<TEntity> : IEntityTypeConfiguratio
 
         builder.Property(entity => entity.RowVersion)
             .IsRowVersion();
+
+        builder.Property(entity => entity.IsDeleted).HasDefaultValue(false);
     }
 }

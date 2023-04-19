@@ -5,8 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Detached.Mappers.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +17,16 @@ namespace PMS.Backend.Features.Extensions;
 
 public static class DbContextExtensions
 {
-    public static async Task<TResult> SaveSingle<TInput, TEntity, TResult>(this DbContext dbContext, TInput input, IMapper mapper)
+    public static async Task<TPayload> SaveAndProjectToAsync<TInput, TEntity, TPayload>(
+        this DbContext dbContext,
+        TInput input,
+        IMapper mapper,
+        CancellationToken cancellationToken = default)
         where TEntity : class
     {
+        // TODO: Test whether the projection creates an additional database roundtrip if the entity already contains the data.
         var entity = await dbContext.MapAsync<TEntity>(input);
-        await dbContext.SaveChangesAsync();
-        return mapper.Map<TResult>(entity);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        return mapper.Map<TPayload>(entity);
     }
 }

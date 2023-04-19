@@ -9,6 +9,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
+using AutoMapper;
 using Detached.Mappers.EntityFramework;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -32,6 +33,8 @@ using PMS.Backend.Common.Extensions;
 using PMS.Backend.Common.Security;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features;
+using PMS.Backend.Features.Features.Agency;
+using PMS.Backend.Features.Features.Reservation;
 using PMS.Backend.Features.GraphQL;
 using PMS.Backend.Service.Extensions;
 using PMS.Backend.Service.Filters;
@@ -98,8 +101,7 @@ builder.Services.AddControllers(options =>
     .AddNewtonsoftJson(options =>
         options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Registrar)));
+builder.Services.AddValidatorsFromAssembly(typeof(Registrar).Assembly);
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 // Add Swagger
@@ -115,8 +117,6 @@ builder.Services.AddSwaggerGen(c =>
 
     c.OperationFilter<SecurityRequirementsOperationFilter>();
     c.OperationFilter<EnableQueryFilter>();
-
-    c.SchemaFilter<HideInternalDataMembersFilter>();
 });
 
 // Add Swagger extensions
@@ -126,7 +126,7 @@ builder.Services.AddSwaggerGenNewtonsoftSupport();
 // Add Database
 builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("PMS")!;
+    string connectionString = builder.Configuration.GetConnectionString("PMS")!;
     options
         .UseSqlServer(
             connectionString,
@@ -147,7 +147,7 @@ builder.Services.AddGraphQLServer()
     .AddFairyBread()
     .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = builder.Environment.IsDevelopment());
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseProblemDetails();
 app.UsePathBase(new PathString("/api"));

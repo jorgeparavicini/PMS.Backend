@@ -1,4 +1,11 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+// <copyright file="PmsDbContext.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -21,44 +28,43 @@ namespace PMS.Backend.Core.Database;
 public class PmsDbContext : DbContext
 {
     /// <summary>
-    /// The table containing all agencies.
+    /// Initializes a new instance of the <see cref="PmsDbContext"/> class.
+    /// </summary>
+    /// <param name="options">The EF core options to be passed along.</param>
+    public PmsDbContext(DbContextOptions<PmsDbContext> options)
+        : base(options)
+    {
+    }
+
+    /// <summary>
+    /// Gets the table containing all agencies.
     /// </summary>
     /// <seealso cref="Agency"/>
-    [BusinessObject(Agency.BusinessObjectName)]
     public DbSet<Agency> Agencies => Set<Agency>();
 
     /// <summary>
-    /// The table containing all agencies contacts.
+    /// Gets the table containing all agencies contacts.
     /// </summary>
     /// <seealso cref="AgencyContact"/>
     public DbSet<AgencyContact> AgencyContacts => Set<AgencyContact>();
 
     /// <summary>
-    /// The table containing all group reservations..
+    /// Gets the table containing all group reservations..
     /// </summary>
     /// <seealso cref="GroupReservation"/>
-    [BusinessObject(GroupReservation.BusinessObjectName)]
     public DbSet<GroupReservation> GroupReservations => Set<GroupReservation>();
 
     /// <summary>
-    /// The table containing all reservations.
+    /// Gets the table containing all reservations.
     /// </summary>
     /// <seealso cref="Reservation"/>
     public DbSet<Reservation> Reservations => Set<Reservation>();
 
     /// <summary>
-    /// The table containing all reservation details.
+    /// Gets the table containing all reservation details.
     /// </summary>
     /// <seealso cref="ReservationDetail"/>
     public DbSet<ReservationDetail> ReservationDetails => Set<ReservationDetail>();
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PmsDbContext"/> class.
-    /// </summary>
-    /// <param name="options">The EF core options to be passed along.</param>
-    public PmsDbContext(DbContextOptions<PmsDbContext> options) : base(options)
-    {
-    }
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -68,7 +74,7 @@ public class PmsDbContext : DbContext
         {
             var isDeletedProperty = entityType.FindProperty(nameof(Entity.IsDeleted));
             if (isDeletedProperty == null || isDeletedProperty.ClrType != typeof(bool)) continue;
-            
+
             var parameter = Expression.Parameter(entityType.ClrType, "p");
             var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(),
                 parameter,

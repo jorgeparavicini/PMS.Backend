@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using PMS.Backend.Test.Utils;
 
 namespace PMS.Backend.Test.ContractResolvers;
 
@@ -13,7 +12,8 @@ public class NoReverseLookupResolver : DefaultContractResolver
         Type type,
         MemberSerialization memberSerialization)
     {
-        var props = base.CreateProperties(type, memberSerialization);
+        return new List<JsonProperty>();
+        /*var props = base.CreateProperties(type, memberSerialization);
         return props.Where(p =>
             {
                 var propertyInfo = type.GetProperty(p.PropertyName!)!;
@@ -25,6 +25,6 @@ public class NoReverseLookupResolver : DefaultContractResolver
 
                 return true;
             })
-            .ToList();
+            .ToList();*/
     }
 }

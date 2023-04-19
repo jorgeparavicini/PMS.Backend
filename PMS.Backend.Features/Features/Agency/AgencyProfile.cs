@@ -8,6 +8,7 @@
 using AutoMapper;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.Features.Agency.Models;
+using PMS.Backend.Features.Features.Agency.Models.Payload;
 
 namespace PMS.Backend.Features.Features.Agency;
 
@@ -15,7 +16,8 @@ public class AgencyProfile : Profile
 {
     public AgencyProfile()
     {
-        CreateMap<Core.Entities.Agency.Agency, AgencyDTO>();
-        CreateMap<AgencyContact, AgencyContactDTO>();
+        CreateMap<Core.Entities.Agency.Agency, AgencyPayload>();
+        CreateMap<AgencyContact, AgencyContactPayload>();
+        CreateMap<AgencyContact, UpsertAgencyContactPayload>();
     }
 }

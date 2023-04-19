@@ -9,7 +9,6 @@ using System.Diagnostics.CodeAnalysis;
 using HotChocolate.Execution.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PMS.Backend.Features.Features.Agency.Extensions;
-using PMS.Backend.Features.Frontend.Agency;
 using PMS.Backend.Features.Frontend.Reservation;
 
 namespace PMS.Backend.Features;
@@ -26,7 +25,6 @@ public static class Registrar
     /// <param name="services">The collection which the dependencies should be added to.</param>
     public static void AddAPI(this IServiceCollection services)
     {
-        services.AddAgencyAPI();
         services.AddReservationAPI();
     }
 

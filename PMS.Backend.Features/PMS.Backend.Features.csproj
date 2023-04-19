@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Detached.Mappers.EntityFramework" Version="7.0.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.0.5" />
@@ -36,8 +37,6 @@
     <Folder Include="Features\Reservation\Extensions\" />
     <Folder Include="Features\Reservation\Queries\" />
     <Folder Include="Features\Reservation\Validation\" />
-    <Folder Include="Frontend\Agency\Commands\" />
-    <Folder Include="Frontend\Agency\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

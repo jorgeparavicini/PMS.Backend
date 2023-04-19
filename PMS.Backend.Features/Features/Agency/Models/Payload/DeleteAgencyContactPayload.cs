@@ -1,0 +1,21 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="DeleteAgencyContactPayload.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using PMS.Backend.Features.Features.Agency.Mutations;
+
+namespace PMS.Backend.Features.Features.Agency.Models.Payload;
+
+/// <summary>
+/// The payload for the <see cref="DeleteAgencyContactMutation"/>.
+/// </summary>
+public record DeleteAgencyContactPayload
+{
+    /// <summary>
+    /// Gets a unique identifier for the client performing the mutation.
+    /// </summary>
+    public required string ClientMutationId { get; init; }
+}
