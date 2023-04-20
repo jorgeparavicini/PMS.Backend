@@ -14,7 +14,6 @@ using HotChocolate.Data;
 using HotChocolate.Types;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
-using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.Features.Agency.Extensions;
 using PMS.Backend.Features.Features.Agency.Models.Input;
@@ -71,12 +70,20 @@ public class MoveAgencyContactToAgencyMutation
 
         if (await dbContext.AgencyContacts.FindAsync(input.AgencyContactId) is not { } agencyContactEntity)
         {
-            throw new NotFoundException($"Agency contact not found with id {input.AgencyContactId}.");
+            throw new GraphQLException(
+                ErrorBuilder.New()
+                    .SetMessage($"Agency contact not found with id {input.AgencyContactId}")
+                    .SetCode("ENTITY_NOT_FOUND")
+                    .Build());
         }
 
         if (await dbContext.Agencies.FindAsync(input.AgencyId) is not { } agencyEntity)
         {
-            throw new NotFoundException($"Agency not found with id {input.AgencyId}.");
+            throw new GraphQLException(
+                ErrorBuilder.New()
+                    .SetMessage($"Agency not found with id {input.AgencyId}")
+                    .SetCode("ENTITY_NOT_FOUND")
+                    .Build());
         }
 
         agencyEntity.AgencyContacts.Add(agencyContactEntity);

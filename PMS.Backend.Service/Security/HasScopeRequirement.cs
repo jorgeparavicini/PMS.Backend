@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// -----------------------------------------------------------------------
+// <copyright file="HasScopeRequirement.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using Microsoft.AspNetCore.Authorization;
 
 namespace PMS.Backend.Service.Security;
 
@@ -8,26 +15,15 @@ namespace PMS.Backend.Service.Security;
 public class HasScopeRequirement : IAuthorizationRequirement
 {
     /// <summary>
-    /// The issuer of the scope.
+    /// Gets the issuer of the scope.
     /// </summary>
-    public string Issuer { get; init; }
+    public required string Issuer { get; init; }
 
     /// <summary>
-    /// The name of the scope.
+    /// Gets the name of the scope.
     /// </summary>
     /// <remarks>
     /// This name must be equal to the one provided in auth0.
     /// </remarks>
-    public string Scope { get; init; }
-
-    /// <summary>
-    /// Initializes a new <see cref="HasScopeRequirement"/> instance.
-    /// </summary>
-    /// <param name="scope">The name of the scope.</param>
-    /// <param name="issuer">The issuer of the scope.</param>
-    public HasScopeRequirement(string scope, string issuer)
-    {
-        Issuer = issuer;
-        Scope = scope;
-    }
+    public required string Scope { get; init; }
 }
