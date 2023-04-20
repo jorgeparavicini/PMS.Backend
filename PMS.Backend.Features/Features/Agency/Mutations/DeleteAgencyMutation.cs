@@ -55,13 +55,19 @@ public class DeleteAgencyMutation
         logger.ExecutingMutation(nameof(DeleteAgencyAsync));
 
         if (await dbContext.Agencies.Include(agency => agency.AgencyContacts)
-                .FirstOrDefaultAsync(agency => agency.Id == input.Id) is { } entity)
+                .FirstOrDefaultAsync(agency => agency.Id == input.Id) is not { } entity)
         {
-            dbContext.Agencies.Remove(entity);
-            await dbContext.SaveChangesAsync();
-
-            logger.AgencyDeleted(entity.Id);
+            throw new GraphQLException(
+                ErrorBuilder.New()
+                    .SetMessage($"Agency not found with id {input.Id}")
+                    .SetCode("ENTITY_NOT_FOUND")
+                    .Build());
         }
+
+        dbContext.Agencies.Remove(entity);
+        await dbContext.SaveChangesAsync();
+
+        logger.AgencyDeleted(entity.Id);
 
         return new DeleteAgencyPayload
         {

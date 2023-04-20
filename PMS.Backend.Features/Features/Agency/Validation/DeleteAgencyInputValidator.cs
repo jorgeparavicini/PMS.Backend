@@ -10,10 +10,16 @@ using PMS.Backend.Features.Features.Agency.Models.Input;
 
 namespace PMS.Backend.Features.Features.Agency.Validation;
 
+/// <summary>
+///     Validator for <see cref="DeleteAgencyInput"/>.
+/// </summary>
 public class DeleteAgencyInputValidator : AbstractValidator<DeleteAgencyInput>
 {
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="DeleteAgencyInputValidator"/> class.
+    /// </summary>
     public DeleteAgencyInputValidator()
     {
-        RuleFor(agency => agency.Id).GreaterThan(0);
+        RuleFor(agency => agency.Id).NotEmpty();
     }
 }

@@ -12,7 +12,6 @@ using AutoMapper.QueryableExtensions;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features.Exceptions;
@@ -70,13 +69,12 @@ public class MoveAgencyContactToAgencyMutation
     {
         logger.ExecutingMutation(nameof(MoveAgencyContactToAgencyAsync));
 
-        if (await dbContext.AgencyContacts.FirstOrDefaultAsync(agencyContact =>
-                agencyContact.Id == input.AgencyContactId) is not { } agencyContactEntity)
+        if (await dbContext.AgencyContacts.FindAsync(input.AgencyContactId) is not { } agencyContactEntity)
         {
             throw new NotFoundException($"Agency contact not found with id {input.AgencyContactId}.");
         }
 
-        if (await dbContext.Agencies.FirstOrDefaultAsync(agency => agency.Id == input.AgencyId) is not { } agencyEntity)
+        if (await dbContext.Agencies.FindAsync(input.AgencyId) is not { } agencyEntity)
         {
             throw new NotFoundException($"Agency not found with id {input.AgencyId}.");
         }
@@ -86,6 +84,8 @@ public class MoveAgencyContactToAgencyMutation
 
         logger.AgencyContactMovedToAgency(agencyContactEntity.Id, agencyEntity.Id);
 
-        return dbContext.Agencies.ProjectTo<AgencyPayload>(mapper.ConfigurationProvider);
+        return dbContext.Agencies
+            .Where(agency => agency.Id == agencyEntity.Id)
+            .ProjectTo<AgencyPayload>(mapper.ConfigurationProvider);
     }
 }

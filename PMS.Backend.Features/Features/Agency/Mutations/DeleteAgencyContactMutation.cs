@@ -7,8 +7,8 @@
 
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore;
 using HotChocolate.Types;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
@@ -53,14 +53,29 @@ public class DeleteAgencyContactMutation
     {
         logger.ExecutingMutation(nameof(DeleteAgencyContactAsync));
 
-        if (await dbContext.AgencyContacts
-                .FirstOrDefaultAsync(agencyContact => agencyContact.Id == input.Id) is { } entity)
+        if (await dbContext.AgencyContacts.FindAsync(input.Id) is not { } entity)
         {
-            dbContext.AgencyContacts.Remove(entity);
-            await dbContext.SaveChangesAsync();
-
-            logger.AgencyContactDeleted(entity.Id);
+            throw new GraphQLException(
+                ErrorBuilder.New()
+                    .SetMessage($"Agency contact not found with id {input.Id}")
+                    .SetCode("ENTITY_NOT_FOUND")
+                    .Build());
         }
+
+        if (entity.Agency.AgencyContacts.Count == 1)
+        {
+            throw new GraphQLRequestException(
+                ErrorBuilder.New()
+                    .SetMessage(
+                        "Cannot delete the last contact for an agency. Please add a new contact before deleting this one.")
+                    .SetCode("CANNOT_DELETE_LAST_CONTACT")
+                    .Build());
+        }
+
+        dbContext.AgencyContacts.Remove(entity);
+        await dbContext.SaveChangesAsync();
+
+        logger.AgencyContactDeleted(entity.Id);
 
         return new DeleteAgencyContactPayload
         {
