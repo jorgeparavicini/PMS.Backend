@@ -14,7 +14,7 @@ namespace PMS.Backend.Features.Features.Agency.Models.Input;
 /// <summary>
 ///     Input for the <see cref="CreateAgencyContactMutation"/>.
 /// </summary>
-public class CreateAgencyContactInput
+public record CreateAgencyContactInput
 {
     /// <inheritdoc cref="AgencyContact.AgencyId"/>
     public required int AgencyId { get; init; }

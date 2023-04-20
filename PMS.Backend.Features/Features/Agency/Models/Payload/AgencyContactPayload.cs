@@ -39,5 +39,5 @@ public record AgencyContactPayload
 
     /// <inheritdoc cref="AgencyContact.GroupReservations"/>
     // TODO: Change to correct type once implemented.
-    public required IList<GroupReservationDTO> GroupReservations { get; init; }
+    //public required IList<GroupReservationDTO> GroupReservations { get; init; }
 }

@@ -65,11 +65,13 @@ public class CreateAgencyContactMutation
     {
         logger.ExecutingMutation(nameof(CreateAgencyContactAsync));
 
-        var agencyContact = await dbContext.MapAsync<AgencyContact>(input);
+        var agencyContactEntity = await dbContext.MapAsync<AgencyContact>(input);
         await dbContext.SaveChangesAsync();
 
-        logger.AgencyContactCreated(agencyContact.Id);
+        logger.AgencyContactCreated(agencyContactEntity.Id);
 
-        return dbContext.AgencyContacts.ProjectTo<AgencyContactPayload>(mapper.ConfigurationProvider);
+        return dbContext.AgencyContacts
+            .Where(agencyContact => agencyContact.Id == agencyContactEntity.Id)
+            .ProjectTo<AgencyContactPayload>(mapper.ConfigurationProvider);
     }
 }

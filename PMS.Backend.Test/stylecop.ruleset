@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Override rules for PMS.Test" Description="These rules override the solution rules." ToolsVersion="15.0">
+    <Include Path="../stylecop.ruleset" Action="Default"/>
+    <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.DocumentationRules">
+        <Rule Id="SA1600"  Action="None" />             <!-- Elements should be documented -->
+    </Rules>
+</RuleSet>
