@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using PMS.Backend.Core.Entities.Agency;
-using PMS.Backend.Features.Features.Reservation.Models;
+﻿using PMS.Backend.Core.Entities.Agency;
 
 namespace PMS.Backend.Features.Features.Agency.Models.Payload;
 
@@ -37,7 +35,7 @@ public record AgencyContactPayload
     /// <inheritdoc cref="AgencyContact.Agency"/>
     public required AgencyPayload Agency { get; init; }
 
-    /// <inheritdoc cref="AgencyContact.GroupReservations"/>
+    // <inheritdoc cref="AgencyContact.GroupReservations"/>
     // TODO: Change to correct type once implemented.
-    //public required IList<GroupReservationDTO> GroupReservations { get; init; }
+    // public required IList<GroupReservationDTO> GroupReservations { get; init; }
 }

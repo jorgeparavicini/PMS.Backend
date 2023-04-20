@@ -6,15 +6,15 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query;
-using PMS.Backend.Core.Attributes;
 using PMS.Backend.Core.Entities;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Core.Entities.Reservation;
@@ -52,43 +52,28 @@ public class PmsDbContext : DbContext
     /// Gets the table containing all group reservations..
     /// </summary>
     /// <seealso cref="GroupReservation"/>
+    /// TODO: Implement
+    [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global", Justification = "Not yet implemented.")]
     public DbSet<GroupReservation> GroupReservations => Set<GroupReservation>();
 
     /// <summary>
     /// Gets the table containing all reservations.
     /// </summary>
     /// <seealso cref="Reservation"/>
+    /// TODO: Implement
+    [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global", Justification = "Not yet implemented.")]
     public DbSet<Reservation> Reservations => Set<Reservation>();
 
     /// <summary>
     /// Gets the table containing all reservation details.
     /// </summary>
     /// <seealso cref="ReservationDetail"/>
+    /// TODO: Implement
+    [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global", Justification = "Not yet implemented.")]
     public DbSet<ReservationDetail> ReservationDetails => Set<ReservationDetail>();
 
     /// <inheritdoc />
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        Expression<Func<Entity, bool>> filterExpr = e => !e.IsDeleted;
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        {
-            var isDeletedProperty = entityType.FindProperty(nameof(Entity.IsDeleted));
-            if (isDeletedProperty == null || isDeletedProperty.ClrType != typeof(bool)) continue;
-
-            var parameter = Expression.Parameter(entityType.ClrType, "p");
-            var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(),
-                parameter,
-                filterExpr.Body);
-            var filter = Expression.Lambda(body, parameter);
-            entityType.SetQueryFilter(filter);
-        }
-
-        // Apply fluent configurations from all entities
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PmsDbContext).Assembly);
-    }
-
-    /// <inheritdoc />
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ChangeTracker.SetAuditProperties();
         return base.SaveChangesAsync(cancellationToken);
@@ -97,7 +82,7 @@ public class PmsDbContext : DbContext
     /// <inheritdoc />
     public override Task<int> SaveChangesAsync(
         bool acceptAllChangesOnSuccess,
-        CancellationToken cancellationToken = new())
+        CancellationToken cancellationToken = default)
     {
         ChangeTracker.SetAuditProperties();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
@@ -142,7 +127,7 @@ public class PmsDbContext : DbContext
     /// A task that represents the asynchronous save operation.
     /// The task result contains the number of state entries written to the database.
     /// </returns>
-    public Task<int> ForceSaveChangesAsync(CancellationToken cancellationToken = new())
+    public Task<int> ForceSaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return base.SaveChangesAsync(cancellationToken);
     }
@@ -178,7 +163,7 @@ public class PmsDbContext : DbContext
     /// </returns>
     public Task<int> ForceSaveChangesAsync(
         bool acceptAllChangesOnSuccess,
-        CancellationToken cancellationToken = new())
+        CancellationToken cancellationToken = default)
     {
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
@@ -239,5 +224,30 @@ public class PmsDbContext : DbContext
     public int ForceSaveChanges(bool acceptAllChangesOnSuccess)
     {
         return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    /// <inheritdoc />
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        Expression<Func<Entity, bool>> filterExpr = e => !e.IsDeleted;
+        foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            IMutableProperty? isDeletedProperty = entityType.FindProperty(nameof(Entity.IsDeleted));
+            if (isDeletedProperty == null || isDeletedProperty.ClrType != typeof(bool))
+            {
+                continue;
+            }
+
+            ParameterExpression parameter = Expression.Parameter(entityType.ClrType, "p");
+            Expression body = ReplacingExpressionVisitor.Replace(
+                filterExpr.Parameters.First(),
+                parameter,
+                filterExpr.Body);
+            LambdaExpression filter = Expression.Lambda(body, parameter);
+            entityType.SetQueryFilter(filter);
+        }
+
+        // Apply fluent configurations from all entities
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PmsDbContext).Assembly);
     }
 }
