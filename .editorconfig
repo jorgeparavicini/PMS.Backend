@@ -1,5 +1,10 @@
 ﻿# Top-most EditorConfig file
 root = true
 
+[*.cs]
+# Disable CS0219: The variable '...' is assigned but its value is never used
+dotnet_diagnostics.CS0219.severity = none
+
 [**/{Mutations,Queries}/*.cs]
+# Disable CA1822: Mark members as static for mutations and queries
 dotnet_diagnostic.CA1822.severity = none
