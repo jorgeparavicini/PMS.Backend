@@ -13,6 +13,7 @@ using Detached.Mappers.EntityFramework;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
@@ -64,6 +65,16 @@ public class CreateAgencyContactMutation
         ILogger<CreateAgencyContactMutation> logger)
     {
         logger.ExecutingMutation(nameof(CreateAgencyContactAsync));
+
+        // Check if the Agency exists
+        if (!await dbContext.Agencies.AnyAsync(agency => agency.Id == input.AgencyId))
+        {
+            throw new GraphQLException(
+                ErrorBuilder.New()
+                    .SetMessage($"Agency not found with id {input.AgencyId}.")
+                    .SetCode("ENTITY_NOT_FOUND")
+                    .Build());
+        }
 
         var agencyContactEntity = await dbContext.MapAsync<AgencyContact>(input);
         await dbContext.SaveChangesAsync();

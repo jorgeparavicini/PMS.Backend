@@ -1,4 +1,12 @@
-﻿using System.Linq;
+﻿// -----------------------------------------------------------------------
+// <copyright file="ChangeTrackerExtensions.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PMS.Backend.Core.Entities;
@@ -18,10 +26,10 @@ public static class ChangeTrackerExtensions
     public static void SetAuditProperties(this ChangeTracker changeTracker)
     {
         changeTracker.DetectChanges();
-        var entries = changeTracker.Entries()
+        IEnumerable<EntityEntry> entries = changeTracker.Entries()
             .Where(x => x is { Entity: Entity, State: EntityState.Deleted });
 
-        foreach (var entry in entries)
+        foreach (EntityEntry entry in entries)
         {
             var entity = (Entity)entry.Entity;
             entity.IsDeleted = true;

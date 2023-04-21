@@ -108,6 +108,19 @@ public class RecordingLogger<TCategoryName> : ILogger<TCategoryName>
                 string.Empty);
     }
 
+    public void ShouldNotHaveLogged(Expression loggerMethodExpression)
+    {
+        LoggerMessageAttribute loggerMessageAttribute = GetLogMessageAttribute(loggerMethodExpression);
+        GetRecordedMessages(loggerMessageAttribute.Level)
+            .ToList()
+            .Should()
+            .NotContain(
+                (Expression<Func<LogMessage, bool>>)(m =>
+                    m.EventId.Id == loggerMessageAttribute.EventId &&
+                    m.EventId.Name == loggerMessageAttribute.EventName),
+                string.Empty);
+    }
+
     private static LoggerMessageAttribute GetLogMessageAttribute(Expression expression)
     {
         if (expression.NodeType != ExpressionType.Lambda)
