@@ -12,8 +12,8 @@
       "copyrightText": "Copyright (c) {companyName}. All rights reserved.\nLicensed under the {licenseName} license. See {licenseFile} file in the project root for full license information.",
       "headerDecoration": "-----------------------------------------------------------------------",
       "variables": {
-        "licenseName": "MIT",
-        "licenseFile": "LICENSE"
+        "licenseName": "Vira Vira Proprietary License",
+        "licenseFile": "LICENSE.md"
       }
     }
   }

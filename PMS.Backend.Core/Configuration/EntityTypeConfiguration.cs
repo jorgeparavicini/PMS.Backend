@@ -1,4 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// -----------------------------------------------------------------------
+// <copyright file="EntityTypeConfiguration.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the Vira Vira Proprietary License license. See LICENSE.md file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PMS.Backend.Core.Entities;
 
