@@ -1,4 +1,11 @@
-﻿using System.Linq;
+﻿// -----------------------------------------------------------------------
+// <copyright file="HasScopeHandler.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
@@ -15,13 +22,15 @@ public class HasScopeHandler : AuthorizationHandler<HasScopeRequirement>
         HasScopeRequirement requirement)
     {
         // Split the scopes string into an array
-        var scopes =
+        string[]? scopes =
             context.User.FindFirst(c => c.Type == "scope" && c.Issuer == requirement.Issuer)?.Value
                 .Split(' ');
 
         // Succeed if the scope array contains the required scope
         if (scopes != null && scopes.Any(s => s == requirement.Scope))
+        {
             context.Succeed(requirement);
+        }
 
         // First check for permissions, they may show up in addition to or instead of scopes.
         if (context.User.HasClaim(c =>

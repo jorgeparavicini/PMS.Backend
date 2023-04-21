@@ -20,4 +20,5 @@ jobs:
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
+          pr-mode: false
           args: --baseline,qodana.sarif.json

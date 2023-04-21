@@ -31,7 +31,9 @@ namespace PMS.Backend.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CommissionMethod")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<decimal?>("DefaultCommissionOnExtras")
                         .HasPrecision(5, 4)
@@ -50,7 +52,9 @@ namespace PMS.Backend.Core.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("LegalName")
                         .IsRequired()
@@ -97,10 +101,14 @@ namespace PMS.Backend.Core.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsFrequentVendor")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Phone")
                         .HasMaxLength(255)
@@ -135,7 +143,9 @@ namespace PMS.Backend.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsQuote")
                         .HasColumnType("bit");
@@ -172,7 +182,9 @@ namespace PMS.Backend.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
@@ -209,7 +221,9 @@ namespace PMS.Backend.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
@@ -235,7 +249,7 @@ namespace PMS.Backend.Core.Migrations
                     b.HasOne("PMS.Backend.Core.Entities.Agency.Agency", "Agency")
                         .WithMany("AgencyContacts")
                         .HasForeignKey("AgencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Agency");

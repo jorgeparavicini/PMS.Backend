@@ -7,10 +7,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using HotChocolate.Execution.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using PMS.Backend.Features.Features.Agency.Extensions;
-using PMS.Backend.Features.Frontend.Agency;
-using PMS.Backend.Features.Frontend.Reservation;
 
 namespace PMS.Backend.Features;
 
@@ -21,15 +18,14 @@ namespace PMS.Backend.Features;
 public static class Registrar
 {
     /// <summary>
-    /// Registers all graphQL endpoints and its dependencies.
+    ///     Registers all graphQL endpoints and its dependencies.
     /// </summary>
-    /// <param name="services">The collection which the dependencies should be added to.</param>
-    public static void AddAPI(this IServiceCollection services)
-    {
-        services.AddAgencyAPI();
-        services.AddReservationAPI();
-    }
-
+    /// <param name="builder">
+    ///    The <see cref="IRequestExecutorBuilder"/> to register the graphQL endpoints and its dependencies.
+    /// </param>
+    /// <returns>
+    ///    The <see cref="IRequestExecutorBuilder"/> with the registered graphQL endpoints and its dependencies.
+    /// </returns>
     public static IRequestExecutorBuilder AddFeatureTypes(this IRequestExecutorBuilder builder)
     {
         return builder.AddAgency();

@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using PMS.Backend.Common.Security;
@@ -24,7 +25,7 @@ public static class PolicyExtensions
     public static string GetScope(this Policy policy)
     {
         var name = policy.ToString();
-        var split = name.SplitCamelCase().Select(x => x.ToLower()).ToList();
+        List<string> split = name.SplitCamelCase().Select(x => x.ToLower()).ToList();
 
         Debug.Assert(
             split.Count >= 2,
