@@ -1,4 +1,11 @@
-﻿namespace PMS.Backend.Common.Models;
+﻿// -----------------------------------------------------------------------
+// <copyright file="CommissionMethod.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the Vira Vira Proprietary License license. See LICENSE.md file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace PMS.Backend.Common.Models;
 
 /// <summary>
 /// A commission method dictates how sales should be commissioned.

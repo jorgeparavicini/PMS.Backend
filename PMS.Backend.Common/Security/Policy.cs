@@ -1,4 +1,11 @@
-﻿namespace PMS.Backend.Common.Security;
+﻿// -----------------------------------------------------------------------
+// <copyright file="Policy.cs" company="Vira Vira">
+// Copyright (c) Vira Vira. All rights reserved.
+// Licensed under the Vira Vira Proprietary License license. See LICENSE.md file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace PMS.Backend.Common.Security;
 
 /// <summary>
 /// Auth0 Policies.
