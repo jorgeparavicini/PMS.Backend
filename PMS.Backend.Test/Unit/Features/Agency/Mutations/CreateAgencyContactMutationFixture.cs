@@ -6,45 +6,34 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
-using Detached.Mappers.EntityFramework;
 using FluentAssertions;
 using HotChocolate;
 using Microsoft.EntityFrameworkCore;
-using PMS.Backend.Core.Database;
-using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.Features.Agency;
 using PMS.Backend.Features.Features.Agency.Extensions;
 using PMS.Backend.Features.Features.Agency.Models.Input;
 using PMS.Backend.Features.Features.Agency.Models.Payload;
 using PMS.Backend.Features.Features.Agency.Mutations;
 using PMS.Backend.Test.Common.Logging;
+using PMS.Backend.Test.Common.SqlServer;
 using Xunit;
 using Xunit.Categories;
 
 namespace PMS.Backend.Test.Unit.Features.Agency.Mutations;
 
 [UnitTest]
-public class CreateAgencyContactMutationFixture
+public class CreateAgencyContactMutationFixture : TestDatabaseFixture
 {
-    private readonly PmsDbContext _dbContext;
     private readonly IMapper _mapper;
     private readonly RecordingLogger<CreateAgencyContactMutation> _logger = new();
     private readonly CreateAgencyContactMutation _sut = new();
 
     public CreateAgencyContactMutationFixture()
     {
-        // DbContext
-        DbContextOptions<PmsDbContext> options = new DbContextOptionsBuilder<PmsDbContext>()
-            .UseInMemoryDatabase(databaseName: "CreateAgencyContactMutationFixture")
-            .UseDetached()
-            .Options;
-        _dbContext = new PmsDbContext(options);
-
         // Mapper
         MapperConfiguration mapperConfig = new(cfg => cfg.AddProfile<AgencyProfile>());
         _mapper = mapperConfig.CreateMapper();
@@ -55,12 +44,8 @@ public class CreateAgencyContactMutationFixture
     {
         // Arrange
         Fixture fixture = new();
-        Core.Entities.Agency.Agency agency = fixture.Build<Core.Entities.Agency.Agency>()
-            .With(agency => agency.AgencyContacts, () => new List<AgencyContact>())
-            .Create();
-
-        await _dbContext.Agencies.AddAsync(agency);
-        await _dbContext.SaveChangesAsync();
+        int currentCount = DbContext.AgencyContacts.Count();
+        Core.Entities.Agency.Agency agency = DbContext.Agencies.First();
 
         CreateAgencyContactInput input = fixture.Build<CreateAgencyContactInput>()
             .With(input => input.AgencyId, agency.Id)
@@ -68,11 +53,12 @@ public class CreateAgencyContactMutationFixture
 
         // Act
         IQueryable<AgencyContactPayload> result =
-            await _sut.CreateAgencyContactAsync(_dbContext, input, _mapper, _logger);
+            await _sut.CreateAgencyContactAsync(DbContext, input, _mapper, _logger);
 
         // Assert
         int? entityId = await result.Select(contact => contact.Id).SingleOrDefaultAsync();
-        Assert.NotNull(entityId);
+        entityId.Should().NotBeNull();
+        DbContext.AgencyContacts.Should().HaveCount(currentCount + 1);
 
         _logger.ShouldHaveLogged(() => Backend.Features.Extensions.LoggerExtensions.ExecutingMutation);
         _logger.ShouldHaveLogged(() => LoggerExtensions.AgencyContactCreated);
@@ -89,7 +75,7 @@ public class CreateAgencyContactMutationFixture
 
         // Act
         Func<Task<IQueryable<AgencyContactPayload>>> act = async () =>
-            await _sut.CreateAgencyContactAsync(_dbContext, input, _mapper, _logger);
+            await _sut.CreateAgencyContactAsync(DbContext, input, _mapper, _logger);
 
         // Assert
         await act.Should()
