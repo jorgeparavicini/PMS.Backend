@@ -20,9 +20,9 @@ public abstract class Entity
     public int Id { get; set; }
 
     /// <summary>
-    /// Gets or sets a timestamp used for concurrency checking.
+    /// Gets a timestamp used for concurrency checking.
     /// </summary>
-    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
+    public byte[] RowVersion { get; init; } = Array.Empty<byte>();
 
     /// <summary>
     /// Gets or sets a value indicating whether a flag used to indicate that a entity is deleted and should not be used in any queries.

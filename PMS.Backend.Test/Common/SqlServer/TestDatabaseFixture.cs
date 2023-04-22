@@ -23,13 +23,13 @@ public abstract class TestDatabaseFixture : IAsyncLifetime
 
     private PmsDbContext? _dbContext;
 
-    protected string ConnectionString => _msSqlContainer.GetConnectionString();
-
     protected PmsDbContext DbContext =>
-        _dbContext ??= new(new DbContextOptionsBuilder<PmsDbContext>()
+        _dbContext ??= new PmsDbContext(new DbContextOptionsBuilder<PmsDbContext>()
             .UseSqlServer(ConnectionString)
             .UseDetached()
             .Options);
+
+    private string ConnectionString => _msSqlContainer.GetConnectionString();
 
     public async Task InitializeAsync()
     {

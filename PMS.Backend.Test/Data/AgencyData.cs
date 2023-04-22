@@ -32,8 +32,6 @@ public static class AgencyData
         Fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
 
-    public static Agency GetSingle() => Fixture.Create<Agency>();
-
     public static IEnumerable<Agency> GetMultiple(int count = 10) => Fixture.CreateMany<Agency>(count);
 
     private static IPostprocessComposer<Agency> WithoutAggregateRelations(
