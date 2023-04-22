@@ -31,7 +31,7 @@ jobs:
         run: dotnet restore PMS.Backend.sln
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build --no-restore --configuration Release PMS.Backend.sln
 
       - name: Test
         run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
