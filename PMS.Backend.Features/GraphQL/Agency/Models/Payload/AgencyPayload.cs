@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using PMS.Backend.Common.Models;
-using PMS.Backend.Core.Entities.Agency;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 
@@ -36,5 +35,5 @@ public record AgencyPayload
     public string? EmergencyEmail { get; init; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.AgencyContacts"/>
-    public required IList<AgencyContact> AgencyContacts { get; init; }
+    public required IList<AgencyContactPayload> AgencyContacts { get; init; }
 }
