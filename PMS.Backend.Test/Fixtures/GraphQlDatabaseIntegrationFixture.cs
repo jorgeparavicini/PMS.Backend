@@ -27,15 +27,15 @@ public class GraphQlDatabaseIntegrationFixture : IAsyncLifetime
     private RequestExecutorProxy? _executor;
     private PmsDbContext? _dbContext;
 
+    public RequestExecutorProxy Executor => _executor ??
+                                            throw new InvalidOperationException("Executor is not initialized");
+
     protected PmsWebApplicationFactory ApplicationFactory => _applicationFactory ??
                                                              throw new InvalidOperationException(
                                                                  "ApplicationFactory is not initialized");
 
     protected HttpClient HttpClient =>
         _httpClient ?? throw new InvalidOperationException("HttpClient is not initialized");
-
-    protected RequestExecutorProxy Executor => _executor ??
-                                               throw new InvalidOperationException("Executor is not initialized");
 
     protected PmsDbContext DbContext =>
         _dbContext ?? throw new InvalidOperationException("DbContext is not initialized");

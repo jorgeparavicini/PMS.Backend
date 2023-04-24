@@ -1,0 +1,27 @@
+﻿{
+  "errors": [
+    {
+      "message": "\u0027Email\u0027 is not a valid email address.",
+      "path": [
+        "editAgencyContact"
+      ],
+      "extensions": {
+        "code": "FairyBread_ValidationError",
+        "argumentName": "input",
+        "validatorName": "EditAgencyContactInputValidator",
+        "errorCode": "EmailValidator",
+        "errorMessage": "\u0027Email\u0027 is not a valid email address.",
+        "attemptedValue": "invalid email",
+        "severity": "Error",
+        "formattedMessagePlaceholderValues": {
+          "PropertyName": "Email",
+          "PropertyValue": "invalid email"
+        },
+        "propertyName": "Email"
+      }
+    }
+  ],
+  "data": {
+    "editAgencyContact": null
+  }
+}

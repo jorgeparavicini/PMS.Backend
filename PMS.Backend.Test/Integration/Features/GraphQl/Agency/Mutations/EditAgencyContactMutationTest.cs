@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CreateAgencyContactMutationTests.cs" company="Vira Vira">
+// <copyright file="EditAgencyContactMutationTest.cs" company="Vira Vira">
 // Copyright (c) Vira Vira. All rights reserved.
 // Licensed under the Vira Vira Proprietary License license. See LICENSE.md file in the project root for full license information.
 // </copyright>
@@ -17,28 +17,28 @@ namespace PMS.Backend.Test.Integration.Features.GraphQl.Agency.Mutations;
 
 [IntegrationTest]
 [UsesVerify]
-public class CreateAgencyContactMutationTests : IClassFixture<AgencyGraphQlDatabaseIntegrationFixture>
+public class EditAgencyContactMutationTest : IClassFixture<AgencyGraphQlDatabaseIntegrationFixture>
 {
     private readonly AgencyGraphQlDatabaseIntegrationFixture _fixture;
 
-    public CreateAgencyContactMutationTests(AgencyGraphQlDatabaseIntegrationFixture fixture)
+    public EditAgencyContactMutationTest(AgencyGraphQlDatabaseIntegrationFixture fixture)
     {
         _fixture = fixture;
     }
 
     [Fact]
-    public async Task CreateAgencyContactAsync_ShouldReturnCreatedAgencyContact()
+    public async Task EditAgencyAsync_ShouldModifyAgency()
     {
         // Arrange
         const string mutation = @"
 mutation {
-  createAgencyContact(
+  editAgencyContact(
     input: {
-      agencyId: 3
+      id: 2
       contactName: ""Legal Entity""
       address: ""New Contact Address""
       city: ""Contact123"",
-      email: ""email@email.com"",
+      email: ""validemail@gmail.com"",
       phone: ""Phone123"",
       zipCode: ""Zip123"",
       isFrequentVendor: true
@@ -66,18 +66,18 @@ mutation {
     }
 
     [Fact]
-    public async Task CreateAgencyContactAsync_ShouldReturnError_WhenValidationFails()
+    public async Task EditAgencyAsync_ShouldReturnError_WhenValidationFails()
     {
         // Arrange
         const string mutation = @"
 mutation {
-  createAgencyContact(
+  editAgencyContact(
     input: {
-      agencyId: 3
+      id: 2
       contactName: ""Legal Entity""
       address: ""New Contact Address""
       city: ""Contact123"",
-      email: ""this is not an email"",
+      email: ""invalid email"",
       phone: ""Phone123"",
       zipCode: ""Zip123"",
       isFrequentVendor: true
