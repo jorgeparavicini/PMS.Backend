@@ -64,7 +64,7 @@ public class DeleteAgencyContactMutation
         }
 
         if (await dbContext.AgencyContacts
-                .Where(agencyContact => agencyContact.AgencyId == entity.Id)
+                .Where(agencyContact => agencyContact.AgencyId == entity.AgencyId)
                 .CountAsync() == 1)
         {
             throw new GraphQLRequestException(
