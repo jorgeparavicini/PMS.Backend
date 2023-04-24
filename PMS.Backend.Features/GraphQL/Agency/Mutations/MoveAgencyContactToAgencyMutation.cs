@@ -12,6 +12,7 @@ using AutoMapper.QueryableExtensions;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Features.Extensions;
@@ -76,7 +77,18 @@ public class MoveAgencyContactToAgencyMutation
                     .Build());
         }
 
-        if (await dbContext.Agencies.FindAsync(input.AgencyId) is not { } agencyEntity)
+        if (agencyContactEntity.AgencyId == input.AgencyId)
+        {
+            throw new GraphQLException(
+                ErrorBuilder.New()
+                    .SetMessage("Cannot move agency contact to the same agency")
+                    .SetCode("INVALID_INPUT")
+                    .Build());
+        }
+
+        if (await dbContext.Agencies.Where(agency => agency.Id == input.AgencyId)
+                .Include(agency => agency.AgencyContacts)
+                .FirstOrDefaultAsync() is not { } agencyEntity)
         {
             throw new GraphQLException(
                 ErrorBuilder.New()

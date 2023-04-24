@@ -5,10 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.Types;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
@@ -61,7 +63,9 @@ public class DeleteAgencyContactMutation
                     .Build());
         }
 
-        if (entity.Agency.AgencyContacts.Count == 1)
+        if (await dbContext.AgencyContacts
+                .Where(agencyContact => agencyContact.AgencyId == entity.Id)
+                .CountAsync() == 1)
         {
             throw new GraphQLRequestException(
                 ErrorBuilder.New()
