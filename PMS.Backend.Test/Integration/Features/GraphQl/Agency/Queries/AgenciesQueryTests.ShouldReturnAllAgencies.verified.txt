@@ -1,0 +1,86 @@
+﻿{
+  Data: {
+    agencies: {
+      nodes: [
+        {
+          agencyContacts: [
+            {
+              address: Address 1,
+              city: City 1,
+              contactName: Contact 1,
+              email: Email 1,
+              id: 1,
+              isFrequentVendor: true,
+              phone: Phone 1,
+              zipCode: Zip Code 1
+            },
+            {
+              address: Address 2,
+              city: City 2,
+              contactName: Contact 2,
+              email: Email 2,
+              id: 2,
+              isFrequentVendor: false,
+              phone: Phone 2,
+              zipCode: Zip Code 2
+            }
+          ],
+          commissionMethod: DEDUCTED_BY_PROVIDER,
+          defaultCommissionOnExtras: 0.1000,
+          defaultCommissionRate: 0.2000,
+          emergencyEmail: mail1,
+          emergencyPhone: phone1,
+          id: 1,
+          legalName: Test Agency
+        },
+        {
+          agencyContacts: [
+            {
+              address: Address 3,
+              city: City 3,
+              contactName: Contact 3,
+              email: Email 3,
+              id: 3,
+              isFrequentVendor: true,
+              phone: Phone 3,
+              zipCode: Zip Code 3
+            },
+            {
+              address: Address 4,
+              city: City 4,
+              contactName: Contact 4,
+              email: Email 4,
+              id: 4,
+              isFrequentVendor: false,
+              phone: Phone 4,
+              zipCode: Zip Code 4
+            },
+            {
+              address: Address 5,
+              city: City 5,
+              contactName: Contact 5,
+              email: Email 5,
+              id: 5,
+              isFrequentVendor: true,
+              phone: Phone 5,
+              zipCode: Zip Code 5
+            }
+          ],
+          commissionMethod: DEDUCTED_BY_PROVIDER,
+          defaultCommissionOnExtras: 0.1000,
+          defaultCommissionRate: 0.2000,
+          emergencyEmail: mail2,
+          emergencyPhone: phone2,
+          id: 2,
+          legalName: Test Agency 2
+        },
+        null,
+        null
+      ],
+      pageInfo: {
+        hasNextPage: true,
+        hasPreviousPage: false
+      }
+    }
+  }
+}
