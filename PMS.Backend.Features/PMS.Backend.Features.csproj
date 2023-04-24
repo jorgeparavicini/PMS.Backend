@@ -32,13 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Reservation\Mutations\" />
-    <Folder Include="Features\Reservation\Extensions\" />
-    <Folder Include="Features\Reservation\Queries\" />
-    <Folder Include="Features\Reservation\Validation\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>

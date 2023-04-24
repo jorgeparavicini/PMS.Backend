@@ -23,12 +23,19 @@ using PMS.Backend.Core.Extensions;
 namespace PMS.Backend.Core.Database;
 
 /// <summary>
-/// An EfCore context containing all tables related to the PMS project.
+///     An EfCore context containing all tables related to the PMS project.
 /// </summary>
 public class PmsDbContext : DbContext
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="PmsDbContext"/> class.
+    ///     Initializes a new instance of the <see cref="PmsDbContext"/> class.
+    /// </summary>
+    public PmsDbContext()
+    {
+    }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="PmsDbContext"/> class.
     /// </summary>
     /// <param name="options">The EF core options to be passed along.</param>
     public PmsDbContext(DbContextOptions<PmsDbContext> options)
@@ -37,19 +44,19 @@ public class PmsDbContext : DbContext
     }
 
     /// <summary>
-    /// Gets the table containing all agencies.
+    ///     Gets the table containing all agencies.
     /// </summary>
     /// <seealso cref="Agency"/>
-    public DbSet<Agency> Agencies => Set<Agency>();
+    public virtual DbSet<Agency> Agencies => Set<Agency>();
 
     /// <summary>
-    /// Gets the table containing all agencies contacts.
+    ///     Gets the table containing all agencies contacts.
     /// </summary>
     /// <seealso cref="AgencyContact"/>
     public DbSet<AgencyContact> AgencyContacts => Set<AgencyContact>();
 
     /// <summary>
-    /// Gets the table containing all group reservations..
+    ///     Gets the table containing all group reservations..
     /// </summary>
     /// <seealso cref="GroupReservation"/>
     /// TODO: Implement
@@ -57,7 +64,7 @@ public class PmsDbContext : DbContext
     public DbSet<GroupReservation> GroupReservations => Set<GroupReservation>();
 
     /// <summary>
-    /// Gets the table containing all reservations.
+    ///     Gets the table containing all reservations.
     /// </summary>
     /// <seealso cref="Reservation"/>
     /// TODO: Implement
@@ -65,7 +72,7 @@ public class PmsDbContext : DbContext
     public DbSet<Reservation> Reservations => Set<Reservation>();
 
     /// <summary>
-    /// Gets the table containing all reservation details.
+    ///     Gets the table containing all reservation details.
     /// </summary>
     /// <seealso cref="ReservationDetail"/>
     /// TODO: Implement
@@ -104,28 +111,28 @@ public class PmsDbContext : DbContext
 
     /// <summary>
     /// <para>
-    /// Saves all changes made in this context to the database and hard deletes entities
-    /// marked for deletion.
+    ///     Saves all changes made in this context to the database and hard deletes entities
+    ///     marked for deletion.
     /// </para>
     /// <para>
-    /// This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
-    /// any changes to entity instances before saving to the underlying database.
-    /// This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
+    ///     This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
+    ///     any changes to entity instances before saving to the underlying database.
+    ///     This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
     /// </para>
     /// <para>
-    /// Entity Framework Core does not support multiple parallel
-    /// operations being run on the same DbContext instance.
-    /// This includes both parallel execution of async queries and any explicit
-    /// concurrent use from multiple threads. Therefore, always await async calls immediately,
-    /// or use separate DbContext instances for operations that execute in parallel.
+    ///     Entity Framework Core does not support multiple parallel
+    ///     operations being run on the same DbContext instance.
+    ///     This includes both parallel execution of async queries and any explicit
+    ///     concurrent use from multiple threads. Therefore, always await async calls immediately,
+    ///     or use separate DbContext instances for operations that execute in parallel.
     /// </para>
     /// </summary>
     /// <param name="cancellationToken">
-    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
+    ///     A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
     /// </param>
     /// <returns>
-    /// A task that represents the asynchronous save operation.
-    /// The task result contains the number of state entries written to the database.
+    ///     A task that represents the asynchronous save operation.
+    ///     The task result contains the number of state entries written to the database.
     /// </returns>
     public Task<int> ForceSaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -134,32 +141,32 @@ public class PmsDbContext : DbContext
 
     /// <summary>
     /// <para>
-    /// Saves all changes made in this context to the database and hard deletes entities
-    /// marked for deletion.
+    ///     Saves all changes made in this context to the database and hard deletes entities
+    ///     marked for deletion.
     /// </para>
     /// <para>
-    /// This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
-    /// any changes to entity instances before saving to the underlying database.
-    /// This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
+    ///     This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
+    ///     any changes to entity instances before saving to the underlying database.
+    ///     This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
     /// </para>
     /// <para>
-    /// Entity Framework Core does not support multiple parallel
-    /// operations being run on the same DbContext instance.
-    /// This includes both parallel execution of async queries and any explicit
-    /// concurrent use from multiple threads. Therefore, always await async calls immediately,
-    /// or use separate DbContext instances for operations that execute in parallel.
+    ///     Entity Framework Core does not support multiple parallel
+    ///     operations being run on the same DbContext instance.
+    ///     This includes both parallel execution of async queries and any explicit
+    ///     concurrent use from multiple threads. Therefore, always await async calls immediately,
+    ///     or use separate DbContext instances for operations that execute in parallel.
     /// </para>
     /// </summary>
     /// <param name="acceptAllChangesOnSuccess">
-    /// Indicates whether <see cref="ChangeTracker.AcceptAllChanges" /> is called after the changes
-    /// have been sent successfully to the database.
+    ///     Indicates whether <see cref="ChangeTracker.AcceptAllChanges" /> is called after the changes
+    ///     have been sent successfully to the database.
     /// </param>
     /// <param name="cancellationToken">
-    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
+    ///     A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
     /// </param>
     /// <returns>
-    /// A task that represents the asynchronous save operation.
-    /// The task result contains the number of state entries written to the database.
+    ///     A task that represents the asynchronous save operation.
+    ///     The task result contains the number of state entries written to the database.
     /// </returns>
     public Task<int> ForceSaveChangesAsync(
         bool acceptAllChangesOnSuccess,
@@ -170,25 +177,25 @@ public class PmsDbContext : DbContext
 
     /// <summary>
     /// <para>
-    /// Saves all changes made in this context to the database and hard deletes entities
-    /// marked for deletion.
+    ///     Saves all changes made in this context to the database and hard deletes entities
+    ///     marked for deletion.
     /// </para>
     /// <para>
-    /// This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
-    /// any changes to entity instances before saving to the underlying database.
-    /// This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
+    ///     This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
+    ///     any changes to entity instances before saving to the underlying database.
+    ///     This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
     /// </para>
     /// <para>
-    /// Entity Framework Core does not support multiple parallel
-    /// operations being run on the same DbContext instance.
-    /// This includes both parallel execution of async queries and any explicit
-    /// concurrent use from multiple threads. Therefore, always await async calls immediately,
-    /// or use separate DbContext instances for operations that execute in parallel.
+    ///     Entity Framework Core does not support multiple parallel
+    ///     operations being run on the same DbContext instance.
+    ///     This includes both parallel execution of async queries and any explicit
+    ///     concurrent use from multiple threads. Therefore, always await async calls immediately,
+    ///     or use separate DbContext instances for operations that execute in parallel.
     /// </para>
     /// </summary>
     /// <returns>
-    /// A task that represents the asynchronous save operation.
-    /// The task result contains the number of state entries written to the database.
+    ///     A task that represents the asynchronous save operation.
+    ///     The task result contains the number of state entries written to the database.
     /// </returns>
     public int ForceSaveChanges()
     {
@@ -197,29 +204,29 @@ public class PmsDbContext : DbContext
 
     /// <summary>
     /// <para>
-    /// Saves all changes made in this context to the database and hard deletes entities
-    /// marked for deletion.
+    ///     Saves all changes made in this context to the database and hard deletes entities
+    ///     marked for deletion.
     /// </para>
     /// <para>
-    /// This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
-    /// any changes to entity instances before saving to the underlying database.
-    /// This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
+    ///     This method will automatically call <see cref="ChangeTracker.DetectChanges()"/> to discover
+    ///     any changes to entity instances before saving to the underlying database.
+    ///     This can be disabled via <see cref="ChangeTracker.AutoDetectChangesEnabled" />.
     /// </para>
     /// <para>
-    /// Entity Framework Core does not support multiple parallel
-    /// operations being run on the same DbContext instance.
-    /// This includes both parallel execution of async queries and any explicit
-    /// concurrent use from multiple threads. Therefore, always await async calls immediately,
-    /// or use separate DbContext instances for operations that execute in parallel.
+    ///     Entity Framework Core does not support multiple parallel
+    ///     operations being run on the same DbContext instance.
+    ///     This includes both parallel execution of async queries and any explicit
+    ///     concurrent use from multiple threads. Therefore, always await async calls immediately,
+    ///     or use separate DbContext instances for operations that execute in parallel.
     /// </para>
     /// </summary>
     /// <param name="acceptAllChangesOnSuccess">
-    /// Indicates whether <see cref="ChangeTracker.AcceptAllChanges" /> is called after the changes
-    /// have been sent successfully to the database.
+    ///     Indicates whether <see cref="ChangeTracker.AcceptAllChanges" /> is called after the changes
+    ///     have been sent successfully to the database.
     /// </param>
     /// <returns>
-    /// A task that represents the asynchronous save operation.
-    /// The task result contains the number of state entries written to the database.
+    ///     A task that represents the asynchronous save operation.
+    ///     The task result contains the number of state entries written to the database.
     /// </returns>
     public int ForceSaveChanges(bool acceptAllChangesOnSuccess)
     {

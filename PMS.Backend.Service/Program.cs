@@ -78,7 +78,7 @@ builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
 builder.Services.AddGraphQLServer()
     .AddMutationType<Mutation>()
     .AddQueryType<Query>()
-    .AddFeatureTypes()
+    .AddGraphQlFeatures()
     .RegisterDbContext<PmsDbContext>(DbContextKind.Pooled)
     .AddFiltering()
     .AddSorting()
@@ -95,7 +95,6 @@ app.UseCors(corsPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
 app.MapGraphQL();
 app.Run();
 

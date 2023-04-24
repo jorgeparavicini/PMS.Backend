@@ -25,6 +25,7 @@
         </PackageReference>
         <PackageReference Include="Testcontainers" Version="3.0.0" />
         <PackageReference Include="Testcontainers.MsSql" Version="3.0.0" />
+        <PackageReference Include="Verify.Xunit" Version="19.13.0" />
         <PackageReference Include="xunit" Version="2.4.2" />
         <PackageReference Include="xunit.categories" Version="2.0.6" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
@@ -50,6 +51,11 @@
       <AdditionalFiles Include="..\stylecop.json">
         <Link>stylecop.json</Link>
       </AdditionalFiles>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Integration\Features\" />
+      <Folder Include="Unit\Features\" />
     </ItemGroup>
 
 </Project>

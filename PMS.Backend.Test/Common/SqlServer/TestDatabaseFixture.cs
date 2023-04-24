@@ -45,7 +45,7 @@ public abstract class TestDatabaseFixture : IAsyncLifetime
 
     private async Task SeedDatabase()
     {
-        IEnumerable<Agency> entities = AgencyData.GetMultiple(5);
+        IEnumerable<Agency> entities = AgencyData.CreateAgencies(5);
         DbContext.Agencies.AddRange(entities);
         await DbContext.SaveChangesAsync();
     }

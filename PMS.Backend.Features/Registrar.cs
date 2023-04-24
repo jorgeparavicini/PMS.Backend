@@ -7,7 +7,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using HotChocolate.Execution.Configuration;
-using PMS.Backend.Features.Features.Agency.Extensions;
+using PMS.Backend.Features.GraphQL.Agency.Extensions;
 
 namespace PMS.Backend.Features;
 
@@ -26,7 +26,7 @@ public static class Registrar
     /// <returns>
     ///    The <see cref="IRequestExecutorBuilder"/> with the registered graphQL endpoints and its dependencies.
     /// </returns>
-    public static IRequestExecutorBuilder AddFeatureTypes(this IRequestExecutorBuilder builder)
+    public static IRequestExecutorBuilder AddGraphQlFeatures(this IRequestExecutorBuilder builder)
     {
         return builder.AddAgency();
     }
