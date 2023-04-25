@@ -7,7 +7,7 @@
 
 using HotChocolate.Types;
 using PMS.Backend.Core.Domain.Models;
-using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Core.Entities;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Models.Input;
@@ -17,25 +17,25 @@ namespace PMS.Backend.Features.GraphQL.Agency.Models.Input;
 /// </summary>
 public record EditAgencyInput
 {
-    /// <inheritdoc cref="Agency.Id"/>
+    /// <inheritdoc cref="Entity.Id"/>
     public required int Id { get; init; }
 
-    /// <inheritdoc cref="Agency.LegalName"/>
+    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.LegalName"/>
     public required string LegalName { get; init; }
 
-    /// <inheritdoc cref="Agency.DefaultCommissionRate"/>
+    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.DefaultCommissionRate"/>
     public decimal? DefaultCommissionRate { get; init; }
 
-    /// <inheritdoc cref="Agency.DefaultCommissionOnExtras"/>
+    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.DefaultCommissionOnExtras"/>
     public decimal? DefaultCommissionOnExtras { get; init; }
 
-    /// <inheritdoc cref="Agency.CommissionMethod"/>
+    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.CommissionMethod"/>
     [DefaultValue(CommissionMethod.DeductedByAgency)]
     public CommissionMethod CommissionMethod { get; init; }
 
-    /// <inheritdoc cref="Agency.EmergencyPhone"/>
+    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.EmergencyPhone"/>
     public string? EmergencyPhone { get; init; }
 
-    /// <inheritdoc cref="Agency.EmergencyEmail"/>
+    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.EmergencyEmail"/>
     public string? EmergencyEmail { get; init; }
 }
