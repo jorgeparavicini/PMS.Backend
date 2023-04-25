@@ -34,7 +34,7 @@ jobs:
         run: dotnet build --no-restore --configuration Release PMS.Backend.sln
 
       - name: Test
-        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage" PMS.Backend.sln
+        run: dotnet test PMS.Backend.sln --no-build --configuration Release --collect:"XPlat Code Coverage" -- RunSettings.DisableAppDomain=true --settings coverage.runsettings
 
       - name: Install ReportGenerator
         run: dotnet tool install dotnet-reportgenerator-globaltool --tool-path ./tools
