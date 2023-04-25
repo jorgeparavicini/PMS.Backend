@@ -20,6 +20,8 @@ public class DeleteAgencyInputValidator : AbstractValidator<DeleteAgencyInput>
     /// </summary>
     public DeleteAgencyInputValidator()
     {
-        RuleFor(agency => agency.Id).NotEmpty();
+        RuleFor(agency => agency.Id)
+            .NotEmpty()
+            .GreaterThan(0);
     }
 }

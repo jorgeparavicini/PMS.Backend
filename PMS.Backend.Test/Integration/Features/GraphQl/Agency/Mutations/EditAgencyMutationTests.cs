@@ -17,11 +17,11 @@ namespace PMS.Backend.Test.Integration.Features.GraphQl.Agency.Mutations;
 
 [IntegrationTest]
 [UsesVerify]
-public class EditAgencyMutationTests : IClassFixture<AgencyGraphQlDatabaseIntegrationFixture>
+public class EditAgencyMutationTests : IClassFixture<AgencyGraphQlFixture>
 {
-    private readonly AgencyGraphQlDatabaseIntegrationFixture _fixture;
+    private readonly AgencyGraphQlFixture _fixture;
 
-    public EditAgencyMutationTests(AgencyGraphQlDatabaseIntegrationFixture fixture)
+    public EditAgencyMutationTests(AgencyGraphQlFixture fixture)
     {
         _fixture = fixture;
     }

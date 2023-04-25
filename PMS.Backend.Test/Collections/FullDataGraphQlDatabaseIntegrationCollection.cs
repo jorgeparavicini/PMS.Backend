@@ -12,6 +12,6 @@ namespace PMS.Backend.Test.Collections;
 
 [CollectionDefinition(CollectionIndex.ReadonlyCollection)]
 public class FullDataGraphQlDatabaseIntegrationCollection
-    : ICollectionFixture<FullDataGraphQlDatabaseIntegrationFixture>
+    : ICollectionFixture<FullDataGraphQlFixture>
 {
 }

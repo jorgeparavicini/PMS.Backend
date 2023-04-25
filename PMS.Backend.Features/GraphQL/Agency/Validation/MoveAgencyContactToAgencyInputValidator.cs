@@ -20,8 +20,12 @@ public class MoveAgencyContactToAgencyInputValidator : AbstractValidator<MoveAge
     /// </summary>
     public MoveAgencyContactToAgencyInputValidator()
     {
-        RuleFor(input => input.AgencyContactId).NotEmpty();
+        RuleFor(input => input.AgencyContactId)
+            .NotEmpty()
+            .GreaterThan(0);
 
-        RuleFor(input => input.AgencyId).NotEmpty();
+        RuleFor(input => input.AgencyId)
+            .NotEmpty()
+            .GreaterThan(0);
     }
 }

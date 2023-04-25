@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="GraphQlDatabaseIntegrationFixture.cs" company="Vira Vira">
+// <copyright file="GraphQlFixture.cs" company="Vira Vira">
 // Copyright (c) Vira Vira. All rights reserved.
 // Licensed under the Vira Vira Proprietary License license. See LICENSE.md file in the project root for full license information.
 // </copyright>
@@ -13,15 +13,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Test.Factories;
-using Testcontainers.MsSql;
 using Xunit;
 
 namespace PMS.Backend.Test.Fixtures;
 
-public class GraphQlDatabaseIntegrationFixture : IAsyncLifetime
+public class GraphQlFixture : IAsyncLifetime
 {
-    private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder().Build();
-
     private PmsWebApplicationFactory? _applicationFactory;
     private HttpClient? _httpClient;
     private RequestExecutorProxy? _executor;
@@ -42,9 +39,8 @@ public class GraphQlDatabaseIntegrationFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        await _msSqlContainer.StartAsync();
-
-        _applicationFactory = new PmsWebApplicationFactory(_msSqlContainer.GetConnectionString());
+        var msSqlContainerFixture = await MsSqlContainerFixture.GetInstance();
+        _applicationFactory = new PmsWebApplicationFactory(msSqlContainerFixture.CreateNewConnectionString());
         _httpClient = _applicationFactory.CreateClient();
 
         await InitializeDatabase();
@@ -52,10 +48,10 @@ public class GraphQlDatabaseIntegrationFixture : IAsyncLifetime
         InitializeExecutor();
     }
 
-    public async Task DisposeAsync()
+    public Task DisposeAsync()
     {
         _httpClient?.Dispose();
-        await _msSqlContainer.DisposeAsync();
+        return Task.CompletedTask;
     }
 
     protected async Task<HttpResponseMessage> SendQueryAsync(string query)

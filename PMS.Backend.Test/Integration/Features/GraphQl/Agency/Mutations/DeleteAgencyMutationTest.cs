@@ -17,11 +17,11 @@ namespace PMS.Backend.Test.Integration.Features.GraphQl.Agency.Mutations;
 
 [IntegrationTest]
 [UsesVerify]
-public class DeleteAgencyMutationTest : IClassFixture<AgencyGraphQlDatabaseIntegrationFixture>
+public class DeleteAgencyMutationTest : IClassFixture<AgencyGraphQlFixture>
 {
-    private readonly AgencyGraphQlDatabaseIntegrationFixture _fixture;
+    private readonly AgencyGraphQlFixture _fixture;
 
-    public DeleteAgencyMutationTest(AgencyGraphQlDatabaseIntegrationFixture fixture)
+    public DeleteAgencyMutationTest(AgencyGraphQlFixture fixture)
     {
         _fixture = fixture;
     }

@@ -81,7 +81,7 @@ public class MoveAgencyContactToAgencyMutation
         {
             throw new GraphQLException(
                 ErrorBuilder.New()
-                    .SetMessage("Cannot move agency contact to the same agency")
+                    .SetMessage($"Agency contact with id {input.AgencyContactId} already belongs to agency with id {input.AgencyId}")
                     .SetCode("INVALID_INPUT")
                     .Build());
         }

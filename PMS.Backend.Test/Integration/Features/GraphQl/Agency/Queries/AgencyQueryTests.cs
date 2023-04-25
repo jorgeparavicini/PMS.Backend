@@ -20,9 +20,9 @@ namespace PMS.Backend.Test.Integration.Features.GraphQl.Agency.Queries;
 [Collection(CollectionIndex.ReadonlyCollection)]
 public class AgencyQueryTests
 {
-    private readonly FullDataGraphQlDatabaseIntegrationFixture _fixture;
+    private readonly FullDataGraphQlFixture _fixture;
 
-    public AgencyQueryTests(FullDataGraphQlDatabaseIntegrationFixture fixture)
+    public AgencyQueryTests(FullDataGraphQlFixture fixture)
     {
         _fixture = fixture;
     }

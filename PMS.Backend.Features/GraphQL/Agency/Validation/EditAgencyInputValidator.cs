@@ -20,13 +20,21 @@ public class EditAgencyInputValidator : AbstractValidator<EditAgencyInput>
     /// </summary>
     public EditAgencyInputValidator()
     {
-        RuleFor(agency => agency.Id).NotEmpty();
+        RuleFor(agency => agency.Id)
+            .NotEmpty()
+            .GreaterThan(0);
 
         RuleFor(agency => agency.LegalName).NotEmpty().MaximumLength(255);
 
-        RuleFor(agency => agency.DefaultCommissionRate).PrecisionScale(5, 4, true);
+        RuleFor(agency => agency.DefaultCommissionRate)
+            .PrecisionScale(5, 4, true)
+            .GreaterThanOrEqualTo(0)
+            .LessThanOrEqualTo(1.0m);
 
-        RuleFor(agency => agency.DefaultCommissionOnExtras).PrecisionScale(5, 4, true);
+        RuleFor(agency => agency.DefaultCommissionOnExtras)
+            .PrecisionScale(5, 4, true)
+            .GreaterThanOrEqualTo(0)
+            .LessThanOrEqualTo(1.0m);
 
         RuleFor(agency => agency.CommissionMethod).IsInEnum();
 

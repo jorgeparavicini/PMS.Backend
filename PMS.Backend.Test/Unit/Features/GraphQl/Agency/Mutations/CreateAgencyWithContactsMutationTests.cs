@@ -22,14 +22,14 @@ using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 using PMS.Backend.Test.Common.Customization;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Common.SqlServer;
+using PMS.Backend.Test.Fixtures;
 using Xunit;
 using Xunit.Categories;
 
 namespace PMS.Backend.Test.Unit.Features.GraphQl.Agency.Mutations;
 
 [UnitTest]
-public class CreateAgencyWithContactsMutationTests : TestDatabaseFixture
+public class CreateAgencyWithContactsMutationTests : AgencyDatabaseFixture
 {
     private readonly IMapper _mapper;
     private readonly RecordingLogger<CreateAgencyWithContactsMutation> _logger = new();

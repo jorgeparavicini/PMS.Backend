@@ -23,6 +23,28 @@
         },
         "propertyName": "DefaultCommissionOnExtras"
       }
+    },
+    {
+      "message": "\u0027Default Commission On Extras\u0027 must be less than or equal to \u00271.0\u0027.",
+      "path": [
+        "editAgency"
+      ],
+      "extensions": {
+        "code": "FairyBread_ValidationError",
+        "argumentName": "input",
+        "validatorName": "EditAgencyInputValidator",
+        "errorCode": "LessThanOrEqualValidator",
+        "errorMessage": "\u0027Default Commission On Extras\u0027 must be less than or equal to \u00271.0\u0027.",
+        "attemptedValue": 15,
+        "severity": "Error",
+        "formattedMessagePlaceholderValues": {
+          "ComparisonValue": 1.0,
+          "ComparisonProperty": "",
+          "PropertyName": "Default Commission On Extras",
+          "PropertyValue": 15
+        },
+        "propertyName": "DefaultCommissionOnExtras"
+      }
     }
   ],
   "data": {

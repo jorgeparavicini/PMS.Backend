@@ -56,7 +56,6 @@
     <ItemGroup>
       <Folder Include="Integration\Features\" />
       <Folder Include="Unit\Features\" />
-      <Folder Include="Unit\Features\GraphQl\Agency\Validation\" />
     </ItemGroup>
 
 </Project>

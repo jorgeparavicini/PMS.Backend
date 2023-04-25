@@ -12,20 +12,21 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using HotChocolate;
+using Microsoft.EntityFrameworkCore;
 using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Common.SqlServer;
+using PMS.Backend.Test.Fixtures;
 using Xunit;
 using Xunit.Categories;
 
 namespace PMS.Backend.Test.Unit.Features.GraphQl.Agency.Mutations;
 
 [UnitTest]
-public class MoveAgencyContactToAgencyMutationTests : TestDatabaseFixture
+public class MoveAgencyContactToAgencyMutationTests : AgencyDatabaseFixture
 {
     private readonly IMapper _mapper;
     private readonly RecordingLogger<MoveAgencyContactToAgencyMutation> _logger = new();
@@ -118,5 +119,29 @@ public class MoveAgencyContactToAgencyMutationTests : TestDatabaseFixture
         await act.Should()
             .ThrowAsync<GraphQLException>()
             .WithMessage($"Agency not found with id {input.AgencyId}");
+    }
+
+    [Fact]
+    public async Task MoveAgencyContactToAgencyAsync_ShouldThrow_WhenMovingToSameAgency()
+    {
+        // Arrange
+        Core.Entities.Agency.Agency agency = DbContext.Agencies.Include(agency => agency.AgencyContacts).First();
+        Core.Entities.Agency.AgencyContact agencyContact = agency.AgencyContacts.First();
+
+        MoveAgencyContactToAgencyInput input = new()
+        {
+            AgencyId = agency.Id,
+            AgencyContactId = agencyContact.Id,
+        };
+
+        // Act
+        Func<Task<IQueryable<AgencyPayload>>> act = async () =>
+            await _sut.MoveAgencyContactToAgencyAsync(DbContext, input, _mapper, _logger);
+
+        // Assert
+        await act.Should()
+            .ThrowAsync<GraphQLException>()
+            .WithMessage(
+                $"Agency contact with id {input.AgencyContactId} already belongs to agency with id {input.AgencyId}");
     }
 }
