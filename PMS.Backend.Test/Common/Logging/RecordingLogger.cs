@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FluentAssertions;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
 namespace PMS.Backend.Test.Common.Logging;
@@ -39,6 +40,7 @@ public class RecordingLogger<TCategoryName> : ILogger<TCategoryName>
         "ReSharper",
         "ContextualLoggerProblem",
         Justification = "This is a utility class which is used for testing.")]
+    [PublicAPI]
     public RecordingLogger(ILogger<TCategoryName> logger)
         : this()
     {
@@ -81,6 +83,7 @@ public class RecordingLogger<TCategoryName> : ILogger<TCategoryName>
     /// <summary>
     ///     Resets the recorded messages.
     /// </summary>
+    [PublicAPI]
     public void Reset()
     {
         _recordedMessages.Clear();
@@ -92,6 +95,7 @@ public class RecordingLogger<TCategoryName> : ILogger<TCategoryName>
     /// </summary>
     /// <param name="logLevel">The log level.</param>
     /// <returns>The recorded messages.</returns>
+    [PublicAPI]
     public IEnumerable<LogMessage> GetRecordedMessages(LogLevel logLevel)
         => _recordedMessages[logLevel];
 

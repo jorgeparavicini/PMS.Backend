@@ -1,0 +1,35 @@
+﻿{
+  "data": {
+    "editAgency": {
+      "id": 1,
+      "legalName": "LegalNamed-55e266c-cb59-421a-88f5-4fc33a409153",
+      "defaultCommissionRate": 0.2000,
+      "defaultCommissionOnExtras": 0.3000,
+      "commissionMethod": "DEDUCTED_BY_PROVIDER",
+      "emergencyPhone": "Phone-d55e266c-cb59-421a-88f5-4fc33a409153",
+      "emergencyEmail": "email@emergency.com",
+      "agencyContacts": [
+        {
+          "id": 1,
+          "contactName": "Contact 1",
+          "email": "Email 1",
+          "address": "Address 1",
+          "phone": "Phone 1",
+          "city": "City 1",
+          "zipCode": "Zip Code 1",
+          "isFrequentVendor": true
+        },
+        {
+          "id": 2,
+          "contactName": "Contact 2",
+          "email": "Email 2",
+          "address": "Address 2",
+          "phone": "Phone 2",
+          "city": "City 2",
+          "zipCode": "Zip Code 2",
+          "isFrequentVendor": false
+        }
+      ]
+    }
+  }
+}

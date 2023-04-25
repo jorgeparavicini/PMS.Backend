@@ -7,7 +7,9 @@
 
 namespace PMS.Backend.Core.Configuration.Reservation;
 
+/// <summary>
+///     The ef core configuration for the <see cref="Entities.Reservation.Reservation" /> entity.
+/// </summary>
 public class ReservationTypeConfiguration : EntityTypeConfiguration<Entities.Reservation.Reservation>
 {
-    
 }

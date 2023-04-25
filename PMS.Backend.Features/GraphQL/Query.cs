@@ -5,11 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using JetBrains.Annotations;
+
 namespace PMS.Backend.Features.GraphQL;
 
 /// <summary>
 ///     Empty class that acts as a placeholder for the root query type.
 /// </summary>
+[UsedImplicitly]
 public class Query
 {
 }

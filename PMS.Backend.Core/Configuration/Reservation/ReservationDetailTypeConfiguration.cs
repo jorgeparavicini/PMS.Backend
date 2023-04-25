@@ -9,7 +9,9 @@ using PMS.Backend.Core.Entities.Reservation;
 
 namespace PMS.Backend.Core.Configuration.Reservation;
 
+/// <summary>
+///    The ef core configuration for the <see cref="ReservationDetail" /> entity.
+/// </summary>
 public class ReservationDetailTypeConfiguration : EntityTypeConfiguration<ReservationDetail>
 {
-    
 }

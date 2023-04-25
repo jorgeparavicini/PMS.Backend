@@ -1,0 +1,53 @@
+﻿{
+  "errors": [
+    {
+      "message": "\u0027Default Commission On Extras\u0027 must not be more than 5 digits in total, with allowance for 4 decimals. 2 digits and 0 decimals were found.",
+      "path": [
+        "createAgencyWithContacts"
+      ],
+      "extensions": {
+        "code": "FairyBread_ValidationError",
+        "argumentName": "input",
+        "validatorName": "CreateAgencyWithContactsInputValidator",
+        "errorCode": "ScalePrecisionValidator",
+        "errorMessage": "\u0027Default Commission On Extras\u0027 must not be more than 5 digits in total, with allowance for 4 decimals. 2 digits and 0 decimals were found.",
+        "attemptedValue": 15,
+        "severity": "Error",
+        "formattedMessagePlaceholderValues": {
+          "ExpectedPrecision": 5,
+          "ExpectedScale": 4,
+          "Digits": 2,
+          "ActualScale": 0,
+          "PropertyName": "Default Commission On Extras",
+          "PropertyValue": 15
+        },
+        "propertyName": "DefaultCommissionOnExtras"
+      }
+    },
+    {
+      "message": "\u0027Default Commission On Extras\u0027 must be less than or equal to \u00271.0\u0027.",
+      "path": [
+        "createAgencyWithContacts"
+      ],
+      "extensions": {
+        "code": "FairyBread_ValidationError",
+        "argumentName": "input",
+        "validatorName": "CreateAgencyWithContactsInputValidator",
+        "errorCode": "LessThanOrEqualValidator",
+        "errorMessage": "\u0027Default Commission On Extras\u0027 must be less than or equal to \u00271.0\u0027.",
+        "attemptedValue": 15,
+        "severity": "Error",
+        "formattedMessagePlaceholderValues": {
+          "ComparisonValue": 1.0,
+          "ComparisonProperty": "",
+          "PropertyName": "Default Commission On Extras",
+          "PropertyValue": 15
+        },
+        "propertyName": "DefaultCommissionOnExtras"
+      }
+    }
+  ],
+  "data": {
+    "createAgencyWithContacts": null
+  }
+}

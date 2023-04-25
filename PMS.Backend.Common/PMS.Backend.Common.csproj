@@ -28,4 +28,8 @@
           <Link>stylecop.ruleset</Link>
       </AdditionalFiles>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
+    </ItemGroup>
 </Project>

@@ -1,0 +1,35 @@
+﻿{
+  "data": {
+    "createAgencyWithContacts": {
+      "id": 4,
+      "legalName": "LegalNamed-55e266c-cb59-421a-88f5-4fc33a409153",
+      "defaultCommissionRate": 0.2000,
+      "defaultCommissionOnExtras": 0.1000,
+      "commissionMethod": "DEDUCTED_BY_PROVIDER",
+      "emergencyPhone": "Phone-d55e266c-cb59-421a-88f5-4fc33a409153",
+      "emergencyEmail": "email@emergency.com",
+      "agencyContacts": [
+        {
+          "id": 7,
+          "contactName": "Contact Name - d55e266c-cb59-421a-88f5-4fc33a409153",
+          "email": "d55e266c-cb59-421a-88f5-4fc33a409153@gmail.com",
+          "address": "Address - d55e266c-cb59-421a-88f5-4fc33a409153",
+          "phone": "Phone-d55e266c-cb59-421a-88f5-4fc33a409153",
+          "city": "City - d55e266c-cb59-421a-88f5-4fc33a409153",
+          "zipCode": "Zip-d55e266c-cb59-421a-88f5-4fc33a409153",
+          "isFrequentVendor": true
+        },
+        {
+          "id": 8,
+          "contactName": "Contact Name - 7196e2db-38c5-4b17-89a1-d6d54740836b",
+          "email": "7196e2db-38c5-4b17-89a1-d6d54740836b@gmail.com",
+          "address": "Address - 7196e2db-38c5-4b17-89a1-d6d54740836b",
+          "phone": "Phone - 7196e2db-38c5-4b17-89a1-d6d54740836b",
+          "city": "City - 7196e2db-38c5-4b17-89a1-d6d54740836b",
+          "zipCode": "Zip - 7196e2db-38c5-4b17-89a1-d6d54740836b",
+          "isFrequentVendor": false
+        }
+      ]
+    }
+  }
+}

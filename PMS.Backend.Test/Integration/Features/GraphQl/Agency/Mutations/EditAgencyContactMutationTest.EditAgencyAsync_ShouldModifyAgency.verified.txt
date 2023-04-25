@@ -1,0 +1,14 @@
+﻿{
+  "data": {
+    "editAgencyContact": {
+      "id": 2,
+      "contactName": "Legal Entity",
+      "address": "New Contact Address",
+      "city": "Contact123",
+      "email": "validemail@gmail.com",
+      "phone": "Phone123",
+      "zipCode": "Zip123",
+      "isFrequentVendor": true
+    }
+  }
+}
