@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using HotChocolate.Types;
+using PMS.Backend.Core.Entities;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -16,7 +17,7 @@ namespace PMS.Backend.Features.GraphQL.Agency.Models.Input;
 /// </summary>
 public record EditAgencyContactInput
 {
-    /// <inheritdoc cref="AgencyContact.Id"/>
+    /// <inheritdoc cref="Entity.Id"/>
     public required int Id { get; init; }
 
     /// <inheritdoc cref="AgencyContact.ContactName"/>

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Core.Entities;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Models.Input;
@@ -15,6 +15,6 @@ namespace PMS.Backend.Features.GraphQL.Agency.Models.Input;
 /// </summary>
 public record DeleteAgencyContactInput
 {
-    /// <inheritdoc cref="AgencyContact.Id"/>
+    /// <inheritdoc cref="Entity.Id"/>
     public required int Id { get; init; }
 }

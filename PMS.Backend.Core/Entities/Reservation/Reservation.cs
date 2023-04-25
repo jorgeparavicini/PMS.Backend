@@ -17,10 +17,8 @@ namespace PMS.Backend.Core.Entities.Reservation;
 [Entity]
 public class Reservation : Entity
 {
-    #region Properties
-
     /// <summary>
-    /// An optional name for this reservation.
+    /// Gets or sets an optional name for this reservation.
     /// </summary>
     /// <remarks>
     /// There can be multiple reservations grouped, in those cases it can be useful to give
@@ -33,12 +31,8 @@ public class Reservation : Entity
     [MaxLength(255)]
     public string? Name { get; set; }
 
-    #endregion
-
-    #region Relations
-
     /// <summary>
-    /// The id of the group reservation this reservation is part of.
+    /// Gets or sets the id of the group reservation this reservation is part of.
     /// </summary>
     /// <remarks>
     /// This is an EF-Core relation, hence both the Id and the group reservation are required.
@@ -47,7 +41,7 @@ public class Reservation : Entity
     public int GroupReservationId { get; set; }
 
     /// <summary>
-    /// The parent group reservation.
+    /// Gets or sets the parent group reservation.
     /// </summary>
     /// <remarks>
     /// This is an EF-Core relation, hence both the Id and the group reservation are required.
@@ -56,13 +50,11 @@ public class Reservation : Entity
     public GroupReservation GroupReservation { get; set; } = null!;
 
     /// <summary>
-    /// A list of all details in this reservation.
+    /// Gets or sets a list of all details in this reservation.
     /// </summary>
     [MinLength(1)]
     [Composition]
     public IList<ReservationDetail> ReservationDetails { get; set; } = new List<ReservationDetail>();
-
-    #endregion
 
     // TODO: Booking type
 }

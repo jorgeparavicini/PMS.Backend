@@ -3,5 +3,6 @@
     <Include Path="../stylecop.ruleset" Action="Default"/>
     <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.DocumentationRules">
         <Rule Id="SA1600"  Action="None" />             <!-- Elements should be documented -->
+        <Rule Id="CS1591"  Action="None" />             <!-- Missing XML comment for publicly visible type or member -->
     </Rules>
 </RuleSet>

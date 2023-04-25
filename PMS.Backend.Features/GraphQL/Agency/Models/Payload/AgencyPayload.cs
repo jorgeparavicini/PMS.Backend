@@ -7,13 +7,14 @@
 
 using System.Collections.Generic;
 using PMS.Backend.Core.Domain.Models;
+using PMS.Backend.Core.Entities;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency"/>
 public record AgencyPayload
 {
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.Id"/>
+    /// <inheritdoc cref="Entity.Id"/>
     public required int Id { get; init; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.LegalName"/>

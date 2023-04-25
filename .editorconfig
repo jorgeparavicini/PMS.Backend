@@ -8,3 +8,10 @@ dotnet_diagnostics.CS0219.severity = none
 [**/{Mutations,Queries}/*.cs]
 # Disable CA1822: Mark members as static for mutations and queries
 dotnet_diagnostic.CA1822.severity = none
+
+[**/Migrations/*.cs]
+# Disable SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
+# Disable SA1413: Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1413.severity = none

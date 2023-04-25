@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PMS.Backend.Core.Entities;
 using PMS.Backend.Core.Entities.Agency;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Models.Payload;
@@ -12,7 +13,7 @@ namespace PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 /// <inheritdoc cref="AgencyContact"/>
 public record AgencyContactPayload
 {
-    /// <inheritdoc cref="AgencyContact.Id"/>
+    /// <inheritdoc cref="Entity.Id"/>
     public required int Id { get; init; }
 
     /// <inheritdoc cref="AgencyContact.ContactName"/>

@@ -7,6 +7,7 @@
 
 using System;
 using JetBrains.Annotations;
+using PMS.Backend.Core.Entities;
 
 namespace PMS.Backend.Features.GraphQL.Reservation.Models;
 
@@ -14,7 +15,7 @@ namespace PMS.Backend.Features.GraphQL.Reservation.Models;
 [UsedImplicitly]
 public record GroupReservationDTO
 {
-    /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation.Id"/>
+    /// <inheritdoc cref="Entity.Id"/>
     [PublicAPI]
     public required int Id { get; set; }
 
