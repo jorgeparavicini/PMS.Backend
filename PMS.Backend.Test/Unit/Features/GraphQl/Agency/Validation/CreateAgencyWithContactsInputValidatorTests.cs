@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using FluentValidation.TestHelper;
-using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Domain.Models;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
 using Xunit;

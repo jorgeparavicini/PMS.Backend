@@ -6,10 +6,12 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using PMS.Backend.Test.Data;
 
 namespace PMS.Backend.Test.Fixtures;
 
+[UsedImplicitly]
 public class AgencyGraphQlFixture : GraphQlFixture
 {
     protected override async Task SeedDatabase()

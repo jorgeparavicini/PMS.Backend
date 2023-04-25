@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using Detached.Annotations;
-using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Domain.Models;
 
 namespace PMS.Backend.Core.Entities.Agency;
 

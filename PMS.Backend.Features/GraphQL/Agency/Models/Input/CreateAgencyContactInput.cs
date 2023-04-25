@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using HotChocolate.Types;
+using JetBrains.Annotations;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -14,6 +15,7 @@ namespace PMS.Backend.Features.GraphQL.Agency.Models.Input;
 /// <summary>
 ///     Input for the <see cref="CreateAgencyContactMutation"/>.
 /// </summary>
+[PublicAPI]
 public record CreateAgencyContactInput
 {
     /// <inheritdoc cref="AgencyContact.AgencyId"/>

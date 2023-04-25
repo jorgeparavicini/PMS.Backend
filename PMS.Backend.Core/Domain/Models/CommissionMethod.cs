@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace PMS.Backend.Common.Models;
+namespace PMS.Backend.Core.Domain.Models;
 
 /// <summary>
 /// A commission method dictates how sales should be commissioned.

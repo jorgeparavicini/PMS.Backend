@@ -6,21 +6,27 @@
 // -----------------------------------------------------------------------
 
 using System;
+using JetBrains.Annotations;
 
 namespace PMS.Backend.Features.GraphQL.Reservation.Models;
 
 /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation"/>
+[UsedImplicitly]
 public record GroupReservationDTO
 {
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation.Id"/>
+    [PublicAPI]
     public required int Id { get; set; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation.Reference"/>
+    [PublicAPI]
     public string? Reference { get; set; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation.ReservationDate"/>
+    [PublicAPI]
     public required DateTime ReservationDate { get; set; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Reservation.GroupReservation.IsQuote"/>
+    [PublicAPI]
     public bool IsQuote { get; set; }
 }

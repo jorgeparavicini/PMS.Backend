@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
-using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Domain.Models;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 

@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using HotChocolate.Types;
-using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Domain.Models;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 

@@ -34,9 +34,6 @@ public class GraphQlFixture : IAsyncLifetime
                                                            throw new InvalidOperationException(
                                                                "ApplicationFactory is not initialized");
 
-    private HttpClient HttpClient =>
-        _httpClient ?? throw new InvalidOperationException("HttpClient is not initialized");
-
     public async Task InitializeAsync()
     {
         var msSqlContainerFixture = await MsSqlContainerFixture.GetInstance();

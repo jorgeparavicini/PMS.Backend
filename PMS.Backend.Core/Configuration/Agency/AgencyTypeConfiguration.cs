@@ -7,7 +7,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PMS.Backend.Common.Models;
+using PMS.Backend.Core.Domain.Models;
 using PMS.Backend.Core.Entities.Agency;
 
 namespace PMS.Backend.Core.Configuration.Agency;
