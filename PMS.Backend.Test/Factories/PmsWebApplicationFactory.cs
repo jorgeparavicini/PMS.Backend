@@ -35,7 +35,7 @@ public class PmsWebApplicationFactory : WebApplicationFactory<Program>
 
         builder.ConfigureAppConfiguration(config =>
         {
-            config.Sources.Add(new MemoryConfigurationSource()
+            config.Sources.Add(new MemoryConfigurationSource
             {
                 InitialData = new[]
                 {

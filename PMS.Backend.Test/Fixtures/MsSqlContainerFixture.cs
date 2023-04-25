@@ -32,7 +32,7 @@ public partial class MsSqlContainerFixture : IAsyncDisposable
     {
     }
 
-    public string MasterDbConnectionString => _msSqlContainer.GetConnectionString();
+    private string MasterDbConnectionString => _msSqlContainer.GetConnectionString();
 
     public static async Task<MsSqlContainerFixture> GetInstance() => await AsyncLazyInstance;
 
@@ -42,11 +42,6 @@ public partial class MsSqlContainerFixture : IAsyncDisposable
         string databaseName = CreateRandomDatabaseName();
 
         return DatabaseNamePattern().Replace(connectionString, databaseName);
-    }
-
-    public async Task InitializeAsync()
-    {
-        await _msSqlContainer.StartAsync();
     }
 
     public async ValueTask DisposeAsync()
@@ -63,4 +58,9 @@ public partial class MsSqlContainerFixture : IAsyncDisposable
 
     [GeneratedRegex("(?<=Database=)([^;]+)")]
     private static partial Regex DatabaseNamePattern();
+
+    private async Task InitializeAsync()
+    {
+        await _msSqlContainer.StartAsync();
+    }
 }

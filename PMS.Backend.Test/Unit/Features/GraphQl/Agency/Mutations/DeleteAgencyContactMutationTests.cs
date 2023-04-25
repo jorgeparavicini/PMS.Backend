@@ -95,7 +95,7 @@ public class DeleteAgencyContactMutationTests : AgencyDatabaseFixture
     {
         // Arrange
         Core.Entities.Agency.Agency agency = AgencyData.CreateAgency();
-        agency.AgencyContacts = new List<AgencyContact>()
+        agency.AgencyContacts = new List<AgencyContact>
         {
             AgencyData.CreateAgencyContact(),
         };

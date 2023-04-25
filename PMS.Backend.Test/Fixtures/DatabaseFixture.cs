@@ -18,7 +18,8 @@ public class DatabaseFixture : IAsyncLifetime
 {
     private PmsDbContext? _dbContext;
 
-    public PmsDbContext DbContext => _dbContext ?? throw new InvalidOperationException("DbContext is not initialized");
+    protected PmsDbContext DbContext =>
+        _dbContext ?? throw new InvalidOperationException("DbContext is not initialized");
 
     public async Task InitializeAsync()
     {

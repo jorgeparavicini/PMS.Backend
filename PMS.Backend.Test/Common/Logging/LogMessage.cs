@@ -21,9 +21,9 @@ public class LogMessage
     public LogLevel LogLevel { get; set; }
 
     /// <summary>
-    ///     Gets or sets the event id.
+    ///     Gets the event id.
     /// </summary>
-    public EventId EventId { get; set; }
+    public EventId EventId { get; init; }
 
     /// <summary>
     ///     Gets or sets the state.

@@ -11,8 +11,14 @@ using PMS.Backend.Features.GraphQL.Reservation.Models;
 
 namespace PMS.Backend.Features.GraphQL.Reservation;
 
+/// <summary>
+///     The automapper profile for the reservation feature.
+/// </summary>
 public class ReservationProfile : Profile
 {
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ReservationProfile" /> class.
+    /// </summary>
     public ReservationProfile()
     {
         CreateMap<GroupReservation, GroupReservationDTO>();

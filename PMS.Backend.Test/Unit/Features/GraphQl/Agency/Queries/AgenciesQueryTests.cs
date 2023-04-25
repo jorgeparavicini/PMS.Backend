@@ -5,7 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using FluentAssertions;
@@ -13,7 +12,6 @@ using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Queries;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Extensions;
 using PMS.Backend.Test.Fixtures;
 using Xunit;
 using Xunit.Categories;

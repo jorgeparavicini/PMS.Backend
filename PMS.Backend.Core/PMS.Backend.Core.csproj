@@ -28,10 +28,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\PMS.Backend.Common\PMS.Backend.Common.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>

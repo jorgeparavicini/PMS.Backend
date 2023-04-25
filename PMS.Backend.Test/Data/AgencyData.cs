@@ -36,7 +36,7 @@ public static class AgencyData
     public static IEnumerable<Agency> DeterministicAgencies =>
         new[]
         {
-            new Agency()
+            new Agency
             {
                 LegalName = "Test Agency",
                 CommissionMethod = CommissionMethod.DeductedByProvider,
@@ -44,7 +44,7 @@ public static class AgencyData
                 DefaultCommissionOnExtras = 0.1m,
                 EmergencyEmail = "mail1",
                 EmergencyPhone = "phone1",
-                AgencyContacts = new List<AgencyContact>()
+                AgencyContacts = new List<AgencyContact>
                 {
                     new()
                     {
@@ -72,7 +72,7 @@ public static class AgencyData
                     },
                 },
             },
-            new Agency()
+            new Agency
             {
                 LegalName = "Test Agency 2",
                 CommissionMethod = CommissionMethod.DeductedByProvider,
@@ -80,7 +80,7 @@ public static class AgencyData
                 DefaultCommissionOnExtras = 0.1m,
                 EmergencyEmail = "mail2",
                 EmergencyPhone = "phone2",
-                AgencyContacts = new List<AgencyContact>()
+                AgencyContacts = new List<AgencyContact>
                 {
                     new()
                     {
@@ -120,7 +120,7 @@ public static class AgencyData
                     },
                 },
             },
-            new Agency()
+            new Agency
             {
                 LegalName = "Test Agency 3",
                 CommissionMethod = CommissionMethod.DeductedByProvider,
@@ -128,7 +128,7 @@ public static class AgencyData
                 DefaultCommissionOnExtras = 0.1m,
                 EmergencyEmail = "mail3",
                 EmergencyPhone = "phone3",
-                AgencyContacts = new List<AgencyContact>()
+                AgencyContacts = new List<AgencyContact>
                 {
                     new()
                     {

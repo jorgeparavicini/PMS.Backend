@@ -27,15 +27,15 @@ public class GraphQlFixture : IAsyncLifetime
     public RequestExecutorProxy Executor => _executor ??
                                             throw new InvalidOperationException("Executor is not initialized");
 
-    protected PmsWebApplicationFactory ApplicationFactory => _applicationFactory ??
-                                                             throw new InvalidOperationException(
-                                                                 "ApplicationFactory is not initialized");
-
-    protected HttpClient HttpClient =>
-        _httpClient ?? throw new InvalidOperationException("HttpClient is not initialized");
-
     protected PmsDbContext DbContext =>
         _dbContext ?? throw new InvalidOperationException("DbContext is not initialized");
+
+    private PmsWebApplicationFactory ApplicationFactory => _applicationFactory ??
+                                                           throw new InvalidOperationException(
+                                                               "ApplicationFactory is not initialized");
+
+    private HttpClient HttpClient =>
+        _httpClient ?? throw new InvalidOperationException("HttpClient is not initialized");
 
     public async Task InitializeAsync()
     {
@@ -54,24 +54,9 @@ public class GraphQlFixture : IAsyncLifetime
         return Task.CompletedTask;
     }
 
-    protected async Task<HttpResponseMessage> SendQueryAsync(string query)
-    {
-        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "/graphql")
-        {
-            Content = new StringContent(GetGraphQlOverHttpPostBody(query)),
-        };
-
-        return await HttpClient.SendAsync(httpRequestMessage);
-    }
-
     protected virtual Task SeedDatabase()
     {
         return Task.CompletedTask;
-    }
-
-    private static string GetGraphQlOverHttpPostBody(string query)
-    {
-        return query.Replace("\n", string.Empty).Replace("\r", string.Empty);
     }
 
     private async Task InitializeDatabase()
