@@ -16,7 +16,7 @@ public enum CommissionMethod
     /// <summary>
     /// The sale should be commissioned by the agency.
     /// </summary>
-    /// <value>0</value>
+    /// <value>0.</value>
     DeductedByAgency = 0,
 
     /// <summary>
@@ -25,6 +25,6 @@ public enum CommissionMethod
     /// <remarks>
     /// The provider is usually the hotel or establishment that provides the service.
     /// </remarks>
-    /// <value>1</value>
+    /// <value>1.</value>
     DeductedByProvider = 1,
 }

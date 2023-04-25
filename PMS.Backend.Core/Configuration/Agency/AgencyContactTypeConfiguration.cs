@@ -11,8 +11,12 @@ using PMS.Backend.Core.Entities.Agency;
 
 namespace PMS.Backend.Core.Configuration.Agency;
 
+/// <summary>
+///     The ef core configuration for the <see cref="AgencyContact" /> entity.
+/// </summary>
 public class AgencyContactTypeConfiguration : EntityTypeConfiguration<AgencyContact>
 {
+    /// <inheritdoc />
     public override void Configure(EntityTypeBuilder<AgencyContact> builder)
     {
         base.Configure(builder);

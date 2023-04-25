@@ -11,9 +11,16 @@ using PMS.Backend.Core.Entities;
 
 namespace PMS.Backend.Core.Configuration;
 
+/// <summary>
+///     The base ef core configuration for all entities.
+/// </summary>
+/// <typeparam name="TEntity">
+///    The type of the entity to configure.
+/// </typeparam>
 public abstract class EntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
     where TEntity : Entity
 {
+    /// <inheritdoc />
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
         builder.HasKey(entity => entity.Id);

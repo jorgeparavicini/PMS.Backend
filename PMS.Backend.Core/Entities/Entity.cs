@@ -15,9 +15,9 @@ namespace PMS.Backend.Core.Entities;
 public abstract class Entity
 {
     /// <summary>
-    /// Gets or sets the unique Identifier of the entity.
+    /// Gets the unique Identifier of the entity.
     /// </summary>
-    public int Id { get; set; }
+    public int Id { get; init; }
 
     /// <summary>
     /// Gets a timestamp used for concurrency checking.
