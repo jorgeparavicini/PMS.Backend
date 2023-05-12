@@ -38,6 +38,17 @@ builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: "Cors",
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        });
+});
 
 builder.Services.AddGraphQLServer()
     .AddMutationType<Mutation>()
@@ -54,6 +65,7 @@ WebApplication app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseCors("Cors");
 app.MapGraphQL();
 app.Run();
 
