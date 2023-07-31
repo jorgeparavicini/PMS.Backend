@@ -8,7 +8,7 @@
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Execution;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using VerifyXunit;
 using Xunit;
 using Xunit.Categories;
@@ -32,7 +32,7 @@ public class MoveAgencyContactToAgencyMutationTests : IClassFixture<AgencyGraphQ
         // Arrange
         const string mutation = @"
 mutation {
-  moveAgencyContactToAgency(input: { agencyId: 1, agencyContactId: 6 }) {
+  moveAgencyContactToAgency(input: { agencyId: 1, agencyContactId: 3 }) {
     id
     legalName
     defaultCommissionRate

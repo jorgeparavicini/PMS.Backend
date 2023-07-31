@@ -8,7 +8,7 @@
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Execution;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using VerifyXunit;
 using Xunit;
 using Xunit.Categories;

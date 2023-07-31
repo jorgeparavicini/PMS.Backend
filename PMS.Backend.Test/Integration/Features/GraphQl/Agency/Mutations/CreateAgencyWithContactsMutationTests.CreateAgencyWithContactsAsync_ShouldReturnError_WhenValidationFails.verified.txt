@@ -8,7 +8,7 @@
       "extensions": {
         "code": "FairyBread_ValidationError",
         "argumentName": "input",
-        "validatorName": "CreateAgencyWithContactsInputValidator",
+        "validatorName": "CreateAgencyWithContactsAgencyInputValidator",
         "errorCode": "ScalePrecisionValidator",
         "errorMessage": "\u0027Default Commission On Extras\u0027 must not be more than 5 digits in total, with allowance for 4 decimals. 2 digits and 0 decimals were found.",
         "attemptedValue": 15,
@@ -32,7 +32,7 @@
       "extensions": {
         "code": "FairyBread_ValidationError",
         "argumentName": "input",
-        "validatorName": "CreateAgencyWithContactsInputValidator",
+        "validatorName": "CreateAgencyWithContactsAgencyInputValidator",
         "errorCode": "LessThanOrEqualValidator",
         "errorMessage": "\u0027Default Commission On Extras\u0027 must be less than or equal to \u00271.0\u0027.",
         "attemptedValue": 15,

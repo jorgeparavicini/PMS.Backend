@@ -8,6 +8,7 @@
 using FluentValidation.TestHelper;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
+using PMS.Backend.Test.Builders.Agency.Models.Input;
 using Xunit;
 using Xunit.Categories;
 
@@ -22,17 +23,31 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldSucceed_WhenValidInput()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = "Contact Name",
-            Email = "mail@gmail.com",
-            ZipCode = "Zip Code",
-            City = "City",
-            Address = "Address",
-            Phone = "Phone",
-            IsFrequentVendor = true,
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithId(1)
+            .WithContactName("Contact Name")
+            .WithEmail("mail@gmail.com")
+            .WithPhone("Phone")
+            .WithAddress("Address")
+            .WithCity("City")
+            .WithZipCode("Zip Code")
+            .WithIsFrequentVendor(true)
+            .Build();
+
+        // Act
+        TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
+
+        // Assert
+        result.ShouldNotHaveAnyValidationErrors();
+    }
+
+    [Fact]
+    public void Validate_ShouldSucceed_WhenBasicInput()
+    {
+        // Arrange
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithId(1)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -47,11 +62,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenIdIsInvalid(int id)
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = id,
-            ContactName = "Contact Name",
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithId(id)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -64,11 +77,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenContactNameIsEmpty()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = string.Empty,
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithContactName(string.Empty)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -81,11 +92,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenContactNameIsTooLong()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = new string('a', 256),
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithContactName(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -98,12 +107,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenEmailIsInvalid()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = "Contact Name",
-            Email = "invalid email",
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithEmail("mail")
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -116,12 +122,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenEmailIsTooLong()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = "Contact Name",
-            Email = new string('a', 256) + "@gmail.com",
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithEmail(new string('a', 256) + "@gmail.com")
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -134,12 +137,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenZipCodeIsTooLong()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = "Contact Name",
-            ZipCode = new string('a', 256),
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithZipCode(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -152,12 +152,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenCityIsTooLong()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = "Contact Name",
-            City = new string('a', 256),
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithCity(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -170,12 +167,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenAddressIsTooLong()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = "Contact Name",
-            Address = new string('a', 256),
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithAddress(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);
@@ -188,12 +182,9 @@ public class EditAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenPhoneIsTooLong()
     {
         // Arrange
-        EditAgencyContactInput input = new()
-        {
-            Id = 1,
-            ContactName = "Contact Name",
-            Phone = new string('a', 256),
-        };
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithPhone(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyContactInput> result = _sut.TestValidate(input);

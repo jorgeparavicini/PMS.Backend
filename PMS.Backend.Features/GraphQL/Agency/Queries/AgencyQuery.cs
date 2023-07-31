@@ -61,7 +61,7 @@ public class AgencyQuery
         [Service]
         ILogger<AgencyQuery> logger)
     {
-        logger.ExecutingQuery(nameof(GetAgency));
+        logger.ExecutingQuery(nameof(AgencyQuery));
         return context.Agencies.ProjectTo<AgencyPayload>(mapper.ConfigurationProvider);
     }
 }

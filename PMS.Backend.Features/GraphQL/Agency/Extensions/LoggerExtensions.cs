@@ -114,4 +114,24 @@ public static partial class LoggerExtensions
         message: "Deleted agency contact {AgencyContactId}",
         EventName = nameof(AgencyContactDeleted))]
     public static partial void AgencyContactDeleted(this ILogger logger, int agencyContactId);
+
+    /// <summary>
+    ///     Logs that an agency contact was already assigned to an agency.
+    /// </summary>
+    /// <param name="logger">The <see cref="ILogger"/> instance used for logging.</param>
+    /// <param name="agencyContactId">
+    ///     The ID of the <see cref="Core.Entities.Agency.AgencyContact"/> entity that was already assigned.
+    /// </param>
+    /// <param name="agencyId">
+    ///     The ID of the <see cref="Core.Entities.Agency.Agency"/> entity that the contact was already assigned to.
+    /// </param>
+    [LoggerMessage(
+        eventId: 10108,
+        LogLevel.Information,
+        message: "Agency contact {AgencyContactId} is already assigned to agency {AgencyId}",
+        EventName = nameof(AgencyContactIsAlreadyAssignedToAgency))]
+    public static partial void AgencyContactIsAlreadyAssignedToAgency(
+        this ILogger logger,
+        int agencyContactId,
+        int agencyId);
 }

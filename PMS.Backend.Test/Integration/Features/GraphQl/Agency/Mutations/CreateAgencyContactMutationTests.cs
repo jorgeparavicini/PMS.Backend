@@ -8,7 +8,7 @@
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Execution;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using VerifyXunit;
 using Xunit;
 using Xunit.Categories;
@@ -34,7 +34,7 @@ public class CreateAgencyContactMutationTests : IClassFixture<AgencyGraphQlFixtu
 mutation {
   createAgencyContact(
     input: {
-      agencyId: 3
+      agencyId: 2
       contactName: ""Legal Entity""
       address: ""New Contact Address""
       city: ""Contact123"",

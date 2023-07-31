@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using HotChocolate;
@@ -19,8 +18,9 @@ using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
+using PMS.Backend.Test.Builders.Agency.Models.Input;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using Xunit;
 using Xunit.Categories;
 
@@ -32,7 +32,6 @@ public class EditAgencyContactMutationTests : AgencyDatabaseFixture
     private readonly IMapper _mapper;
     private readonly RecordingLogger<EditAgencyContactMutation> _logger = new();
     private readonly EditAgencyContactMutation _sut = new();
-    private readonly Fixture _fixture = new();
 
     public EditAgencyContactMutationTests()
     {
@@ -46,9 +45,9 @@ public class EditAgencyContactMutationTests : AgencyDatabaseFixture
         int currentCount = DbContext.AgencyContacts.Count();
         AgencyContact agencyContact = DbContext.AgencyContacts.First();
 
-        EditAgencyContactInput input = _fixture.Build<EditAgencyContactInput>()
-            .With(input => input.Id, agencyContact.Id)
-            .Create();
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithId(agencyContact.Id)
+            .Build();
 
         // Act
         IQueryable<AgencyContactPayload> result =
@@ -71,9 +70,9 @@ public class EditAgencyContactMutationTests : AgencyDatabaseFixture
         // Arrange
         int currentCount = DbContext.AgencyContacts.Count();
 
-        EditAgencyContactInput input = _fixture.Build<EditAgencyContactInput>()
-            .With(agencyContact => agencyContact.Id, 0)
-            .Create();
+        EditAgencyContactInput input = new EditAgencyContactInputBuilder()
+            .WithId(0)
+            .Build();
 
         // Act
         Func<Task<IQueryable<AgencyContactPayload>>> act = async () =>
@@ -82,7 +81,7 @@ public class EditAgencyContactMutationTests : AgencyDatabaseFixture
         // Assert
         await act.Should()
             .ThrowAsync<GraphQLException>()
-            .WithMessage($"Agency Contact not found with id {input.Id}.");
+            .WithMessage($"AgencyContact not found with id {input.Id}.");
         DbContext.AgencyContacts.Count().Should().Be(currentCount);
 
         _logger.ShouldHaveLogged(() => LoggerExtensions.ExecutingMutation);

@@ -8,6 +8,7 @@
 using FluentValidation.TestHelper;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
+using PMS.Backend.Test.Builders.Agency.Models.Input;
 using Xunit;
 using Xunit.Categories;
 
@@ -22,10 +23,9 @@ public class DeleteAgencyInputValidatorTests
     public void Validate_ShouldSucceed_WhenValidInput()
     {
         // Arrange
-        DeleteAgencyInput input = new()
-        {
-            Id = 1,
-        };
+        DeleteAgencyInput input = new DeleteAgencyInputBuilder()
+            .WithId(1)
+            .Build();
 
         // Act
         TestValidationResult<DeleteAgencyInput> result = _sut.TestValidate(input);
@@ -40,10 +40,9 @@ public class DeleteAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenIdIsInvalid(int id)
     {
         // Arrange
-        DeleteAgencyInput input = new()
-        {
-            Id = id,
-        };
+        DeleteAgencyInput input = new DeleteAgencyInputBuilder()
+            .WithId(id)
+            .Build();
 
         // Act
         TestValidationResult<DeleteAgencyInput> result = _sut.TestValidate(input);

@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Detached.Mappers.EntityFramework;
 using FluentValidation;
@@ -26,7 +27,6 @@ builder.Configuration.AddJsonFile($"appsettings.{env}.json", true, true);
 
 builder.Services.AddValidatorsFromAssembly(typeof(Registrar).Assembly);
 
-// Add Database
 builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
 {
     string connectionString = builder.Configuration.GetConnectionString("PMS")!;
@@ -34,10 +34,31 @@ builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
         .UseSqlServer(
             connectionString,
             serverOptions => serverOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-        .UseDetached();
+        .UseDetached()
+        .UseMapping(cfg =>
+        {
+            cfg.Default(opts =>
+            {
+                opts.Primitives.Add(typeof(DateOnly));
+                opts.Primitives.Add(typeof(TimeOnly));
+            });
+        });
 });
 
 builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
+
+// TODO: This must obviously be changed to a more secure CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: "Cors",
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        });
+});
 
 builder.Services.AddGraphQLServer()
     .AddMutationType<Mutation>()
@@ -54,6 +75,7 @@ WebApplication app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseCors("Cors");
 app.MapGraphQL();
 app.Run();
 
