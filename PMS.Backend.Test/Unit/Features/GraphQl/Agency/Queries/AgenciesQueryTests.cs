@@ -12,7 +12,7 @@ using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Queries;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using Xunit;
 using Xunit.Categories;
 
@@ -32,7 +32,7 @@ public class AgenciesQueryTests : AgencyDatabaseFixture
         IQueryable<AgencyPayload> result = _sut.GetAgencies(DbContext, _mapper, _logger);
 
         // Assert
-        result.Should().HaveCount(AgencyCount);
+        result.Should().HaveCount(Entities.Count());
         result.Select(agency => agency.Id).Should().BeEquivalentTo(DbContext.Agencies.Select(agency => agency.Id));
 
         _logger.ShouldHaveLogged(() => Backend.Features.Extensions.LoggerExtensions.ExecutingQuery);

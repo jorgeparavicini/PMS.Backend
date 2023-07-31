@@ -17,7 +17,7 @@ namespace PMS.Backend.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "8.0.0-preview.6.23329.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -211,11 +211,11 @@ namespace PMS.Backend.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CheckIn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("CheckIn")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("CheckOut")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("CheckOut")
+                        .HasColumnType("date");
 
                     b.Property<DateTime?>("FolioClosedOn")
                         .HasColumnType("datetime2");

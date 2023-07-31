@@ -6,7 +6,6 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using Detached.Annotations;
 
 namespace PMS.Backend.Core.Entities.Reservation;
@@ -14,7 +13,6 @@ namespace PMS.Backend.Core.Entities.Reservation;
 /// <summary>
 /// An object that holds a list of all details regarding a reservation.
 /// </summary>
-[Entity]
 public class Reservation : Entity
 {
     /// <summary>
@@ -28,33 +26,25 @@ public class Reservation : Entity
     /// Lets say the group is the family <c>Doe</c> then there could be multiple reservations
     /// and one of which could be <c>Max's Reservation</c>.
     /// </example>
-    [MaxLength(255)]
     public string? Name { get; set; }
 
     /// <summary>
     /// Gets or sets the id of the group reservation this reservation is part of.
     /// </summary>
-    /// <remarks>
-    /// This is an EF-Core relation, hence both the Id and the group reservation are required.
-    /// </remarks>
     /// <seealso cref="GroupReservation"/>
     public int GroupReservationId { get; set; }
 
     /// <summary>
     /// Gets or sets the parent group reservation.
     /// </summary>
-    /// <remarks>
-    /// This is an EF-Core relation, hence both the Id and the group reservation are required.
-    /// </remarks>
     /// <seealso cref="GroupReservationId"/>
-    public GroupReservation GroupReservation { get; set; } = null!;
+    public required GroupReservation GroupReservation { get; set; }
 
     /// <summary>
     /// Gets or sets a list of all details in this reservation.
     /// </summary>
-    [MinLength(1)]
     [Composition]
-    public IList<ReservationDetail> ReservationDetails { get; set; } = new List<ReservationDetail>();
+    public required IList<ReservationDetail> ReservationDetails { get; set; }
 
     // TODO: Booking type
 }

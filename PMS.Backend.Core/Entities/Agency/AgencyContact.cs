@@ -53,18 +53,12 @@ public class AgencyContact : Entity
     /// <summary>
     /// Gets or sets the id of the associated agency.
     /// </summary>
-    /// <remarks>
-    /// This is an EF-Core relation, hence both the Id and the agency are required.
-    /// </remarks>
     /// <seealso cref="Agency"/>
     public int AgencyId { get; set; }
 
     /// <summary>
     /// Gets or sets the associated agency.
     /// </summary>
-    /// <remarks>
-    /// This is an EF-Core relation, hence both the Id and the agency are required.
-    /// </remarks>
     /// <seealso cref="AgencyId"/>
     public required Agency Agency { get; set; }
 

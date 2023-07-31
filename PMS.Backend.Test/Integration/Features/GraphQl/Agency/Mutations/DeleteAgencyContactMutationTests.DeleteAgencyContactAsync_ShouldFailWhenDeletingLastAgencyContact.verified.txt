@@ -1,0 +1,10 @@
+﻿{
+  "errors": [
+    {
+      "message": "Cannot delete last AgencyContact (3) of Agency (2). At least one AgencyContact must exist.",
+      "extensions": {
+        "code": "LAST_ENTRY_DELETION"
+      }
+    }
+  ]
+}

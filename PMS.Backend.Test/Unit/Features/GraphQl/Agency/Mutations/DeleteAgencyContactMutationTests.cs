@@ -6,7 +6,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -16,9 +15,9 @@ using PMS.Backend.Features.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
+using PMS.Backend.Test.Builders.Agency.Entity;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Data;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using Xunit;
 using Xunit.Categories;
 
@@ -87,18 +86,17 @@ public class DeleteAgencyContactMutationTests : AgencyDatabaseFixture
         // Assert
         await result.Should()
             .ThrowAsync<GraphQLException>()
-            .WithMessage($"Agency contact not found with id {input.Id}");
+            .WithMessage($"AgencyContact not found with id {input.Id}.");
     }
 
     [Fact]
     public async Task DeleteAgencyContactAsync_ShouldThrow_WhenIsLastContact()
     {
         // Arrange
-        Core.Entities.Agency.Agency agency = AgencyData.CreateAgency();
-        agency.AgencyContacts = new List<AgencyContact>
-        {
-            AgencyData.CreateAgencyContact(),
-        };
+        Core.Entities.Agency.Agency agency = new AgencyBuilder()
+            .AddAgencyContacts(_ => { })
+            .Build();
+
         DbContext.Agencies.Add(agency);
         await DbContext.SaveChangesAsync();
 
@@ -115,6 +113,6 @@ public class DeleteAgencyContactMutationTests : AgencyDatabaseFixture
         await result.Should()
             .ThrowAsync<GraphQLException>()
             .WithMessage(
-                "Cannot delete the last contact for an agency. Please add a new contact before deleting this one.");
+                "Cannot delete last AgencyContact (4) of Agency (3). At least one AgencyContact must exist.");
     }
 }

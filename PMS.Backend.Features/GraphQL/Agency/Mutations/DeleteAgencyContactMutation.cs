@@ -5,19 +5,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
-using HotChocolate.AspNetCore;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
+using PMS.Backend.Features.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
-using LoggerExtensions = PMS.Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -43,6 +43,9 @@ public class DeleteAgencyContactMutation
     /// </param>
     /// <param name="input">The input data for deleting the <see cref="AgencyContact"/> entity.</param>
     /// <param name="logger">The <see cref="ILogger"/> instance used for logging.</param>
+    /// <param name="cancellationToken">
+    ///     A <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.
+    /// </param>
     /// <returns>
     ///     A <see cref="DeleteAgencyContactPayload"/> representing the result of the deletion operation.
     /// </returns>
@@ -50,35 +53,29 @@ public class DeleteAgencyContactMutation
         PmsDbContext dbContext,
         DeleteAgencyContactInput input,
         [Service]
-        ILogger<DeleteAgencyContactMutation> logger)
+        ILogger<DeleteAgencyContactMutation> logger,
+        CancellationToken cancellationToken = default)
     {
-        logger.ExecutingMutation(nameof(DeleteAgencyContactAsync));
+        logger.ExecutingMutation(nameof(DeleteAgencyContactMutation));
 
-        if (await dbContext.AgencyContacts.FindAsync(input.Id) is not { } entity)
+        if (await dbContext.FindAsync<AgencyContact>(input.Id, cancellationToken) is not { } agencyContact)
         {
-            throw new GraphQLException(
-                ErrorBuilder.New()
-                    .SetMessage($"Agency contact not found with id {input.Id}")
-                    .SetCode("ENTITY_NOT_FOUND")
-                    .Build());
+            throw new NotFoundException<AgencyContact>(input.Id);
         }
 
-        if (await dbContext.AgencyContacts
-                .Where(agencyContact => agencyContact.AgencyId == entity.AgencyId)
-                .CountAsync() == 1)
+        if (await dbContext.AgencyContacts.CountAsync(
+                entity => entity.AgencyId == agencyContact.AgencyId,
+                cancellationToken) <= 1)
         {
-            throw new GraphQLRequestException(
-                ErrorBuilder.New()
-                    .SetMessage(
-                        "Cannot delete the last contact for an agency. Please add a new contact before deleting this one.")
-                    .SetCode("CANNOT_DELETE_LAST_CONTACT")
-                    .Build());
+            throw new LastEntryDeletionException<Core.Entities.Agency.Agency, AgencyContact>(
+                agencyContact.AgencyId,
+                agencyContact.Id);
         }
 
-        dbContext.AgencyContacts.Remove(entity);
-        await dbContext.SaveChangesAsync();
+        dbContext.AgencyContacts.Remove(agencyContact);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        LoggerExtensions.AgencyContactDeleted(logger, entity.Id);
+        logger.AgencyContactDeleted(agencyContact.Id);
 
         return new DeleteAgencyContactPayload
         {

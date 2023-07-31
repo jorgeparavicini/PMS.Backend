@@ -3,33 +3,23 @@
     agency: {
       agencyContacts: [
         {
-          address: Address 1,
-          city: City 1,
+          address: null,
+          city: null,
           contactName: Contact 1,
-          email: Email 1,
+          email: null,
           id: 1,
-          isFrequentVendor: true,
-          phone: Phone 1,
-          zipCode: Zip Code 1
-        },
-        {
-          address: Address 2,
-          city: City 2,
-          contactName: Contact 2,
-          email: Email 2,
-          id: 2,
           isFrequentVendor: false,
-          phone: Phone 2,
-          zipCode: Zip Code 2
+          phone: null,
+          zipCode: null
         }
       ],
-      commissionMethod: DEDUCTED_BY_PROVIDER,
-      defaultCommissionOnExtras: 0.1000,
-      defaultCommissionRate: 0.2000,
-      emergencyEmail: mail1,
-      emergencyPhone: phone1,
+      commissionMethod: DEDUCTED_BY_AGENCY,
+      defaultCommissionOnExtras: 0.0000,
+      defaultCommissionRate: 0.0000,
+      emergencyEmail: null,
+      emergencyPhone: null,
       id: 1,
-      legalName: Test Agency
+      legalName: Agency 1
     }
   }
 }

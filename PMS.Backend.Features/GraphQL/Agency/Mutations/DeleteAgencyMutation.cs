@@ -5,16 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Types;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
+using PMS.Backend.Features.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
-using LoggerExtensions = PMS.Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -42,6 +43,9 @@ public class DeleteAgencyMutation
     ///     The input data for deleting the  <see cref="PMS.Backend.Core.Entities.Agency.Agency"/> entity.
     /// </param>
     /// <param name="logger">The <see cref="ILogger"/> instance used for logging.</param>
+    /// <param name="cancellationToken">
+    ///     A <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.
+    /// </param>
     /// <returns>
     ///     A <see cref="DeleteAgencyPayload"/> representing the result of the deletion operation.
     /// </returns>
@@ -49,24 +53,20 @@ public class DeleteAgencyMutation
         PmsDbContext dbContext,
         DeleteAgencyInput input,
         [Service]
-        ILogger<DeleteAgencyMutation> logger)
+        ILogger<DeleteAgencyMutation> logger,
+        CancellationToken cancellationToken = default)
     {
-        logger.ExecutingMutation(nameof(DeleteAgencyAsync));
+        logger.ExecutingMutation(nameof(DeleteAgencyMutation));
 
-        if (await dbContext.Agencies.Include(agency => agency.AgencyContacts)
-                .FirstOrDefaultAsync(agency => agency.Id == input.Id) is not { } entity)
+        if (await dbContext.FindAsync<Core.Entities.Agency.Agency>(input.Id, cancellationToken) is not { } agency)
         {
-            throw new GraphQLException(
-                ErrorBuilder.New()
-                    .SetMessage($"Agency not found with id {input.Id}")
-                    .SetCode("ENTITY_NOT_FOUND")
-                    .Build());
+            throw new NotFoundException<Core.Entities.Agency.Agency>(input.Id);
         }
 
-        dbContext.Agencies.Remove(entity);
-        await dbContext.SaveChangesAsync();
+        dbContext.Agencies.Remove(agency);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        LoggerExtensions.AgencyDeleted(logger, entity.Id);
+        logger.AgencyDeleted(agency.Id);
 
         return new DeleteAgencyPayload
         {

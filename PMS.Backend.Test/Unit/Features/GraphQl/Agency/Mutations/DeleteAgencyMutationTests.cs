@@ -15,7 +15,7 @@ using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using Xunit;
 using Xunit.Categories;
 
@@ -102,6 +102,6 @@ public class DeleteAgencyMutationTests : AgencyDatabaseFixture
         // Assert
         await act.Should()
             .ThrowAsync<GraphQLException>()
-            .WithMessage($"Agency not found with id {input.Id}");
+            .WithMessage($"Agency not found with id {input.Id}.");
     }
 }
