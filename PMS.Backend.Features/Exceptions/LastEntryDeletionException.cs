@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using System;
+using HotChocolate;
 using PMS.Backend.Core.Entities;
 
 namespace PMS.Backend.Features.Exceptions;
@@ -25,7 +26,7 @@ public class LastEntryDeletionException<TParent, TChild> : GraphQLException
     /// <param name="childId">
     ///     The id of the child entity.
     /// </param>
-    public LastEntryDeletionException(int parentId, int childId)
+    public LastEntryDeletionException(Guid parentId, Guid childId)
         : base(ErrorBuilder.New()
             .SetMessage(
                 $"Cannot delete last {typeof(TChild).Name} ({childId}) of {typeof(TParent).Name} ({parentId}). At least one {typeof(TChild).Name} must exist.")

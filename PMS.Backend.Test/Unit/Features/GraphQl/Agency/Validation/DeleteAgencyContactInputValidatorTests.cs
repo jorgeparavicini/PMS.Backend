@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using FluentValidation.TestHelper;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
@@ -24,7 +25,7 @@ public class DeleteAgencyContactInputValidatorTests
     {
         // Arrange
         DeleteAgencyContactInput input = new DeleteAgencyContactInputBuilder()
-            .WithId(1)
+            .WithId(Guid.NewGuid())
             .Build();
 
         // Act
@@ -34,14 +35,12 @@ public class DeleteAgencyContactInputValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenIdIsInvalid(int id)
+    [Fact]
+    public void Validate_ShouldFail_WhenIdIsInvalid()
     {
         // Arrange
         DeleteAgencyContactInput input = new DeleteAgencyContactInputBuilder()
-            .WithId(id)
+            .WithId(Guid.Empty)
             .Build();
 
         // Act

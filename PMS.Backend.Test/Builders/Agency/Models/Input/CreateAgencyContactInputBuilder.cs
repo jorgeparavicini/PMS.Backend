@@ -1,4 +1,5 @@
-﻿using PMS.Backend.Features.GraphQL.Agency.Models.Input;
+﻿using System;
+using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 
 namespace PMS.Backend.Test.Builders.Agency.Models.Input;
 
@@ -11,7 +12,7 @@ public class CreateAgencyContactInputBuilder
     private string? _city;
     private string? _zipCode;
     private bool _isFrequentVendor;
-    private int _agencyId;
+    private Guid _agencyId;
 
     public CreateAgencyContactInputBuilder WithContactName(string contactName)
     {
@@ -55,7 +56,7 @@ public class CreateAgencyContactInputBuilder
         return this;
     }
 
-    public CreateAgencyContactInputBuilder WithAgencyId(int agencyId)
+    public CreateAgencyContactInputBuilder WithAgencyId(Guid agencyId)
     {
         _agencyId = agencyId;
         return this;

@@ -16,7 +16,7 @@ public class CreateReservationGroupReservationInputValidator
     {
         RuleFor(reservation => reservation.Reference).MaximumLength(255);
 
-        RuleFor(reservation => reservation.AgencyContactId).NotEmpty().GreaterThan(0);
+        RuleFor(reservation => reservation.AgencyContactId).NotEmpty();
 
         RuleFor(reservation => reservation.Reservations).NotEmpty();
 

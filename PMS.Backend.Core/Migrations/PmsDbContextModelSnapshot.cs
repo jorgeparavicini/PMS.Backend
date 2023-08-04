@@ -24,11 +24,9 @@ namespace PMS.Backend.Core.Migrations
 
             modelBuilder.Entity("PMS.Backend.Core.Entities.Agency.Agency", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CommissionMethod")
                         .ValueGeneratedOnAdd()
@@ -74,18 +72,16 @@ namespace PMS.Backend.Core.Migrations
 
             modelBuilder.Entity("PMS.Backend.Core.Entities.Agency.AgencyContact", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("AgencyId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AgencyId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
                         .HasMaxLength(255)
@@ -133,14 +129,12 @@ namespace PMS.Backend.Core.Migrations
 
             modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.GroupReservation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AgencyContactId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AgencyContactId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -172,14 +166,12 @@ namespace PMS.Backend.Core.Migrations
 
             modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.Reservation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GroupReservationId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("GroupReservationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -205,11 +197,9 @@ namespace PMS.Backend.Core.Migrations
 
             modelBuilder.Entity("PMS.Backend.Core.Entities.Reservation.ReservationDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("CheckIn")
                         .HasColumnType("date");
@@ -228,8 +218,8 @@ namespace PMS.Backend.Core.Migrations
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ReservationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

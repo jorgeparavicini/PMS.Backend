@@ -55,7 +55,7 @@ public class CreateAgencyContactMutationTests : AgencyDatabaseFixture
             await _sut.CreateAgencyContactAsync(DbContext, input, _mapper, _logger);
 
         // Assert
-        int? entityId = await result.Select(contact => contact.Id).SingleOrDefaultAsync();
+        Guid? entityId = await result.Select(contact => contact.Id).SingleOrDefaultAsync();
         entityId.Should().NotBeNull();
         DbContext.AgencyContacts.Should().HaveCount(currentCount + 1);
 
@@ -68,7 +68,7 @@ public class CreateAgencyContactMutationTests : AgencyDatabaseFixture
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(0)
+            .WithAgencyId(Guid.Empty)
             .Build();
 
         // Act

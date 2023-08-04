@@ -20,9 +20,7 @@ public class EditAgencyContactInputValidator : AbstractValidator<EditAgencyConta
     /// </summary>
     public EditAgencyContactInputValidator()
     {
-        RuleFor(agencyContact => agencyContact.Id)
-            .NotEmpty()
-            .GreaterThan(0);
+        RuleFor(agencyContact => agencyContact.Id).NotEmpty();
 
         RuleFor(agencyContact => agencyContact.ContactName).NotEmpty().MaximumLength(255);
 

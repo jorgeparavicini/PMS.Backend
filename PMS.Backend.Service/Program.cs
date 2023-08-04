@@ -5,9 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using Detached.Mappers.EntityFramework;
+using Detached.Mappers.HotChocolate;
 using FluentValidation;
 using HotChocolate.Data;
 using JetBrains.Annotations;
@@ -39,8 +39,7 @@ builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
         {
             cfg.Default(opts =>
             {
-                opts.Primitives.Add(typeof(DateOnly));
-                opts.Primitives.Add(typeof(TimeOnly));
+                opts.WithHotChocolate();
             });
         });
 });

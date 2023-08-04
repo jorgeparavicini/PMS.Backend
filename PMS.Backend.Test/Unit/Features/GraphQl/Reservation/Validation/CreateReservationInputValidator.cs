@@ -54,14 +54,12 @@ public class CreateReservationInputValidator
         result.ShouldHaveValidationErrorFor(reservation => reservation.Reference);
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenAgencyContactIdIsInvalid(int agencyContactId)
+    [Fact]
+    public void Validate_ShouldFail_WhenAgencyContactIdIsInvalid()
     {
         // Arrange
         CreateReservationGroupReservationInput input = new CreateReservationGroupReservationInputBuilder()
-            .WithAgencyContactId(agencyContactId)
+            .WithAgencyContactId(Guid.Empty)
             .Build();
 
         // Act

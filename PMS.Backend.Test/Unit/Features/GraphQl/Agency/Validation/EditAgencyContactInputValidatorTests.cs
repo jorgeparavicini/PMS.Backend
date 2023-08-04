@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using FluentValidation.TestHelper;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
@@ -24,7 +25,7 @@ public class EditAgencyContactInputValidatorTests
     {
         // Arrange
         EditAgencyContactInput input = new EditAgencyContactInputBuilder()
-            .WithId(1)
+            .WithId(Guid.NewGuid())
             .WithContactName("Contact Name")
             .WithEmail("mail@gmail.com")
             .WithPhone("Phone")
@@ -46,7 +47,7 @@ public class EditAgencyContactInputValidatorTests
     {
         // Arrange
         EditAgencyContactInput input = new EditAgencyContactInputBuilder()
-            .WithId(1)
+            .WithId(Guid.NewGuid())
             .Build();
 
         // Act
@@ -56,14 +57,12 @@ public class EditAgencyContactInputValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenIdIsInvalid(int id)
+    [Fact]
+    public void Validate_ShouldFail_WhenIdIsInvalid()
     {
         // Arrange
         EditAgencyContactInput input = new EditAgencyContactInputBuilder()
-            .WithId(id)
+            .WithId(Guid.Empty)
             .Build();
 
         // Act

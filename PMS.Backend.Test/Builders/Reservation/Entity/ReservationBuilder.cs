@@ -7,7 +7,7 @@ namespace PMS.Backend.Test.Builders.Reservation.Entity;
 
 public class ReservationBuilder
 {
-    private int _id;
+    private Guid _id;
     private string? _name;
 
     private IList<Action<ReservationDetailBuilder>> _reservationDetails =
@@ -16,7 +16,7 @@ public class ReservationBuilder
             _ => { },
         };
 
-    public ReservationBuilder WithId(int id)
+    public ReservationBuilder WithId(Guid id)
     {
         _id = id;
         return this;
@@ -35,7 +35,7 @@ public class ReservationBuilder
         return this;
     }
 
-    public Core.Entities.Reservation.Reservation Build(int groupReservationId, GroupReservation groupReservation)
+    public Core.Entities.Reservation.Reservation Build(Guid groupReservationId, GroupReservation groupReservation)
     {
         Core.Entities.Reservation.Reservation reservation = new()
         {

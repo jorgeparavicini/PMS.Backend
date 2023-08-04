@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using FluentValidation.TestHelper;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
@@ -23,7 +24,8 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldSucceed_WhenValidInput()
     {
         // Arrange
-        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder().WithAgencyId(1)
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
             .WithContactName("Contact Name")
             .WithEmail("validmail@gmail.com")
             .WithPhone("Phone")
@@ -44,7 +46,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(0)
+            .WithAgencyId(Guid.Empty)
             .Build();
 
         // Act
@@ -59,7 +61,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(1)
+            .WithAgencyId(Guid.NewGuid())
             .WithContactName(string.Empty)
             .Build();
 
@@ -75,7 +77,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(1)
+            .WithAgencyId(Guid.NewGuid())
             .WithContactName(new string('a', 256))
             .Build();
 
@@ -91,7 +93,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(1)
+            .WithAgencyId(Guid.NewGuid())
             .WithEmail("invalidmail")
             .Build();
 
@@ -107,7 +109,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(1)
+            .WithAgencyId(Guid.NewGuid())
             .WithEmail(new string('a', 256) + "@gmail.com")
             .Build();
 
@@ -123,7 +125,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(1)
+            .WithAgencyId(Guid.NewGuid())
             .WithPhone(new string('a', 256))
             .Build();
 
@@ -139,7 +141,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(1)
+            .WithAgencyId(Guid.NewGuid())
             .WithAddress(new string('a', 256))
             .Build();
 
@@ -155,7 +157,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(1)
+            .WithAgencyId(Guid.NewGuid())
             .WithCity(new string('a', 256))
             .Build();
 
@@ -171,7 +173,7 @@ public class CreateAgencyContactInputValidatorTests
     {
         // Arrange
         CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
-            .WithAgencyId(1)
+            .WithAgencyId(Guid.NewGuid())
             .WithZipCode(new string('a', 256))
             .Build();
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Core.Entities.Reservation;
 
@@ -6,7 +7,7 @@ namespace PMS.Backend.Test.Builders.Agency.Entity;
 
 public class AgencyContactBuilder
 {
-    private int _id;
+    private Guid _id;
     private string _contactName = "ContactName";
     private string? _email;
     private string? _phone;
@@ -15,7 +16,7 @@ public class AgencyContactBuilder
     private string? _zipCode;
     private bool _isFrequentVendor;
 
-    public AgencyContactBuilder WithId(int id)
+    public AgencyContactBuilder WithId(Guid id)
     {
         _id = id;
         return this;
@@ -63,7 +64,7 @@ public class AgencyContactBuilder
         return this;
     }
 
-    public AgencyContact Build(Core.Entities.Agency.Agency agency, int agencyId)
+    public AgencyContact Build(Core.Entities.Agency.Agency agency, Guid agencyId)
     {
         return new AgencyContact
         {

@@ -86,7 +86,7 @@ public class EditAgencyMutationTests : AgencyDatabaseFixture
     {
         // Arrange
         EditAgencyInput input = new EditAgencyInputBuilder()
-            .WithId(0)
+            .WithId(Guid.Empty)
             .Build();
 
         // Act

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PMS.Backend.Core.Entities.Reservation;
 using PMS.Backend.Features.GraphQL.Reservation.Mutations;
 
@@ -22,7 +23,7 @@ public record CreateReservationGroupReservationInput
     /// <summary>
     ///     Gets the id of the agency contact who made this reservation.
     /// </summary>
-    public int AgencyContactId { get; init; }
+    public Guid AgencyContactId { get; init; }
 
     /// <summary>
     ///     Gets the list of all reservations in this group.

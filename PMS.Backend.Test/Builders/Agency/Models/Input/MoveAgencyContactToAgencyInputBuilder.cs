@@ -1,19 +1,20 @@
-﻿using PMS.Backend.Features.GraphQL.Agency.Models.Input;
+﻿using System;
+using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 
 namespace PMS.Backend.Test.Builders.Agency.Models.Input;
 
 public class MoveAgencyContactToAgencyInputBuilder
 {
-    private int _agencyContactId;
-    private int _agencyId;
+    private Guid _agencyContactId;
+    private Guid _agencyId;
 
-    public MoveAgencyContactToAgencyInputBuilder WithAgencyContactId(int agencyContactId)
+    public MoveAgencyContactToAgencyInputBuilder WithAgencyContactId(Guid agencyContactId)
     {
         _agencyContactId = agencyContactId;
         return this;
     }
 
-    public MoveAgencyContactToAgencyInputBuilder WithAgencyId(int agencyId)
+    public MoveAgencyContactToAgencyInputBuilder WithAgencyId(Guid agencyId)
     {
         _agencyId = agencyId;
         return this;

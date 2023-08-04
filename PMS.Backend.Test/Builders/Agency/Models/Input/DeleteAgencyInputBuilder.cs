@@ -1,12 +1,13 @@
-﻿using PMS.Backend.Features.GraphQL.Agency.Models.Input;
+﻿using System;
+using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 
 namespace PMS.Backend.Test.Builders.Agency.Models.Input;
 
 public class DeleteAgencyInputBuilder
 {
-    private int _id;
+    private Guid _id;
 
-    public DeleteAgencyInputBuilder WithId(int id)
+    public DeleteAgencyInputBuilder WithId(Guid id)
     {
         _id = id;
         return this;

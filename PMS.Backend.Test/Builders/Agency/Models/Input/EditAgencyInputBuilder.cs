@@ -1,11 +1,12 @@
-﻿using PMS.Backend.Core.Domain.Models;
+﻿using System;
+using PMS.Backend.Core.Domain.Models;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 
 namespace PMS.Backend.Test.Builders.Agency.Models.Input;
 
 public class EditAgencyInputBuilder
 {
-    private int _id;
+    private Guid _id;
     private string _legalName = "LegalName";
     private decimal? _defaultCommissionRate = 0m;
     private decimal? _defaultCommissionOnExtras = 0m;
@@ -13,7 +14,7 @@ public class EditAgencyInputBuilder
     private string? _emergencyPhone;
     private string? _emergencyEmail;
 
-    public EditAgencyInputBuilder WithId(int id)
+    public EditAgencyInputBuilder WithId(Guid id)
     {
         _id = id;
         return this;

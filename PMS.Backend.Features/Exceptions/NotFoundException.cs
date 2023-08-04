@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using System;
+using HotChocolate;
 using PMS.Backend.Core.Entities;
 
 namespace PMS.Backend.Features.Exceptions;
@@ -18,7 +19,7 @@ public class NotFoundException<T> : GraphQLException
     /// <param name="id">
     ///     The id of the entity that was not found.
     /// </param>
-    public NotFoundException(int id)
+    public NotFoundException(Guid id)
         : base(ErrorBuilder.New()
             .SetMessage($"{typeof(T).Name} not found with id {id}.")
             .SetCode("ENTITY_NOT_FOUND")

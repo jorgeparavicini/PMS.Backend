@@ -11,7 +11,7 @@ public class AgencyBuilder
     private readonly IList<Action<AgencyContactBuilder>> _agencyContactBuilders =
         new List<Action<AgencyContactBuilder>>();
 
-    private int _id;
+    private Guid _id;
     private string _legalName = "LegalName";
     private decimal? _defaultCommissionRate = 0m;
     private decimal? _defaultCommissionOnExtras = 0m;
@@ -19,7 +19,7 @@ public class AgencyBuilder
     private string? _emergencyPhone;
     private string? _emergencyEmail;
 
-    public AgencyBuilder WithId(int id)
+    public AgencyBuilder WithId(Guid id)
     {
         _id = id;
         return this;

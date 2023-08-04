@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using Detached.Annotations;
 
@@ -32,7 +33,7 @@ public class Reservation : Entity
     /// Gets or sets the id of the group reservation this reservation is part of.
     /// </summary>
     /// <seealso cref="GroupReservation"/>
-    public int GroupReservationId { get; set; }
+    public Guid GroupReservationId { get; set; }
 
     /// <summary>
     /// Gets or sets the parent group reservation.

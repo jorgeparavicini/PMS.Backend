@@ -41,7 +41,7 @@ public class ReservationDetail : Entity
     /// Gets or sets the id of the parent reservation.
     /// </summary>
     /// <seealso cref="Reservation"/>
-    public int ReservationId { get; set; }
+    public Guid ReservationId { get; set; }
 
     /// <summary>
     /// Gets or sets the parent reservation this detail is part of.

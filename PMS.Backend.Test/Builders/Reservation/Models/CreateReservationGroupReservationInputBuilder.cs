@@ -9,7 +9,7 @@ public class CreateReservationGroupReservationInputBuilder
 {
     private string? _reference;
     private bool _isQuote;
-    private int _agencyContactId = 1;
+    private Guid _agencyContactId;
 
     private IList<Action<CreateReservationReservationInputBuilder>> _reservations =
         new List<Action<CreateReservationReservationInputBuilder>>
@@ -29,7 +29,7 @@ public class CreateReservationGroupReservationInputBuilder
         return this;
     }
 
-    public CreateReservationGroupReservationInputBuilder WithAgencyContactId(int agencyContactId)
+    public CreateReservationGroupReservationInputBuilder WithAgencyContactId(Guid agencyContactId)
     {
         _agencyContactId = agencyContactId;
         return this;

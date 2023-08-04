@@ -70,7 +70,9 @@ public class CreateAgencyContactMutation
     {
         logger.ExecutingMutation(nameof(CreateAgencyContactMutation));
 
-        if (await dbContext.FindAsync<Core.Entities.Agency.Agency>(input.AgencyId, cancellationToken) is null)
+        if (await dbContext.FindAsync<Core.Entities.Agency.Agency>(
+                input.AgencyId,
+                cancellationToken) is null)
         {
             throw new NotFoundException<Core.Entities.Agency.Agency>(input.AgencyId);
         }

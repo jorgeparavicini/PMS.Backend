@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using FluentValidation.TestHelper;
 using PMS.Backend.Core.Domain.Models;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
@@ -25,7 +26,7 @@ public class EditAgencyInputValidatorTests
     {
         // Arrange
         EditAgencyInput input = new EditAgencyInputBuilder()
-            .WithId(1)
+            .WithId(Guid.NewGuid())
             .WithLegalName("Test")
             .WithDefaultCommissionRate(0.1m)
             .WithDefaultCommissionOnExtras(0.1m)
@@ -46,7 +47,7 @@ public class EditAgencyInputValidatorTests
     {
         // Arrange
         EditAgencyInput input = new EditAgencyInputBuilder()
-            .WithId(1)
+            .WithId(Guid.NewGuid())
             .Build();
 
         // Act
@@ -56,14 +57,12 @@ public class EditAgencyInputValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenIdIsInvalid(int id)
+    [Fact]
+    public void Validate_ShouldFail_WhenIdIsInvalid()
     {
         // Arrange
         EditAgencyInput input = new EditAgencyInputBuilder()
-            .WithId(id)
+            .WithId(Guid.Empty)
             .Build();
 
         // Act

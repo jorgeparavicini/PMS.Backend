@@ -6,11 +6,11 @@ namespace PMS.Backend.Test.Builders.Reservation.Entity;
 
 public class GroupReservationBuilder
 {
-    private int _id;
+    private Guid _id;
     private string? _reference;
     private DateTime _reservationDate;
     private bool _isQuote;
-    private int _agencyContactId;
+    private Guid _agencyContactId;
 
     private IList<Action<ReservationBuilder>> _reservations =
         new List<Action<ReservationBuilder>>
@@ -18,7 +18,7 @@ public class GroupReservationBuilder
             _ => { },
         };
 
-    public GroupReservationBuilder WithId(int id)
+    public GroupReservationBuilder WithId(Guid id)
     {
         _id = id;
         return this;
@@ -42,7 +42,7 @@ public class GroupReservationBuilder
         return this;
     }
 
-    public GroupReservationBuilder WithAgencyContactId(int agencyContactId)
+    public GroupReservationBuilder WithAgencyContactId(Guid agencyContactId)
     {
         _agencyContactId = agencyContactId;
         return this;

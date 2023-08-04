@@ -76,7 +76,7 @@ public class DeleteAgencyContactMutationTests : AgencyDatabaseFixture
         // Arrange
         DeleteAgencyContactInput input = new()
         {
-            Id = 0,
+            Id = Guid.Empty,
         };
 
         // Act

@@ -41,7 +41,7 @@ public class GroupReservation : Entity
     /// Gets or sets the id of the associated agency contact.
     /// </summary>
     /// <seealso cref="AgencyContact"/>
-    public int AgencyContactId { get; set; }
+    public Guid AgencyContactId { get; set; }
 
     /// <summary>
     /// Gets or sets the contact who made this reservation.

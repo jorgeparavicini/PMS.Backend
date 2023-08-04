@@ -71,7 +71,7 @@ public class EditAgencyContactMutationTests : AgencyDatabaseFixture
         int currentCount = DbContext.AgencyContacts.Count();
 
         EditAgencyContactInput input = new EditAgencyContactInputBuilder()
-            .WithId(0)
+            .WithId(Guid.Empty)
             .Build();
 
         // Act

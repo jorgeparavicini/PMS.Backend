@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using FluentValidation.TestHelper;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
@@ -24,8 +25,8 @@ public class MoveAgencyContactToAgencyInputValidatorTests
     {
         // Arrange
         MoveAgencyContactToAgencyInput input = new MoveAgencyContactToAgencyInputBuilder()
-            .WithAgencyId(1)
-            .WithAgencyContactId(1)
+            .WithAgencyId(Guid.NewGuid())
+            .WithAgencyContactId(Guid.NewGuid())
             .Build();
 
         // Act
@@ -35,15 +36,13 @@ public class MoveAgencyContactToAgencyInputValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenAgencyContactIdIsInvalid(int agencyContactId)
+    [Fact]
+    public void Validate_ShouldFail_WhenAgencyContactIdIsInvalid()
     {
         // Arrange
         MoveAgencyContactToAgencyInput input = new MoveAgencyContactToAgencyInputBuilder()
-            .WithAgencyId(1)
-            .WithAgencyContactId(agencyContactId)
+            .WithAgencyId(Guid.NewGuid())
+            .WithAgencyContactId(Guid.Empty)
             .Build();
 
         // Act
@@ -53,15 +52,13 @@ public class MoveAgencyContactToAgencyInputValidatorTests
         result.ShouldHaveValidationErrorFor(agencyContact => agencyContact.AgencyContactId);
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenAgencyIdIsInvalid(int agencyId)
+    [Fact]
+    public void Validate_ShouldFail_WhenAgencyIdIsInvalid()
     {
         // Arrange
         MoveAgencyContactToAgencyInput input = new MoveAgencyContactToAgencyInputBuilder()
-            .WithAgencyId(agencyId)
-            .WithAgencyContactId(1)
+            .WithAgencyId(Guid.Empty)
+            .WithAgencyContactId(Guid.NewGuid())
             .Build();
 
         // Act

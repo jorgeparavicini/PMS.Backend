@@ -15,8 +15,7 @@ namespace PMS.Backend.Core.Migrations
                 name: "Agencies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LegalName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     DefaultCommissionRate = table.Column<decimal>(type: "decimal(5,4)", precision: 5, scale: 4, nullable: true),
                     DefaultCommissionOnExtras = table.Column<decimal>(type: "decimal(5,4)", precision: 5, scale: 4, nullable: true),
@@ -35,8 +34,7 @@ namespace PMS.Backend.Core.Migrations
                 name: "AgencyContacts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContactName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -44,7 +42,7 @@ namespace PMS.Backend.Core.Migrations
                     City = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     ZipCode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     IsFrequentVendor = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    AgencyId = table.Column<int>(type: "int", nullable: false),
+                    AgencyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
@@ -62,12 +60,11 @@ namespace PMS.Backend.Core.Migrations
                 name: "GroupReservations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Reference = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     ReservationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsQuote = table.Column<bool>(type: "bit", nullable: false),
-                    AgencyContactId = table.Column<int>(type: "int", nullable: false),
+                    AgencyContactId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
@@ -86,10 +83,9 @@ namespace PMS.Backend.Core.Migrations
                 name: "Reservations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    GroupReservationId = table.Column<int>(type: "int", nullable: false),
+                    GroupReservationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
@@ -108,13 +104,12 @@ namespace PMS.Backend.Core.Migrations
                 name: "ReservationDetails",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReservationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckIn = table.Column<DateOnly>(type: "date", nullable: false),
                     CheckOut = table.Column<DateOnly>(type: "date", nullable: false),
                     FolioClosedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ReservationId = table.Column<int>(type: "int", nullable: false),
+                    ReservationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },

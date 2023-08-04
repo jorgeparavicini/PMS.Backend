@@ -69,7 +69,8 @@ public class EditAgencyMutation
     {
         logger.ExecutingMutation(nameof(EditAgencyMutation));
 
-        if (await dbContext.FindAsync<Core.Entities.Agency.Agency>(input.Id, cancellationToken) is null)
+        if (await dbContext.FindAsync<Core.Entities.Agency.Agency>(input.Id, cancellationToken) is
+            null)
         {
             throw new NotFoundException<Core.Entities.Agency.Agency>(input.Id);
         }

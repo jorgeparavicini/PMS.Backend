@@ -86,7 +86,7 @@ public class MoveAgencyContactToAgencyMutationTests : AgencyDatabaseFixture
         MoveAgencyContactToAgencyInput input = new()
         {
             AgencyId = agency.Id,
-            AgencyContactId = 0,
+            AgencyContactId = Guid.Empty,
         };
 
         // Act
@@ -107,7 +107,7 @@ public class MoveAgencyContactToAgencyMutationTests : AgencyDatabaseFixture
 
         MoveAgencyContactToAgencyInput input = new()
         {
-            AgencyId = 0,
+            AgencyId = Guid.Empty,
             AgencyContactId = agencyContact.Id,
         };
 

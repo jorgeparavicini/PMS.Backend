@@ -32,7 +32,7 @@ public class CreateAgencyWithContactsAgencyInputValidator : AbstractValidator<Cr
             .GreaterThanOrEqualTo(0)
             .LessThanOrEqualTo(1.0m);
 
-        RuleFor(agency => agency.CommissionMethod).IsInEnum();
+        RuleFor(agency => agency.CommissionMethod.Value).IsInEnum();
 
         RuleFor(agency => agency.EmergencyPhone).MaximumLength(255);
 

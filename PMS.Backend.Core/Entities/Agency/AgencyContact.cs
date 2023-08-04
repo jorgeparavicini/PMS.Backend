@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using PMS.Backend.Core.Entities.Reservation;
 
@@ -54,7 +55,7 @@ public class AgencyContact : Entity
     /// Gets or sets the id of the associated agency.
     /// </summary>
     /// <seealso cref="Agency"/>
-    public int AgencyId { get; set; }
+    public Guid AgencyId { get; set; }
 
     /// <summary>
     /// Gets or sets the associated agency.

@@ -93,7 +93,7 @@ public class DeleteAgencyMutationTests : AgencyDatabaseFixture
         // Arrange
         DeleteAgencyInput input = new()
         {
-            Id = 0,
+            Id = Guid.Empty,
         };
 
         // Act

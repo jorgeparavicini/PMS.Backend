@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using HotChocolate;
 using HotChocolate.Types;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
@@ -36,5 +37,5 @@ public record CreateAgencyWithContactsAgencyContactInput
 
     /// <inheritdoc cref="AgencyContact.IsFrequentVendor"/>
     [DefaultValue(false)]
-    public bool IsFrequentVendor { get; init; }
+    public Optional<bool> IsFrequentVendor { get; init; }
 }

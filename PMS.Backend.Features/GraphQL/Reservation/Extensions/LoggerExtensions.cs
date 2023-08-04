@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.Extensions.Logging;
 
 namespace PMS.Backend.Features.GraphQL.Reservation.Extensions;
 
@@ -21,5 +22,5 @@ public static partial class LoggerExtensions
         LogLevel.Information,
         message: "Created reservation {ReservationId}",
         EventName = nameof(ReservationCreated))]
-    public static partial void ReservationCreated(this ILogger logger, int reservationId);
+    public static partial void ReservationCreated(this ILogger logger, Guid reservationId);
 }

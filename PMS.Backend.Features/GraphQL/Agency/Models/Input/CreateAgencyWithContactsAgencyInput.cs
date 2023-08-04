@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
+using HotChocolate;
 using HotChocolate.Types;
 using PMS.Backend.Core.Domain.Models;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
@@ -27,8 +28,8 @@ public record CreateAgencyWithContactsAgencyInput
     public decimal? DefaultCommissionOnExtras { get; init; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.CommissionMethod"/>
-    [DefaultValue(CommissionMethod.DeductedByAgency)]
-    public CommissionMethod CommissionMethod { get; init; }
+    [DefaultValue(Core.Domain.Models.CommissionMethod.DeductedByAgency)]
+    public Optional<CommissionMethod> CommissionMethod { get; init; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.EmergencyPhone"/>
     public string? EmergencyPhone { get; init; }
