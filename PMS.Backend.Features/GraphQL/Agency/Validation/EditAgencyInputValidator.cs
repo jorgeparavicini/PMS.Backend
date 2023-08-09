@@ -20,9 +20,7 @@ public class EditAgencyInputValidator : AbstractValidator<EditAgencyInput>
     /// </summary>
     public EditAgencyInputValidator()
     {
-        RuleFor(agency => agency.Id)
-            .NotEmpty()
-            .GreaterThan(0);
+        RuleFor(agency => agency.Id).NotEmpty();
 
         RuleFor(agency => agency.LegalName).NotEmpty().MaximumLength(255);
 

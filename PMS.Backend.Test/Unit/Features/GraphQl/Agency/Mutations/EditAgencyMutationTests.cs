@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using HotChocolate;
@@ -18,9 +17,9 @@ using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
-using PMS.Backend.Test.Common.Customization;
+using PMS.Backend.Test.Builders.Agency.Models.Input;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using Xunit;
 using Xunit.Categories;
 
@@ -32,15 +31,10 @@ public class EditAgencyMutationTests : AgencyDatabaseFixture
     private readonly IMapper _mapper;
     private readonly RecordingLogger<EditAgencyMutation> _logger = new();
     private readonly EditAgencyMutation _sut = new();
-    private readonly Fixture _fixture = new();
 
     public EditAgencyMutationTests()
     {
         _mapper = new MapperConfiguration(cfg => cfg.AddProfile<AgencyProfile>()).CreateMapper();
-
-        _fixture.Customize(new CommissionCustomization<EditAgencyInput>(
-            agency => agency.DefaultCommissionRate,
-            agency => agency.DefaultCommissionOnExtras));
     }
 
     [Fact]
@@ -50,9 +44,9 @@ public class EditAgencyMutationTests : AgencyDatabaseFixture
         int currentCount = DbContext.Agencies.Count();
         Core.Entities.Agency.Agency agency = DbContext.Agencies.First();
 
-        EditAgencyInput input = _fixture.Build<EditAgencyInput>()
-            .With(input => input.Id, agency.Id)
-            .Create();
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithId(agency.Id)
+            .Build();
 
         // Act
         IQueryable<AgencyPayload> result =
@@ -74,9 +68,9 @@ public class EditAgencyMutationTests : AgencyDatabaseFixture
         // Arrange
         Core.Entities.Agency.Agency agency = DbContext.Agencies.First();
 
-        EditAgencyInput input = _fixture.Build<EditAgencyInput>()
-            .With(input => input.Id, agency.Id)
-            .Create();
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithId(agency.Id)
+            .Build();
 
         // Act
         await _sut.EditAgencyAsync(DbContext, input, _mapper, _logger);
@@ -91,9 +85,9 @@ public class EditAgencyMutationTests : AgencyDatabaseFixture
     public async Task EditAgencyAsync_ShouldThrow_WhenAgencyDoesNotExist()
     {
         // Arrange
-        EditAgencyInput input = _fixture.Build<EditAgencyInput>()
-            .With(input => input.Id, 0)
-            .Create();
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithId(Guid.Empty)
+            .Build();
 
         // Act
         Func<Task<IQueryable<AgencyPayload>>> act = async () =>

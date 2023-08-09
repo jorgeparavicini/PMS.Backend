@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace PMS.Backend.Core.Configuration.Reservation;
 
 /// <summary>
@@ -12,4 +14,11 @@ namespace PMS.Backend.Core.Configuration.Reservation;
 /// </summary>
 public class ReservationTypeConfiguration : EntityTypeConfiguration<Entities.Reservation.Reservation>
 {
+    /// <inheritdoc />
+    public override void Configure(EntityTypeBuilder<Entities.Reservation.Reservation> builder)
+    {
+        base.Configure(builder);
+
+        builder.Property(reservation => reservation.Name).HasMaxLength(255);
+    }
 }

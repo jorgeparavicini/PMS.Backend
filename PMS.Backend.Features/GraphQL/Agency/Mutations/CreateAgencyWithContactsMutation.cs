@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -17,10 +18,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
+using PMS.Backend.Features.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
-using LoggerExtensions = PMS.Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -55,6 +57,9 @@ public class CreateAgencyWithContactsMutation
     ///     entity to the <see cref="AgencyPayload"/>.
     /// </param>
     /// <param name="logger">The <see cref="ILogger"/> instance used for logging.</param>
+    /// <param name="cancellationToken">
+    ///     A <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.
+    /// </param>
     /// <returns>
     ///     An <see cref="IQueryable"/> of <see cref="AgencyPayload"/> representing the newly created
     ///     <see cref="Core.Entities.Agency.Agency"/> entity along with its associated <see cref="AgencyContact"/>s.
@@ -67,26 +72,24 @@ public class CreateAgencyWithContactsMutation
     [UseProjection]
     public async Task<IQueryable<AgencyPayload>> CreateAgencyWithContactsAsync(
         PmsDbContext dbContext,
-        CreateAgencyWithContactsInput input,
+        CreateAgencyWithContactsAgencyInput input,
         [Service]
         IMapper mapper,
         [Service]
-        ILogger<CreateAgencyWithContactsMutation> logger)
+        ILogger<CreateAgencyWithContactsMutation> logger,
+        CancellationToken cancellationToken = default)
     {
-        logger.ExecutingMutation(nameof(CreateAgencyWithContactsAsync));
+        logger.ExecutingMutation(nameof(CreateAgencyWithContactsMutation));
 
         if (input.AgencyContacts.IsNullOrEmpty())
         {
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage("At least one agency contact must be provided.")
-                .SetCode("AGENCY_CONTACTS_REQUIRED")
-                .Build());
+            throw new EmptyException<AgencyContact>();
         }
 
         var agencyEntity = await dbContext.MapAsync<Core.Entities.Agency.Agency>(input);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        LoggerExtensions.AgencyCreated(logger, agencyEntity.Id);
+        logger.AgencyCreated(agencyEntity.Id);
 
         return dbContext.Agencies
             .Where(agency => agency.Id == agencyEntity.Id)

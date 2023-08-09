@@ -1,7 +1,7 @@
 ﻿{
   "data": {
     "createAgencyWithContacts": {
-      "id": 4,
+      "id": 3,
       "legalName": "LegalNamed-55e266c-cb59-421a-88f5-4fc33a409153",
       "defaultCommissionRate": 0.2000,
       "defaultCommissionOnExtras": 0.1000,
@@ -10,7 +10,7 @@
       "emergencyEmail": "email@emergency.com",
       "agencyContacts": [
         {
-          "id": 7,
+          "id": 4,
           "contactName": "Contact Name - d55e266c-cb59-421a-88f5-4fc33a409153",
           "email": "d55e266c-cb59-421a-88f5-4fc33a409153@gmail.com",
           "address": "Address - d55e266c-cb59-421a-88f5-4fc33a409153",
@@ -20,7 +20,7 @@
           "isFrequentVendor": true
         },
         {
-          "id": 8,
+          "id": 5,
           "contactName": "Contact Name - 7196e2db-38c5-4b17-89a1-d6d54740836b",
           "email": "7196e2db-38c5-4b17-89a1-d6d54740836b@gmail.com",
           "address": "Address - 7196e2db-38c5-4b17-89a1-d6d54740836b",

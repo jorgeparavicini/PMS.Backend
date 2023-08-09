@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using PMS.Backend.Core.Entities;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -16,5 +17,5 @@ namespace PMS.Backend.Features.GraphQL.Agency.Models.Input;
 public record DeleteAgencyInput
 {
     /// <inheritdoc cref="Entity.Id"/>
-    public required int Id { get; init; }
+    public required Guid Id { get; init; }
 }

@@ -12,7 +12,7 @@ using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Queries;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using Xunit;
 using Xunit.Categories;
 
@@ -28,11 +28,12 @@ public class AgencyQueryTests : AgencyDatabaseFixture
     [Fact]
     public void AgencyAsync_ShouldReturnAgency()
     {
+        // GraphQL is responsible for actually filtering. This query should return all agencies.
         // Act
         IQueryable<AgencyPayload> result = _sut.GetAgency(DbContext, _mapper, _logger);
 
         // Assert
-        result.Should().HaveCount(AgencyCount);
+        result.Should().HaveCount(Entities.Count());
         result.Select(agency => agency.Id).Should().BeEquivalentTo(DbContext.Agencies.Select(agency => agency.Id));
 
         _logger.ShouldHaveLogged(() => Backend.Features.Extensions.LoggerExtensions.ExecutingQuery);

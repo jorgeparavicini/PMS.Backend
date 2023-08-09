@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -13,14 +14,14 @@ using Detached.Mappers.EntityFramework;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
 using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
+using PMS.Backend.Features.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
-using LoggerExtensions = PMS.Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -45,6 +46,9 @@ public class CreateAgencyContactMutation
     ///     <see cref="AgencyContactPayload"/>.
     /// </param>
     /// <param name="logger">The <see cref="ILogger"/> instance used for logging.</param>
+    /// <param name="cancellationToken">
+    ///     A <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.
+    /// </param>
     /// <returns>
     ///     An <see cref="IQueryable"/> of <see cref="AgencyContactPayload"/> representing the newly created
     ///     <see cref="AgencyContact"/> entity.
@@ -61,24 +65,22 @@ public class CreateAgencyContactMutation
         [Service]
         IMapper mapper,
         [Service]
-        ILogger<CreateAgencyContactMutation> logger)
+        ILogger<CreateAgencyContactMutation> logger,
+        CancellationToken cancellationToken = default)
     {
-        logger.ExecutingMutation(nameof(CreateAgencyContactAsync));
+        logger.ExecutingMutation(nameof(CreateAgencyContactMutation));
 
-        // Check if the Agency exists
-        if (!await dbContext.Agencies.AnyAsync(agency => agency.Id == input.AgencyId))
+        if (await dbContext.FindAsync<Core.Entities.Agency.Agency>(
+                input.AgencyId,
+                cancellationToken) is null)
         {
-            throw new GraphQLException(
-                ErrorBuilder.New()
-                    .SetMessage($"Agency not found with id {input.AgencyId}.")
-                    .SetCode("ENTITY_NOT_FOUND")
-                    .Build());
+            throw new NotFoundException<Core.Entities.Agency.Agency>(input.AgencyId);
         }
 
         var agencyContactEntity = await dbContext.MapAsync<AgencyContact>(input);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        LoggerExtensions.AgencyContactCreated(logger, agencyContactEntity.Id);
+        logger.AgencyContactCreated(agencyContactEntity.Id);
 
         return dbContext.AgencyContacts
             .Where(agencyContact => agencyContact.Id == agencyContactEntity.Id)

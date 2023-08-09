@@ -8,6 +8,7 @@
 using System.Diagnostics.CodeAnalysis;
 using HotChocolate.Execution.Configuration;
 using PMS.Backend.Features.GraphQL.Agency.Extensions;
+using PMS.Backend.Features.GraphQL.Reservation.Extensions;
 
 namespace PMS.Backend.Features;
 
@@ -28,6 +29,8 @@ public static class Registrar
     /// </returns>
     public static IRequestExecutorBuilder AddGraphQlFeatures(this IRequestExecutorBuilder builder)
     {
-        return builder.AddAgency();
+        return builder
+            .AddAgency()
+            .AddReservation();
     }
 }

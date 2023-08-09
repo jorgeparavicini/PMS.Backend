@@ -17,7 +17,7 @@ public abstract class Entity
     /// <summary>
     /// Gets the unique Identifier of the entity.
     /// </summary>
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
     /// <summary>
     /// Gets a timestamp used for concurrency checking.
