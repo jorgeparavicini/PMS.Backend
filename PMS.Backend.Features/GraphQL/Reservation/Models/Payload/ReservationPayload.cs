@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PMS.Backend.Features.GraphQL.Reservation.Models.Payload;
 
@@ -10,7 +11,7 @@ public record ReservationPayload
     /// <summary>
     ///     Gets the unique identifier for this entity.
     /// </summary>
-    public required int Id { get; init; }
+    public required Guid Id { get; init; }
 
     /// <summary>
     ///     Gets an optional name label to identify the reservation.
@@ -20,7 +21,7 @@ public record ReservationPayload
     /// <summary>
     ///     Gets the id of the group reservation this reservation is part of.
     /// </summary>
-    public int GroupReservationId { get; init; }
+    public Guid GroupReservationId { get; init; }
 
     /// <summary>
     ///     Gets the parent group reservation.

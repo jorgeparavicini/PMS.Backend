@@ -12,7 +12,7 @@ public record GroupReservationPayload
     /// <summary>
     ///     Gets the unique identifier for this entity.
     /// </summary>
-    public required int Id { get; init; }
+    public required Guid Id { get; init; }
 
     /// <summary>
     ///     Gets an optional reference label to identify the reservation.
@@ -32,7 +32,7 @@ public record GroupReservationPayload
     /// <summary>
     ///     Gets the id of the associated agency contact.
     /// </summary>
-    public int AgencyContactId { get; init; }
+    public Guid AgencyContactId { get; init; }
 
     /// <summary>
     ///     Gets the contact who made this reservation.

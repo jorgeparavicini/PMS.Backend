@@ -10,7 +10,7 @@ public record ReservationDetailPayload
     /// <summary>
     ///     Gets the unique identifier for this entity.
     /// </summary>
-    public required int Id { get; init; }
+    public required Guid Id { get; init; }
 
     /// <summary>
     ///     Gets the date when the reservation was made.
@@ -35,7 +35,7 @@ public record ReservationDetailPayload
     /// <summary>
     ///     Gets the id of the reservation this detail is part of.
     /// </summary>
-    public int ReservationId { get; init; }
+    public Guid ReservationId { get; init; }
 
     /// <summary>
     ///     Gets the parent reservation.

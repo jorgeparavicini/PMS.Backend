@@ -6,87 +6,31 @@
 // -----------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
-using Detached.Mappers.EntityFramework;
-using Detached.Mappers.HotChocolate;
-using FluentValidation;
-using HotChocolate.Data;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using PMS.Backend.Core.Database;
-using PMS.Backend.Features;
-using PMS.Backend.Features.GraphQL;
+using PMS.Backend.Service.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-string env = builder.Environment.EnvironmentName;
-builder.Configuration.AddJsonFile($"appsettings.{env}.json", true, true);
+builder.Configuration
+    .AddEnvironmentConfiguration(builder.Environment)
+    .AddUserSecrets<Program>(optional: true, reloadOnChange: true);
 
-builder.Services.AddValidatorsFromAssembly(typeof(Registrar).Assembly);
-
-builder.Services.AddPooledDbContextFactory<PmsDbContext>(options =>
-{
-    string connectionString = builder.Configuration.GetConnectionString("PMS")!;
-    options
-        .UseSqlServer(
-            connectionString,
-            serverOptions => serverOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-        .UseDetached()
-        .UseMapping(cfg =>
-        {
-            cfg.Default(opts =>
-            {
-                opts.WithHotChocolate();
-            });
-        });
-});
-
-builder.Services.AddAutoMapper(typeof(Registrar).Assembly);
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(
-        name: "Cors",
-        policy =>
-        {
-            policy.AllowAnyOrigin();
-            policy.AllowAnyHeader();
-            policy.AllowAnyMethod();
-        });
-});
-
-// TODO: This must obviously be changed to a more secure CORS policy
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(
-        name: "Cors",
-        policy =>
-        {
-            policy.AllowAnyOrigin();
-            policy.AllowAnyHeader();
-            policy.AllowAnyMethod();
-        });
-});
-
-builder.Services.AddGraphQLServer()
-    .AddMutationType<Mutation>()
-    .AddQueryType<Query>()
-    .AddGraphQlFeatures()
-    .RegisterDbContext<PmsDbContext>(DbContextKind.Pooled)
-    .AddFiltering()
-    .AddSorting()
-    .AddProjections()
-    .AddFairyBread()
-    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = builder.Environment.IsDevelopment());
+builder.Services
+    .AddValidators()
+    .AddEfCore(builder.Configuration)
+    .AddAutoMapper()
+    .AddApplicationCors()
+    .AddGraphQl(builder.Environment);
 
 WebApplication app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseCors("Cors");
+app.UseCors();
 app.MapGraphQL();
+
 app.Run();
 
 /// <summary>

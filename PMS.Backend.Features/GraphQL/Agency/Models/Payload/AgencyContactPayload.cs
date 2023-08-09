@@ -39,7 +39,7 @@ public record AgencyContactPayload
     public bool IsFrequentVendor { get; init; }
 
     /// <inheritdoc cref="AgencyContact.AgencyId"/>
-    public int AgencyId { get; init; }
+    public Guid AgencyId { get; init; }
 
     /// <inheritdoc cref="AgencyContact.Agency"/>
     public required AgencyPayload Agency { get; init; }
