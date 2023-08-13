@@ -12,8 +12,9 @@ using AutoMapper;
 using FluentAssertions;
 using HotChocolate;
 using Microsoft.EntityFrameworkCore;
+using PMS.Backend.Api.GraphQL.Agency.Extensions;
+using PMS.Backend.Api.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency;
-using PMS.Backend.Features.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
@@ -59,7 +60,7 @@ public class CreateAgencyContactMutationTests : AgencyDatabaseFixture
         entityId.Should().NotBeNull();
         DbContext.AgencyContacts.Should().HaveCount(currentCount + 1);
 
-        _logger.ShouldHaveLogged(() => Backend.Features.Extensions.LoggerExtensions.ExecutingMutation);
+        _logger.ShouldHaveLogged(() => Api.Extensions.LoggerExtensions.ExecutingMutation);
         _logger.ShouldHaveLogged(() => LoggerExtensions.AgencyContactCreated);
     }
 
@@ -80,7 +81,7 @@ public class CreateAgencyContactMutationTests : AgencyDatabaseFixture
             .ThrowAsync<GraphQLException>()
             .WithMessage($"Agency not found with id {input.AgencyId}.");
 
-        _logger.ShouldHaveLogged(() => Backend.Features.Extensions.LoggerExtensions.ExecutingMutation);
+        _logger.ShouldHaveLogged(() => Api.Extensions.LoggerExtensions.ExecutingMutation);
         _logger.ShouldNotHaveLogged(() => LoggerExtensions.AgencyContactCreated);
     }
 }

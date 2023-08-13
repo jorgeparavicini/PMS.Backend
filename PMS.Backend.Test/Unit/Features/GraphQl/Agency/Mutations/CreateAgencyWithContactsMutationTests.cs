@@ -12,8 +12,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using PMS.Backend.Api.Exceptions;
+using PMS.Backend.Api.Extensions;
+using PMS.Backend.Api.GraphQL.Agency.Mutations;
 using PMS.Backend.Core.Entities.Agency;
-using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
@@ -31,8 +33,8 @@ namespace PMS.Backend.Test.Unit.Features.GraphQl.Agency.Mutations;
 public class CreateAgencyWithContactsMutationTests : AgencyDatabaseFixture
 {
     private readonly IMapper _mapper;
-    private readonly RecordingLogger<CreateAgencyWithContactsMutation> _logger = new();
-    private readonly CreateAgencyWithContactsMutation _sut = new();
+    private readonly RecordingLogger<CreateAgencyMutation> _logger = new();
+    private readonly CreateAgencyMutation _sut = new();
 
     public CreateAgencyWithContactsMutationTests()
     {
@@ -68,7 +70,7 @@ public class CreateAgencyWithContactsMutationTests : AgencyDatabaseFixture
         agencyContacts.Should().HaveCount(input.AgencyContacts.Count);
 
         _logger.ShouldHaveLogged(() => LoggerExtensions.ExecutingMutation);
-        _logger.ShouldHaveLogged(() => Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions.AgencyCreated);
+        _logger.ShouldHaveLogged(() => Api.GraphQL.Agency.Extensions.LoggerExtensions.AgencyCreated);
     }
 
     [Fact]
@@ -93,6 +95,6 @@ public class CreateAgencyWithContactsMutationTests : AgencyDatabaseFixture
         DbContext.AgencyContacts.Count().Should().Be(currentContactCount);
 
         _logger.ShouldHaveLogged(() => LoggerExtensions.ExecutingMutation);
-        _logger.ShouldNotHaveLogged(() => Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions.AgencyCreated);
+        _logger.ShouldNotHaveLogged(() => Api.GraphQL.Agency.Extensions.LoggerExtensions.AgencyCreated);
     }
 }

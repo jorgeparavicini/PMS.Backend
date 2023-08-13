@@ -38,7 +38,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PMS.Backend.Features\PMS.Backend.Features.csproj" />
+      <ProjectReference Include="..\PMS.Backend.Api\PMS.Backend.Api.csproj" />
       <ProjectReference Include="..\PMS.Backend.Service\PMS.Backend.Service.csproj" />
     </ItemGroup>
 

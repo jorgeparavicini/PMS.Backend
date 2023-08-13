@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
 using FluentAssertions;
+using PMS.Backend.Api.Extensions;
 using PMS.Backend.Features.GraphQL.Reservation;
 using PMS.Backend.Features.GraphQL.Reservation.Models.Payload;
 using PMS.Backend.Features.GraphQL.Reservation.Queries;
@@ -30,6 +31,6 @@ public class ReservationQueryTests : ReservationDatabaseFixture
             .Should()
             .BeEquivalentTo(DbContext.Reservations.Select(reservation => reservation.Id));
 
-        _logger.ShouldHaveLogged(() => Backend.Features.Extensions.LoggerExtensions.ExecutingQuery);
+        _logger.ShouldHaveLogged(() => LoggerExtensions.ExecutingQuery);
     }
 }

@@ -8,6 +8,7 @@
 using System.Linq;
 using AutoMapper;
 using FluentAssertions;
+using PMS.Backend.Api.Extensions;
 using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Queries;
@@ -36,6 +37,6 @@ public class AgencyQueryTests : AgencyDatabaseFixture
         result.Should().HaveCount(Entities.Count());
         result.Select(agency => agency.Id).Should().BeEquivalentTo(DbContext.Agencies.Select(agency => agency.Id));
 
-        _logger.ShouldHaveLogged(() => Backend.Features.Extensions.LoggerExtensions.ExecutingQuery);
+        _logger.ShouldHaveLogged(() => LoggerExtensions.ExecutingQuery);
     }
 }

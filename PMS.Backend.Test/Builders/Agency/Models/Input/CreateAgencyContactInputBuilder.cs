@@ -1,4 +1,5 @@
 ﻿using System;
+using PMS.Backend.Api.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 
 namespace PMS.Backend.Test.Builders.Agency.Models.Input;

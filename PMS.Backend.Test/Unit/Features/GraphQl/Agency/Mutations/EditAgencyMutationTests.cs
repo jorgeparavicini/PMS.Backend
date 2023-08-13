@@ -12,6 +12,7 @@ using AutoMapper;
 using FluentAssertions;
 using HotChocolate;
 using Microsoft.EntityFrameworkCore;
+using PMS.Backend.Api.Extensions;
 using PMS.Backend.Features.Extensions;
 using PMS.Backend.Features.GraphQL.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
@@ -59,7 +60,7 @@ public class EditAgencyMutationTests : AgencyDatabaseFixture
         DbContext.Agencies.Count().Should().Be(currentCount);
 
         _logger.ShouldHaveLogged(() => LoggerExtensions.ExecutingMutation);
-        _logger.ShouldHaveLogged(() => Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions.AgencyEdited);
+        _logger.ShouldHaveLogged(() => Api.GraphQL.Agency.Extensions.LoggerExtensions.AgencyEdited);
     }
 
     [Fact]
@@ -99,6 +100,6 @@ public class EditAgencyMutationTests : AgencyDatabaseFixture
             .WithMessage($"Agency not found with id {input.Id}.");
 
         _logger.ShouldHaveLogged(() => LoggerExtensions.ExecutingMutation);
-        _logger.ShouldNotHaveLogged(() => Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions.AgencyEdited);
+        _logger.ShouldNotHaveLogged(() => Api.GraphQL.Agency.Extensions.LoggerExtensions.AgencyEdited);
     }
 }

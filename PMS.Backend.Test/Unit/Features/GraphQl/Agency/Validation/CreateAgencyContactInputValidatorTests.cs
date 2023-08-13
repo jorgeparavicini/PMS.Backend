@@ -7,6 +7,7 @@
 
 using System;
 using FluentValidation.TestHelper;
+using PMS.Backend.Api.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
 using PMS.Backend.Test.Builders.Agency.Models.Input;

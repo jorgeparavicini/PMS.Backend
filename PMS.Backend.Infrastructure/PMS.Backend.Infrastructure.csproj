@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>PMS.Backend.Persistence</RootNamespace>
+        <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="12.1.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.7.23375.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PMS.Backend.Common\PMS.Backend.Common.csproj" />
+      <ProjectReference Include="..\PMS.Backend.Domain\PMS.Backend.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

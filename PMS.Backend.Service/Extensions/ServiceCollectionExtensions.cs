@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PMS.Backend.Core.Database;
-using PMS.Backend.Features;
-using PMS.Backend.Features.GraphQL;
+using PMS.Backend.Api;
+using PMS.Backend.Api.GraphQL;
+using PMS.Backend.Persistence.Db;
 
 namespace PMS.Backend.Service.Extensions;
 
@@ -36,7 +36,7 @@ public static class ServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection" /> so that additional calls can be chained.</returns>
     public static IServiceCollection AddEfCore(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddPooledDbContextFactory<PmsDbContext>(options =>
+        services.AddPooledDbContextFactory<PmsContext>(options =>
         {
             string connectionString = configuration.GetConnectionString("PMS")!;
 
@@ -92,12 +92,13 @@ public static class ServiceCollectionExtensions
             .AddMutationType<Mutation>()
             .AddQueryType<Query>()
             .AddGraphQlFeatures()
-            .RegisterDbContext<PmsDbContext>(DbContextKind.Pooled)
+            .RegisterDbContext<PmsContext>(DbContextKind.Pooled)
             .AddFiltering()
             .AddSorting()
             .AddProjections()
             .AddFairyBread()
-            .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = environment.IsDevelopment());
+            .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = environment.IsDevelopment())
+            .AddMutationConventions();
 
         return services;
     }

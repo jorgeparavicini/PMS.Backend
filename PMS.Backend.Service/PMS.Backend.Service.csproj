@@ -38,8 +38,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\PMS.Backend.Core\PMS.Backend.Core.csproj" />
-    <ProjectReference Include="..\PMS.Backend.Features\PMS.Backend.Features.csproj" />
+    <ProjectReference Include="..\PMS.Backend.Api\PMS.Backend.Api.csproj" />
+    <ProjectReference Include="..\PMS.Backend.Infrastructure\PMS.Backend.Infrastructure.csproj" />
   </ItemGroup>
   
   <ItemGroup>

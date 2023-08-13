@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HotChocolate;
-using PMS.Backend.Features.GraphQL.Agency.Extensions;
+using PMS.Backend.Api.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
@@ -46,7 +46,7 @@ public class DeleteAgencyMutationTests : AgencyDatabaseFixture
         agency.IsDeleted.Should().BeTrue();
         DbContext.Agencies.Should().HaveCount(currentCount - 1);
 
-        _logger.ShouldHaveLogged(() => Backend.Features.Extensions.LoggerExtensions.ExecutingMutation);
+        _logger.ShouldHaveLogged(() => Api.Extensions.LoggerExtensions.ExecutingMutation);
         _logger.ShouldHaveLogged(() => LoggerExtensions.AgencyDeleted);
     }
 
