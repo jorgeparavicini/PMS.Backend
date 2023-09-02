@@ -19,7 +19,7 @@ using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using Xunit;
 using Xunit.Categories;
 
@@ -86,7 +86,7 @@ public class MoveAgencyContactToAgencyMutationTests : AgencyDatabaseFixture
         MoveAgencyContactToAgencyInput input = new()
         {
             AgencyId = agency.Id,
-            AgencyContactId = 0,
+            AgencyContactId = Guid.Empty,
         };
 
         // Act
@@ -96,7 +96,7 @@ public class MoveAgencyContactToAgencyMutationTests : AgencyDatabaseFixture
         // Assert
         await act.Should()
             .ThrowAsync<GraphQLException>()
-            .WithMessage($"Agency contact not found with id {input.AgencyContactId}");
+            .WithMessage($"AgencyContact not found with id {input.AgencyContactId}.");
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public class MoveAgencyContactToAgencyMutationTests : AgencyDatabaseFixture
 
         MoveAgencyContactToAgencyInput input = new()
         {
-            AgencyId = 0,
+            AgencyId = Guid.Empty,
             AgencyContactId = agencyContact.Id,
         };
 
@@ -118,11 +118,11 @@ public class MoveAgencyContactToAgencyMutationTests : AgencyDatabaseFixture
         // Assert
         await act.Should()
             .ThrowAsync<GraphQLException>()
-            .WithMessage($"Agency not found with id {input.AgencyId}");
+            .WithMessage($"Agency not found with id {input.AgencyId}.");
     }
 
     [Fact]
-    public async Task MoveAgencyContactToAgencyAsync_ShouldThrow_WhenMovingToSameAgency()
+    public async Task MoveAgencyContactToAgencyAsync_ShouldLog_WhenMovingToSameAgency()
     {
         // Arrange
         Core.Entities.Agency.Agency agency = DbContext.Agencies.Include(agency => agency.AgencyContacts).First();
@@ -139,9 +139,8 @@ public class MoveAgencyContactToAgencyMutationTests : AgencyDatabaseFixture
             await _sut.MoveAgencyContactToAgencyAsync(DbContext, input, _mapper, _logger);
 
         // Assert
-        await act.Should()
-            .ThrowAsync<GraphQLException>()
-            .WithMessage(
-                $"Agency contact with id {input.AgencyContactId} already belongs to agency with id {input.AgencyId}");
+        await act.Should().NotThrowAsync();
+        _logger.ShouldHaveLogged(() =>
+            Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions.AgencyContactIsAlreadyAssignedToAgency);
     }
 }

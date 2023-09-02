@@ -5,9 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using FluentValidation.TestHelper;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
+using PMS.Backend.Test.Builders.Agency.Models.Input;
 using Xunit;
 using Xunit.Categories;
 
@@ -22,16 +24,15 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldSucceed_WhenValidInput()
     {
         // Arrange
-        CreateAgencyContactInput input = new()
-        {
-            AgencyId = 1,
-            ContactName = "Contact Name",
-            Email = "validmail@gmail.com",
-            Phone = "Phone",
-            Address = "Address",
-            City = "City",
-            ZipCode = "Zip Code",
-        };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithContactName("Contact Name")
+            .WithEmail("validmail@gmail.com")
+            .WithPhone("Phone")
+            .WithAddress("Address")
+            .WithCity("City")
+            .WithZipCode("Zip Code")
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -44,11 +45,9 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenAgencyIdIs0()
     {
         // Arrange
-        CreateAgencyContactInput input = new()
-        {
-            AgencyId = 0,
-            ContactName = "Contact Name",
-        };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.Empty)
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -61,7 +60,10 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenContactNameIsEmpty()
     {
         // Arrange
-        CreateAgencyContactInput input = new() { AgencyId = 1, ContactName = string.Empty };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithContactName(string.Empty)
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -74,7 +76,10 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenContactNameIsTooLong()
     {
         // Arrange
-        CreateAgencyContactInput input = new() { AgencyId = 1, ContactName = new string('a', 256) };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithContactName(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -87,12 +92,10 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenEmailIsInvalid()
     {
         // Arrange
-        CreateAgencyContactInput input = new()
-        {
-            AgencyId = 1,
-            ContactName = "Contact",
-            Email = "invalid mail",
-        };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithEmail("invalidmail")
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -105,12 +108,10 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenEmailIsTooLong()
     {
         // Arrange
-        CreateAgencyContactInput input = new()
-        {
-            AgencyId = 1,
-            ContactName = "Contact",
-            Email = new string('a', 256) + "@gmail.com",
-        };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithEmail(new string('a', 256) + "@gmail.com")
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -123,12 +124,10 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenPhoneIsTooLong()
     {
         // Arrange
-        CreateAgencyContactInput input = new()
-        {
-            AgencyId = 1,
-            ContactName = "Contact",
-            Phone = new string('a', 256),
-        };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithPhone(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -141,12 +140,10 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenAddressIsTooLong()
     {
         // Arrange
-        CreateAgencyContactInput input = new()
-        {
-            AgencyId = 1,
-            ContactName = "Contact",
-            Address = new string('a', 256),
-        };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithAddress(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -159,12 +156,10 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenCityIsTooLong()
     {
         // Arrange
-        CreateAgencyContactInput input = new()
-        {
-            AgencyId = 1,
-            ContactName = "Contact",
-            City = new string('a', 256),
-        };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithCity(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);
@@ -177,12 +172,10 @@ public class CreateAgencyContactInputValidatorTests
     public void Validate_ShouldFail_WhenZipCodeIsTooLong()
     {
         // Arrange
-        CreateAgencyContactInput input = new()
-        {
-            AgencyId = 1,
-            ContactName = "Contact",
-            ZipCode = new string('a', 256),
-        };
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithZipCode(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<CreateAgencyContactInput> result = _sut.TestValidate(input);

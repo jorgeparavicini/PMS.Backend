@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using Microsoft.Extensions.Logging;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Extensions;
@@ -26,7 +27,7 @@ public static partial class LoggerExtensions
         LogLevel.Information,
         message: "Created agency {AgencyId}",
         EventName = nameof(AgencyCreated))]
-    public static partial void AgencyCreated(this ILogger logger, int agencyId);
+    public static partial void AgencyCreated(this ILogger logger, Guid agencyId);
 
     /// <summary>
     ///     Logs the creation of an agency contact.
@@ -40,7 +41,7 @@ public static partial class LoggerExtensions
         LogLevel.Information,
         message: "Created agency contact {AgencyContactId}",
         EventName = nameof(AgencyContactCreated))]
-    public static partial void AgencyContactCreated(this ILogger logger, int agencyContactId);
+    public static partial void AgencyContactCreated(this ILogger logger, Guid agencyContactId);
 
     /// <summary>
     ///     Logs the editing of an agency.
@@ -54,7 +55,7 @@ public static partial class LoggerExtensions
         LogLevel.Information,
         message: "Edited agency {AgencyId}",
         EventName = nameof(AgencyEdited))]
-    public static partial void AgencyEdited(this ILogger logger, int agencyId);
+    public static partial void AgencyEdited(this ILogger logger, Guid agencyId);
 
     /// <summary>
     ///     Logs the editing of an agency contact.
@@ -68,7 +69,7 @@ public static partial class LoggerExtensions
         LogLevel.Information,
         message: "Edited agency contact {AgencyContactId}",
         EventName = nameof(AgencyContactEdited))]
-    public static partial void AgencyContactEdited(this ILogger logger, int agencyContactId);
+    public static partial void AgencyContactEdited(this ILogger logger, Guid agencyContactId);
 
     /// <summary>
     ///     Logs that an agency contact was moved to a different agency.
@@ -85,7 +86,7 @@ public static partial class LoggerExtensions
         LogLevel.Information,
         message: "Moved agency contact {AgencyContactId} to agency {AgencyId}",
         EventName = nameof(AgencyContactMovedToAgency))]
-    public static partial void AgencyContactMovedToAgency(this ILogger logger, int agencyContactId, int agencyId);
+    public static partial void AgencyContactMovedToAgency(this ILogger logger, Guid agencyContactId, Guid agencyId);
 
     /// <summary>
     ///     Logs the deletion of an agency.
@@ -99,7 +100,7 @@ public static partial class LoggerExtensions
         LogLevel.Information,
         message: "Deleted agency {AgencyId}",
         EventName = nameof(AgencyDeleted))]
-    public static partial void AgencyDeleted(this ILogger logger, int agencyId);
+    public static partial void AgencyDeleted(this ILogger logger, Guid agencyId);
 
     /// <summary>
     ///     Logs the deletion of an agency contact.
@@ -113,5 +114,25 @@ public static partial class LoggerExtensions
         LogLevel.Information,
         message: "Deleted agency contact {AgencyContactId}",
         EventName = nameof(AgencyContactDeleted))]
-    public static partial void AgencyContactDeleted(this ILogger logger, int agencyContactId);
+    public static partial void AgencyContactDeleted(this ILogger logger, Guid agencyContactId);
+
+    /// <summary>
+    ///     Logs that an agency contact was already assigned to an agency.
+    /// </summary>
+    /// <param name="logger">The <see cref="ILogger"/> instance used for logging.</param>
+    /// <param name="agencyContactId">
+    ///     The ID of the <see cref="Core.Entities.Agency.AgencyContact"/> entity that was already assigned.
+    /// </param>
+    /// <param name="agencyId">
+    ///     The ID of the <see cref="Core.Entities.Agency.Agency"/> entity that the contact was already assigned to.
+    /// </param>
+    [LoggerMessage(
+        eventId: 10108,
+        LogLevel.Information,
+        message: "Agency contact {AgencyContactId} is already assigned to agency {AgencyId}",
+        EventName = nameof(AgencyContactIsAlreadyAssignedToAgency))]
+    public static partial void AgencyContactIsAlreadyAssignedToAgency(
+        this ILogger logger,
+        Guid agencyContactId,
+        Guid agencyId);
 }

@@ -8,7 +8,7 @@
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Execution;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using VerifyXunit;
 using Xunit;
 using Xunit.Categories;
@@ -31,9 +31,29 @@ public class DeleteAgencyContactMutationTests : IClassFixture<AgencyGraphQlFixtu
     {
         // Arrange
         const string mutation = @"
-
 mutation {
   deleteAgencyContact(input: {id: 1}) {
+    clientMutationId
+  }
+}";
+        QueryRequestBuilder queryRequestBuilder = new();
+        queryRequestBuilder.SetQuery(mutation);
+
+        // Act
+        await using IExecutionResult result = await _fixture.Executor.ExecuteAsync(queryRequestBuilder.Create());
+
+        // Assert
+        result.ExpectQueryResult();
+        await Verifier.Verify(result.ToJson());
+    }
+
+    [Fact]
+    public async Task DeleteAgencyContactAsync_ShouldFailWhenDeletingLastAgencyContact()
+    {
+        // Arrange
+        const string mutation = @"
+mutation {
+  deleteAgencyContact(input: {id: 3}) {
     clientMutationId
   }
 }";

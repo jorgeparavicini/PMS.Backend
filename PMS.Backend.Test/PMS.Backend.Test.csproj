@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
@@ -10,12 +10,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Auth0.AuthenticationApi" Version="7.20.0" />
-        <PackageReference Include="AutoFixture.Xunit2" Version="4.18.0" />
         <PackageReference Include="FluentAssertions" Version="6.11.0" />
         <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0-preview.6.23329.4" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
         <PackageReference Include="Moq" Version="4.18.4" />
         <PackageReference Include="Moq.EntityFrameworkCore" Version="7.0.0.2" />
@@ -24,16 +22,21 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Testcontainers" Version="3.1.0" />
-        <PackageReference Include="Testcontainers.MsSql" Version="3.0.0" />
-        <PackageReference Include="Verify.Xunit" Version="20.0.0" />
-        <PackageReference Include="xunit" Version="2.4.2" />
-        <PackageReference Include="xunit.categories" Version="2.0.6" />
+        <PackageReference Include="Testcontainers" Version="3.3.0" />
+        <PackageReference Include="Testcontainers.MsSql" Version="3.3.0" />
+        <PackageReference Include="Verify.Xunit" Version="20.6.0" />
+        <PackageReference Include="xunit" Version="2.5.0" />
+        <PackageReference Include="xunit.categories" Version="2.0.7" />
+        <PackageReference Include="Testcontainers" Version="3.3.0" />
+        <PackageReference Include="Testcontainers.MsSql" Version="3.3.0" />
+        <PackageReference Include="Verify.Xunit" Version="20.6.0" />
+        <PackageReference Include="xunit" Version="2.5.0" />
+        <PackageReference Include="xunit.categories" Version="2.0.7" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="3.2.0">
+        <PackageReference Include="coverlet.collector" Version="6.0.0">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
@@ -52,11 +55,6 @@
       <AdditionalFiles Include="..\stylecop.json">
         <Link>stylecop.json</Link>
       </AdditionalFiles>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Integration\Features\" />
-      <Folder Include="Unit\Features\" />
     </ItemGroup>
 
 </Project>

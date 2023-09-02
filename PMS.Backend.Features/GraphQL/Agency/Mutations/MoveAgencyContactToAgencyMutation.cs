@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -15,10 +16,12 @@ using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Core.Database;
+using PMS.Backend.Core.Entities.Agency;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Extensions;
+using PMS.Backend.Features.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
-using LoggerExtensions = PMS.Backend.Features.GraphQL.Agency.Extensions.LoggerExtensions;
 
 namespace PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -52,6 +55,9 @@ public class MoveAgencyContactToAgencyMutation
     ///     <see cref="Core.Entities.Agency.Agency"/> entity to the <see cref="AgencyPayload"/>.
     /// </param>
     /// <param name="logger">The <see cref="ILogger"/> instance used for logging.</param>
+    /// <param name="cancellationToken">
+    ///     A <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.
+    /// </param>
     /// <returns>
     ///     An <see cref="IQueryable"/> of <see cref="AgencyPayload"/> representing the updated
     ///     <see cref="Core.Entities.Agency.Agency"/> entity.
@@ -64,46 +70,35 @@ public class MoveAgencyContactToAgencyMutation
         [Service]
         IMapper mapper,
         [Service]
-        ILogger<MoveAgencyContactToAgencyMutation> logger)
+        ILogger<MoveAgencyContactToAgencyMutation> logger,
+        CancellationToken cancellationToken = default)
     {
-        logger.ExecutingMutation(nameof(MoveAgencyContactToAgencyAsync));
+        logger.ExecutingMutation(nameof(MoveAgencyContactToAgencyMutation));
 
-        if (await dbContext.AgencyContacts.FindAsync(input.AgencyContactId) is not { } agencyContactEntity)
+        if (await dbContext.FindAsync<AgencyContact>(input.AgencyContactId, cancellationToken) is not { } agencyContact)
         {
-            throw new GraphQLException(
-                ErrorBuilder.New()
-                    .SetMessage($"Agency contact not found with id {input.AgencyContactId}")
-                    .SetCode("ENTITY_NOT_FOUND")
-                    .Build());
+            throw new NotFoundException<AgencyContact>(input.AgencyContactId);
         }
 
-        if (agencyContactEntity.AgencyId == input.AgencyId)
+        if (agencyContact.AgencyId == input.AgencyId)
         {
-            throw new GraphQLException(
-                ErrorBuilder.New()
-                    .SetMessage($"Agency contact with id {input.AgencyContactId} already belongs to agency with id {input.AgencyId}")
-                    .SetCode("INVALID_INPUT")
-                    .Build());
+            logger.AgencyContactIsAlreadyAssignedToAgency(agencyContact.Id, agencyContact.AgencyId);
         }
 
-        if (await dbContext.Agencies.Where(agency => agency.Id == input.AgencyId)
-                .Include(agency => agency.AgencyContacts)
-                .FirstOrDefaultAsync() is not { } agencyEntity)
+        if (await dbContext.Agencies.Where(entity => entity.Id == input.AgencyId)
+                .Include(entity => entity.AgencyContacts)
+                .FirstOrDefaultAsync(cancellationToken) is not { } agency)
         {
-            throw new GraphQLException(
-                ErrorBuilder.New()
-                    .SetMessage($"Agency not found with id {input.AgencyId}")
-                    .SetCode("ENTITY_NOT_FOUND")
-                    .Build());
+            throw new NotFoundException<Core.Entities.Agency.Agency>(input.AgencyId);
         }
 
-        agencyEntity.AgencyContacts.Add(agencyContactEntity);
-        await dbContext.SaveChangesAsync();
+        agency.AgencyContacts.Add(agencyContact);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        LoggerExtensions.AgencyContactMovedToAgency(logger, agencyContactEntity.Id, agencyEntity.Id);
+        logger.AgencyContactMovedToAgency(agencyContact.Id, agency.Id);
 
         return dbContext.Agencies
-            .Where(agency => agency.Id == agencyEntity.Id)
+            .Where(entity => entity.Id == agency.Id)
             .ProjectTo<AgencyPayload>(mapper.ConfigurationProvider);
     }
 }

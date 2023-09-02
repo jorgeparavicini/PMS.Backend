@@ -5,80 +5,50 @@
         {
           agencyContacts: [
             {
-              address: Address 1,
-              city: City 1,
+              address: null,
+              city: null,
               contactName: Contact 1,
-              email: Email 1,
+              email: null,
               id: 1,
-              isFrequentVendor: true,
-              phone: Phone 1,
-              zipCode: Zip Code 1
-            },
-            {
-              address: Address 2,
-              city: City 2,
-              contactName: Contact 2,
-              email: Email 2,
-              id: 2,
               isFrequentVendor: false,
-              phone: Phone 2,
-              zipCode: Zip Code 2
+              phone: null,
+              zipCode: null
             }
           ],
-          commissionMethod: DEDUCTED_BY_PROVIDER,
-          defaultCommissionOnExtras: 0.1000,
-          defaultCommissionRate: 0.2000,
-          emergencyEmail: mail1,
-          emergencyPhone: phone1,
+          commissionMethod: DEDUCTED_BY_AGENCY,
+          defaultCommissionOnExtras: 0.0000,
+          defaultCommissionRate: 0.0000,
+          emergencyEmail: null,
+          emergencyPhone: null,
           id: 1,
-          legalName: Test Agency
+          legalName: Agency 1
         },
         {
           agencyContacts: [
             {
-              address: Address 3,
-              city: City 3,
-              contactName: Contact 3,
-              email: Email 3,
-              id: 3,
-              isFrequentVendor: true,
-              phone: Phone 3,
-              zipCode: Zip Code 3
-            },
-            {
-              address: Address 4,
-              city: City 4,
-              contactName: Contact 4,
-              email: Email 4,
-              id: 4,
+              address: null,
+              city: null,
+              contactName: ContactName,
+              email: null,
+              id: 2,
               isFrequentVendor: false,
-              phone: Phone 4,
-              zipCode: Zip Code 4
-            },
-            {
-              address: Address 5,
-              city: City 5,
-              contactName: Contact 5,
-              email: Email 5,
-              id: 5,
-              isFrequentVendor: true,
-              phone: Phone 5,
-              zipCode: Zip Code 5
+              phone: null,
+              zipCode: null
             }
           ],
-          commissionMethod: DEDUCTED_BY_PROVIDER,
-          defaultCommissionOnExtras: 0.1000,
-          defaultCommissionRate: 0.2000,
-          emergencyEmail: mail2,
-          emergencyPhone: phone2,
+          commissionMethod: DEDUCTED_BY_AGENCY,
+          defaultCommissionOnExtras: 0.0000,
+          defaultCommissionRate: 0.0000,
+          emergencyEmail: null,
+          emergencyPhone: null,
           id: 2,
-          legalName: Test Agency 2
+          legalName: Agency 2
         },
         null,
         null
       ],
       pageInfo: {
-        hasNextPage: true,
+        hasNextPage: false,
         hasPreviousPage: false
       }
     }

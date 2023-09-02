@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using PMS.Backend.Core.Entities;
 using PMS.Backend.Core.Entities.Agency;
 
@@ -14,7 +15,7 @@ namespace PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 public record AgencyContactPayload
 {
     /// <inheritdoc cref="Entity.Id"/>
-    public required int Id { get; init; }
+    public required Guid Id { get; init; }
 
     /// <inheritdoc cref="AgencyContact.ContactName"/>
     public required string ContactName { get; init; }
@@ -38,7 +39,7 @@ public record AgencyContactPayload
     public bool IsFrequentVendor { get; init; }
 
     /// <inheritdoc cref="AgencyContact.AgencyId"/>
-    public int AgencyId { get; init; }
+    public Guid AgencyId { get; init; }
 
     /// <inheritdoc cref="AgencyContact.Agency"/>
     public required AgencyPayload Agency { get; init; }

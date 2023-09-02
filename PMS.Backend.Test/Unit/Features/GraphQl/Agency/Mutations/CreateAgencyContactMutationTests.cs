@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using HotChocolate;
@@ -18,8 +17,9 @@ using PMS.Backend.Features.GraphQL.Agency.Extensions;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
+using PMS.Backend.Test.Builders.Agency.Models.Input;
 using PMS.Backend.Test.Common.Logging;
-using PMS.Backend.Test.Fixtures;
+using PMS.Backend.Test.Fixtures.Agency;
 using Xunit;
 using Xunit.Categories;
 
@@ -43,20 +43,19 @@ public class CreateAgencyContactMutationTests : AgencyDatabaseFixture
     public async Task CreateAgencyContactAsync_ShouldCreateAgencyContact()
     {
         // Arrange
-        Fixture fixture = new();
         int currentCount = DbContext.AgencyContacts.Count();
         Core.Entities.Agency.Agency agency = DbContext.Agencies.First();
 
-        CreateAgencyContactInput input = fixture.Build<CreateAgencyContactInput>()
-            .With(input => input.AgencyId, agency.Id)
-            .Create();
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(agency.Id)
+            .Build();
 
         // Act
         IQueryable<AgencyContactPayload> result =
             await _sut.CreateAgencyContactAsync(DbContext, input, _mapper, _logger);
 
         // Assert
-        int? entityId = await result.Select(contact => contact.Id).SingleOrDefaultAsync();
+        Guid? entityId = await result.Select(contact => contact.Id).SingleOrDefaultAsync();
         entityId.Should().NotBeNull();
         DbContext.AgencyContacts.Should().HaveCount(currentCount + 1);
 
@@ -68,10 +67,9 @@ public class CreateAgencyContactMutationTests : AgencyDatabaseFixture
     public async Task CreateAgencyContactAsync_ShouldThrowNotFoundError_WhenAgencyDoesNotExist()
     {
         // Arrange
-        Fixture fixture = new();
-        CreateAgencyContactInput input = fixture.Build<CreateAgencyContactInput>()
-            .With(input => input.AgencyId, 0)
-            .Create();
+        CreateAgencyContactInput input = new CreateAgencyContactInputBuilder()
+            .WithAgencyId(Guid.Empty)
+            .Build();
 
         // Act
         Func<Task<IQueryable<AgencyContactPayload>>> act = async () =>
