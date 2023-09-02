@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: PMS.Backend.Service/Dockerfile
     depends_on:
-    - pms.db
+      - pms.db
 
   pms.db:
-    image: postgres
+    image: "mcr.microsoft.com/mssql/server"

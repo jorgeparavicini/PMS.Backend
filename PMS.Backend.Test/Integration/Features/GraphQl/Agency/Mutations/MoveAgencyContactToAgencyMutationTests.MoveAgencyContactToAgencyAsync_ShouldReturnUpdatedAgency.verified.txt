@@ -2,41 +2,41 @@
   "data": {
     "moveAgencyContactToAgency": {
       "id": 1,
-      "legalName": "Test Agency",
-      "defaultCommissionRate": 0.2000,
-      "defaultCommissionOnExtras": 0.1000,
-      "commissionMethod": "DEDUCTED_BY_PROVIDER",
-      "emergencyPhone": "phone1",
-      "emergencyEmail": "mail1",
+      "legalName": "Agency 1",
+      "defaultCommissionRate": 0.0000,
+      "defaultCommissionOnExtras": 0.0000,
+      "commissionMethod": "DEDUCTED_BY_AGENCY",
+      "emergencyPhone": null,
+      "emergencyEmail": null,
       "agencyContacts": [
         {
           "id": 1,
           "contactName": "Contact 1",
-          "email": "Email 1",
-          "address": "Address 1",
-          "phone": "Phone 1",
-          "city": "City 1",
-          "zipCode": "Zip Code 1",
-          "isFrequentVendor": true
-        },
-        {
-          "id": 2,
-          "contactName": "Contact 2",
-          "email": "Email 2",
-          "address": "Address 2",
-          "phone": "Phone 2",
-          "city": "City 2",
-          "zipCode": "Zip Code 2",
+          "email": null,
+          "address": null,
+          "phone": null,
+          "city": null,
+          "zipCode": null,
           "isFrequentVendor": false
         },
         {
-          "id": 6,
-          "contactName": "Contact 6",
-          "email": "Email 6",
-          "address": "Address 6",
-          "phone": "Phone 6",
-          "city": "City 6",
-          "zipCode": "Zip Code 6",
+          "id": 2,
+          "contactName": "ContactName",
+          "email": null,
+          "address": null,
+          "phone": null,
+          "city": null,
+          "zipCode": null,
+          "isFrequentVendor": false
+        },
+        {
+          "id": 3,
+          "contactName": "ContactName",
+          "email": null,
+          "address": null,
+          "phone": null,
+          "city": null,
+          "zipCode": null,
           "isFrequentVendor": false
         }
       ]

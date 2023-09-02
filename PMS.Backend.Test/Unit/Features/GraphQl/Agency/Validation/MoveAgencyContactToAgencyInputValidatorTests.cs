@@ -5,9 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using FluentValidation.TestHelper;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
+using PMS.Backend.Test.Builders.Agency.Models.Input;
 using Xunit;
 using Xunit.Categories;
 
@@ -22,11 +24,10 @@ public class MoveAgencyContactToAgencyInputValidatorTests
     public void Validate_ShouldSucceed_WhenValidInput()
     {
         // Arrange
-        MoveAgencyContactToAgencyInput input = new()
-        {
-            AgencyContactId = 1,
-            AgencyId = 1,
-        };
+        MoveAgencyContactToAgencyInput input = new MoveAgencyContactToAgencyInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithAgencyContactId(Guid.NewGuid())
+            .Build();
 
         // Act
         TestValidationResult<MoveAgencyContactToAgencyInput> result = _sut.TestValidate(input);
@@ -35,17 +36,14 @@ public class MoveAgencyContactToAgencyInputValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenAgencyContactIdIsInvalid(int agencyContactId)
+    [Fact]
+    public void Validate_ShouldFail_WhenAgencyContactIdIsInvalid()
     {
         // Arrange
-        MoveAgencyContactToAgencyInput input = new()
-        {
-            AgencyContactId = agencyContactId,
-            AgencyId = 1,
-        };
+        MoveAgencyContactToAgencyInput input = new MoveAgencyContactToAgencyInputBuilder()
+            .WithAgencyId(Guid.NewGuid())
+            .WithAgencyContactId(Guid.Empty)
+            .Build();
 
         // Act
         TestValidationResult<MoveAgencyContactToAgencyInput> result = _sut.TestValidate(input);
@@ -54,17 +52,14 @@ public class MoveAgencyContactToAgencyInputValidatorTests
         result.ShouldHaveValidationErrorFor(agencyContact => agencyContact.AgencyContactId);
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenAgencyIdIsInvalid(int agencyId)
+    [Fact]
+    public void Validate_ShouldFail_WhenAgencyIdIsInvalid()
     {
         // Arrange
-        MoveAgencyContactToAgencyInput input = new()
-        {
-            AgencyContactId = 1,
-            AgencyId = agencyId,
-        };
+        MoveAgencyContactToAgencyInput input = new MoveAgencyContactToAgencyInputBuilder()
+            .WithAgencyId(Guid.Empty)
+            .WithAgencyContactId(Guid.NewGuid())
+            .Build();
 
         // Act
         TestValidationResult<MoveAgencyContactToAgencyInput> result = _sut.TestValidate(input);

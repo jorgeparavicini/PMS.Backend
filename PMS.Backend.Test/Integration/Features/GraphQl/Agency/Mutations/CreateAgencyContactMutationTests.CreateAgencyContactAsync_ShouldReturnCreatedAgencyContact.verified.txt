@@ -1,7 +1,7 @@
 ﻿{
   "data": {
     "createAgencyContact": {
-      "id": 7,
+      "id": 4,
       "contactName": "Legal Entity",
       "address": "New Contact Address",
       "city": "Contact123",

@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using PMS.Backend.Core.Domain.Models;
 using PMS.Backend.Core.Entities;
@@ -15,7 +16,7 @@ namespace PMS.Backend.Features.GraphQL.Agency.Models.Payload;
 public record AgencyPayload
 {
     /// <inheritdoc cref="Entity.Id"/>
-    public required int Id { get; init; }
+    public required Guid Id { get; init; }
 
     /// <inheritdoc cref="PMS.Backend.Core.Entities.Agency.Agency.LegalName"/>
     public required string LegalName { get; init; }

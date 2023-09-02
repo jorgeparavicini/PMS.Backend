@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using PMS.Backend.Core.Entities.Agency;
 using PMS.Backend.Features.GraphQL.Agency.Mutations;
 
@@ -19,11 +20,11 @@ public record MoveAgencyContactToAgencyInput
     ///     Gets the ID of the <see cref="AgencyContact"/> that will be moved to a different <see cref="Agency"/>.
     ///     The <see cref="AgencyContact"/> must exist in the system.
     /// </summary>
-    public required int AgencyContactId { get; init; }
+    public required Guid AgencyContactId { get; init; }
 
     /// <summary>
     ///     Gets the ID of the target <see cref="Agency"/> where the <see cref="AgencyContact"/> will be moved.
     ///     The target <see cref="Agency"/> must exist in the system.
     /// </summary>
-    public required int AgencyId { get; init; }
+    public required Guid AgencyId { get; init; }
 }

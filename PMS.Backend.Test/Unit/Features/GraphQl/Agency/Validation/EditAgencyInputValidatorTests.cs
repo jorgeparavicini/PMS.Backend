@@ -5,10 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using FluentValidation.TestHelper;
 using PMS.Backend.Core.Domain.Models;
 using PMS.Backend.Features.GraphQL.Agency.Models.Input;
 using PMS.Backend.Features.GraphQL.Agency.Validation;
+using PMS.Backend.Test.Builders.Agency.Models.Input;
 using Xunit;
 using Xunit.Categories;
 
@@ -23,16 +25,15 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldSucceed_WhenValidInput()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            DefaultCommissionRate = 0.1m,
-            DefaultCommissionOnExtras = 0.1m,
-            CommissionMethod = CommissionMethod.DeductedByAgency,
-            EmergencyPhone = "123456789",
-            EmergencyEmail = "mail@gmail.com",
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithId(Guid.NewGuid())
+            .WithLegalName("Test")
+            .WithDefaultCommissionRate(0.1m)
+            .WithDefaultCommissionOnExtras(0.1m)
+            .WithCommissionMethod(CommissionMethod.DeductedByAgency)
+            .WithEmergencyPhone("123456789")
+            .WithEmergencyEmail("mail@gmail.com")
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -41,17 +42,28 @@ public class EditAgencyInputValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void Validate_ShouldFail_WhenIdIsInvalid(int id)
+    [Fact]
+    public void Validate_ShouldSucceed_WhenBasicInput()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = id,
-            LegalName = "Test",
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithId(Guid.NewGuid())
+            .Build();
+
+        // Act
+        TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
+
+        // Assert
+        result.ShouldNotHaveAnyValidationErrors();
+    }
+
+    [Fact]
+    public void Validate_ShouldFail_WhenIdIsInvalid()
+    {
+        // Arrange
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithId(Guid.Empty)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -64,11 +76,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenLegalNameIsEmpty()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = string.Empty,
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithLegalName(string.Empty)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -81,11 +91,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenLegalNameIsTooLong()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = new string('a', 256),
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithLegalName(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -98,12 +106,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenDefaultCommissionRateIsNegative()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            DefaultCommissionRate = -0.1m,
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithDefaultCommissionRate(-0.00001m)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -116,12 +121,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenDefaultCommissionRateIsGreaterThan1()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            DefaultCommissionRate = 1.1m,
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithDefaultCommissionRate(1.0001m)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -134,12 +136,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenDefaultCommissionOnExtrasIsNegative()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            DefaultCommissionOnExtras = -0.1m,
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithDefaultCommissionOnExtras(-0.00001m)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -152,12 +151,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenDefaultCommissionOnExtrasIsGreaterThan1()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            DefaultCommissionOnExtras = 1.1m,
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithDefaultCommissionOnExtras(1.0001m)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -170,12 +166,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenEmergencyPhoneIsTooLong()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            EmergencyPhone = new string('a', 256),
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithEmergencyPhone(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -188,12 +181,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenEmergencyEmailIsTooLong()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            EmergencyEmail = new string('a', 256),
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithEmergencyEmail(new string('a', 256))
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -206,12 +196,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenEmergencyEmailIsInvalid()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            EmergencyEmail = "mail",
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithEmergencyEmail("invalidEmail")
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);
@@ -224,12 +211,9 @@ public class EditAgencyInputValidatorTests
     public void Validate_ShouldFail_WhenCommissionMethodIsInvalid()
     {
         // Arrange
-        EditAgencyInput input = new()
-        {
-            Id = 1,
-            LegalName = "Test",
-            CommissionMethod = (CommissionMethod)100,
-        };
+        EditAgencyInput input = new EditAgencyInputBuilder()
+            .WithCommissionMethod((CommissionMethod)100)
+            .Build();
 
         // Act
         TestValidationResult<EditAgencyInput> result = _sut.TestValidate(input);

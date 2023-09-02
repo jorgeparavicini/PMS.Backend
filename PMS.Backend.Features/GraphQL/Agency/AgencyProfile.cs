@@ -17,7 +17,7 @@ namespace PMS.Backend.Features.GraphQL.Agency;
 public class AgencyProfile : Profile
 {
     /// <summary>
-    ///    Initializes a new instance of the <see cref="AgencyProfile"/> class.
+    ///     Initializes a new instance of the <see cref="AgencyProfile"/> class.
     /// </summary>
     public AgencyProfile()
     {

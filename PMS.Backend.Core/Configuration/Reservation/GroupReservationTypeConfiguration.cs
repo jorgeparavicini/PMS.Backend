@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PMS.Backend.Core.Entities.Reservation;
 
 namespace PMS.Backend.Core.Configuration.Reservation;
@@ -14,4 +15,11 @@ namespace PMS.Backend.Core.Configuration.Reservation;
 /// </summary>
 public class GroupReservationTypeConfiguration : EntityTypeConfiguration<GroupReservation>
 {
+    /// <inheritdoc />
+    public override void Configure(EntityTypeBuilder<GroupReservation> builder)
+    {
+        base.Configure(builder);
+
+        builder.Property(reservation => reservation.Reference).HasMaxLength(255);
+    }
 }

@@ -6,7 +6,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -46,7 +45,7 @@ public class PmsDbContext : DbContext
     ///     Gets the table containing all agencies.
     /// </summary>
     /// <seealso cref="Agency"/>
-    public virtual DbSet<Agency> Agencies => Set<Agency>();
+    public DbSet<Agency> Agencies => Set<Agency>();
 
     /// <summary>
     ///     Gets the table containing all agencies contacts.
@@ -58,24 +57,18 @@ public class PmsDbContext : DbContext
     ///     Gets the table containing all group reservations..
     /// </summary>
     /// <seealso cref="GroupReservation"/>
-    /// TODO: Implement
-    [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global", Justification = "Not yet implemented.")]
     public DbSet<GroupReservation> GroupReservations => Set<GroupReservation>();
 
     /// <summary>
     ///     Gets the table containing all reservations.
     /// </summary>
     /// <seealso cref="Reservation"/>
-    /// TODO: Implement
-    [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global", Justification = "Not yet implemented.")]
     public DbSet<Reservation> Reservations => Set<Reservation>();
 
     /// <summary>
     ///     Gets the table containing all reservation details.
     /// </summary>
     /// <seealso cref="ReservationDetail"/>
-    /// TODO: Implement
-    [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global", Justification = "Not yet implemented.")]
     public DbSet<ReservationDetail> ReservationDetails => Set<ReservationDetail>();
 
     /// <inheritdoc />

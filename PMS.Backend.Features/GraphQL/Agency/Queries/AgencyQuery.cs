@@ -51,7 +51,7 @@ public class AgencyQuery
     ///     This method supports projection and filtering. Projection allows clients to request only specific fields,
     ///     while filtering enables them to apply conditions to refine the results.
     /// </remarks>
-    [HotChocolate.Data.UseFirstOrDefault]
+    [HotChocolate.Data.UseSingleOrDefault]
     [UseProjection]
     [HotChocolate.Data.UseFiltering]
     public IQueryable<AgencyPayload> GetAgency(
@@ -61,7 +61,7 @@ public class AgencyQuery
         [Service]
         ILogger<AgencyQuery> logger)
     {
-        logger.ExecutingQuery(nameof(GetAgency));
+        logger.ExecutingQuery(nameof(AgencyQuery));
         return context.Agencies.ProjectTo<AgencyPayload>(mapper.ConfigurationProvider);
     }
 }
