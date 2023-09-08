@@ -9,6 +9,8 @@ using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using PMS.Backend.Features.Agency.Commands;
 using PMS.Backend.Service.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,7 @@ builder.Configuration
     .AddUserSecrets<Program>(optional: true, reloadOnChange: true);
 
 builder.Services
+    .AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateAgencyCommand>())
     .AddValidators()
     .AddEfCore(builder.Configuration)
     .AddAutoMapper()

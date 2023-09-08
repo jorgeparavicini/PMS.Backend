@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NuGet.Packaging;
-using PMS.Backend.Core.Domain.Models;
+using PMS.Backend.Features.Shared.ValueObjects;
 
 namespace PMS.Backend.Test.Builders.Agency.Entity;
 
@@ -67,9 +67,9 @@ public class AgencyBuilder
         return this;
     }
 
-    public Core.Entities.Agency.Agency Build()
+    public Features.Agency.Models.Agency Build()
     {
-        Core.Entities.Agency.Agency agency = new()
+        Features.Agency.Models.Agency agency = new()
         {
             Id = _id,
             LegalName = _legalName,

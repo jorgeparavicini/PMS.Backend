@@ -8,6 +8,9 @@
 using HotChocolate.Execution.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PMS.Backend.Api.GraphQL.Agency.Mutations;
+using PMS.Backend.Api.GraphQL.Agency.Queries;
+using PMS.Backend.Api.GraphQL.Agency.Types;
+using GetAgenciesQuery = PMS.Backend.Api.GraphQL.Agency.Queries.GetAgenciesQuery;
 
 namespace PMS.Backend.Api.GraphQL.Agency.Extensions;
 
@@ -26,6 +29,14 @@ public static class RequestExecutorBuilderExtensions
         return builder
 
             // Mutations
-            .AddTypeExtension<CreateAgencyMutation>();
+            .AddTypeExtension<CreateAgencyMutation>()
+
+            // Queries
+            .AddTypeExtension<GetAgenciesQuery>();
+        //.AddTypeExtension<GetAgencyByIdQuery>()
+
+        // Types
+        //.AddTypeExtension<AgencyNode>()
+        //.AddTypeExtension<AgencyContactNode>();
     }
 }

@@ -1,4 +1,4 @@
-﻿using PMS.Backend.Application.Models.Agency;
+﻿using PMS.Backend.Features.Agency.Models;
 
 namespace PMS.Backend.Api.GraphQL.Agency.Payloads;
 

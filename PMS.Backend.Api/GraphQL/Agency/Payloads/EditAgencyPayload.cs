@@ -1,3 +1,3 @@
 ﻿namespace PMS.Backend.Api.GraphQL.Agency.Payloads;
 
-public record EditAgencyPayload(Application.Models.Agency.Agency Agency);
+public record EditAgencyPayload(Features.Agency.Models.Agency Agency);

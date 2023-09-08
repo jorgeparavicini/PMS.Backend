@@ -8,7 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PMS.Backend.Api;
 using PMS.Backend.Api.GraphQL;
-using PMS.Backend.Persistence.Db;
+using PMS.Backend.Features.Agency.Mappings;
+using PMS.Backend.Features.Infrastructure;
+using PMS.Backend.Features.Shared;
 
 namespace PMS.Backend.Service.Extensions;
 
@@ -24,7 +26,7 @@ public static class ServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection" /> so that additional calls can be chained.</returns>
     public static IServiceCollection AddValidators(this IServiceCollection services)
     {
-        services.AddValidatorsFromAssembly(typeof(Registrar).Assembly);
+        services.AddValidatorsFromAssembly(typeof(Entity).Assembly);
         return services;
     }
 
@@ -46,6 +48,9 @@ public static class ServiceCollectionExtensions
                 .UseDetached()
                 .UseMapping(cfg => { cfg.Default(mappingOptions => { mappingOptions.WithHotChocolate(); }); });
         });
+
+        services.AddScoped<PmsContextFactory>();
+        services.AddScoped(sp => sp.GetRequiredService<PmsContextFactory>().CreateDbContext());
         return services;
     }
 
@@ -56,7 +61,7 @@ public static class ServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection" /> so that additional calls can be chained.</returns>
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(Registrar).Assembly);
+        services.AddAutoMapper(typeof(AgencyMappings).Assembly);
         return services;
     }
 

@@ -12,8 +12,8 @@ using HotChocolate.Data;
 using HotChocolate.Types;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using PMS.Backend.Application.Commands;
-using PMS.Backend.Application.Models.Agency.Input;
+using PMS.Backend.Features.Agency.Commands;
+using PMS.Backend.Features.Agency.Models.Input;
 using LoggerExtensions = PMS.Backend.Api.Extensions.LoggerExtensions;
 
 namespace PMS.Backend.Api.GraphQL.Agency.Mutations;
@@ -23,7 +23,7 @@ public class CreateAgencyMutation
 {
     [HotChocolate.Data.UseSingleOrDefault]
     [UseProjection]
-    public async Task<Application.Models.Agency.Agency> CreateAgencyAsync(
+    public async Task<Features.Agency.Models.Agency> CreateAgencyAsync(
         CreateAgencyInput input,
         [Service]
         ILogger<CreateAgencyMutation> logger,
