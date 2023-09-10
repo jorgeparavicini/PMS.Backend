@@ -4,6 +4,8 @@ namespace PMS.Backend.Features.Shared.ValueObjects;
 
 internal record Commission(decimal Value)
 {
+    public static Commission? FromDecimal(decimal? value) => value is null ? null : new Commission(value.Value);
+
     public decimal Value { get; } = Value switch
     {
         < 0 => throw new ArgumentOutOfRangeException(nameof(Value), "Commission value cannot be negative"),

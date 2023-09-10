@@ -18,6 +18,8 @@ internal record Phone
         Value = value;
     }
 
+    public static Phone? FromString(string? phone) => string.IsNullOrWhiteSpace(phone) ? null : new Phone(phone);
+
     private static bool IsValid(string phone)
     {
         try
@@ -30,7 +32,7 @@ internal record Phone
             return false;
         }
     }
-    
+
     private Phone() : this(string.Empty)
     {
     }

@@ -16,6 +16,8 @@ internal record Email
         Value = value;
     }
 
+    public static Email? FromString(string? email) => string.IsNullOrWhiteSpace(email) ? null : new Email(email);
+
 
     private static bool IsValid(string email)
     {

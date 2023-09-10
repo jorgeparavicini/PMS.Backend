@@ -29,5 +29,7 @@ internal class AgencyTypeConfiguration : IEntityTypeConfiguration<Entities.Agenc
             .WithOne()
             .HasForeignKey("AgencyId")
             .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasCon
     }
 }

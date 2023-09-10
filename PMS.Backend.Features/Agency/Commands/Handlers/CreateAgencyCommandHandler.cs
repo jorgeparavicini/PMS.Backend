@@ -14,31 +14,12 @@ internal class CreateAgencyCommandHandler(
     public async Task<Models.Agency> Handle(CreateAgencyCommand request, CancellationToken cancellationToken)
     {
         CreateAgencyInput input = request.Input;
-        Commission? defaultCommission = input.DefaultCommission.HasValue
-            ? new Commission(input.DefaultCommission.Value)
-            : null;
 
-        Commission? defaultCommissionOnExtras = input.DefaultCommissionOnExtras.HasValue
-            ? new Commission(input.DefaultCommissionOnExtras.Value)
-            : null;
-
-        CommissionMethod commissionMethod = CommissionMethod.FromName(input.CommissionMethod);
-
-        Email? email = string.IsNullOrWhiteSpace(input.EmergencyContactEmail)
-            ? null
-            : new Email(input.EmergencyContactEmail);
-
-        Phone? phone = string.IsNullOrWhiteSpace(input.EmergencyContactPhone)
-            ? null
-            : new Phone(input.EmergencyContactPhone);
-
-        ContactDetails contactDetails = new(email, phone);
-
-        Entities.Agency agency = new(
+        var agency = Entities.Agency.Create(
             input.LegalName,
-            defaultCommission,
-            defaultCommissionOnExtras,
-            commissionMethod,
+            input.DefaultCommission,
+            input.DefaultCommissionOnExtras,
+            input.CommissionMethod,
             contactDetails,
             input.Contacts.Select(CreateAgencyContact).ToList()
         );

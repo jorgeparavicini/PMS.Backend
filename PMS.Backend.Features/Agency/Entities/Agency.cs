@@ -19,17 +19,13 @@ internal class Agency : Entity, IAggregateRoot
     private readonly IList<AgencyContact> _contacts;
     public IReadOnlyCollection<AgencyContact> Contacts => _contacts.AsReadOnly();
 
-    private Agency()
-    {
-        // Required by EF Core
-    }
-
     public Agency(
         string legalName,
-        Commission? defaultCommission,
-        Commission? defaultCommissionOnExtras,
-        CommissionMethod commissionMethod,
-        ContactDetails contactDetails,
+        decimal? defaultCommission,
+        decimal? defaultCommissionOnExtras,
+        string commissionMethod,
+        string? email,
+        string? phone,
         IList<AgencyContact> contacts)
     {
         if (contacts.Count == 0)
@@ -38,12 +34,11 @@ internal class Agency : Entity, IAggregateRoot
         }
 
         LegalName = legalName;
-        DefaultCommission = defaultCommission;
-        DefaultCommissionOnExtras = defaultCommissionOnExtras;
-        CommissionMethod = commissionMethod;
-        EmergencyContact = contactDetails;
+        DefaultCommission = Commission.FromDecimal(defaultCommission);
+        DefaultCommissionOnExtras = Commission.FromDecimal(defaultCommissionOnExtras);
+        CommissionMethod = CommissionMethod.FromName(commissionMethod);
+        EmergencyContact = ContactDetails.FromStrings(email, phone);
         _contacts = contacts;
-
 
         AddDomainEvent(new AgencyCreatedEvent(
             Id,
@@ -56,16 +51,17 @@ internal class Agency : Entity, IAggregateRoot
 
     public void SetAgencyDetails(
         string legalName,
-        Commission? defaultCommission,
-        Commission? defaultCommissionOnExtras,
-        CommissionMethod commissionMethod,
-        ContactDetails emergencyContact)
+        decimal? defaultCommission,
+        decimal? defaultCommissionOnExtras,
+        string commissionMethod,
+        string? emergencyEmail,
+        string? emergencyPhone)
     {
         LegalName = legalName;
-        DefaultCommission = defaultCommission;
-        DefaultCommissionOnExtras = defaultCommissionOnExtras;
-        CommissionMethod = commissionMethod;
-        EmergencyContact = emergencyContact;
+        DefaultCommission = Commission.FromDecimal(defaultCommission);
+        DefaultCommissionOnExtras = Commission.FromDecimal(defaultCommissionOnExtras);
+        CommissionMethod = CommissionMethod.FromName(commissionMethod);
+        EmergencyContact = ContactDetails.FromStrings(emergencyEmail, emergencyPhone);
     }
 
     public void AddContact(AgencyContact contact)
