@@ -7,6 +7,6 @@ public class CommissionMappings : Profile
 {
     public CommissionMappings()
     {
-        CreateMap<Commission, decimal>().ConvertUsing(src => src.Value);
+        CreateMap<Commission?, decimal?>().ConvertUsing(src => src != null ? src.Value : null);
     }
 }

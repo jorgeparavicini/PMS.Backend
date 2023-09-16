@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
-using HotChocolate.Data;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using MediatR;
@@ -12,21 +11,19 @@ using PMS.Backend.Api.Extensions;
 namespace PMS.Backend.Api.GraphQL.Agency.Queries;
 
 [ExtendObjectType<Query>]
-public class GetAgenciesQuery
+public class GetAgencyQuery
 {
-    [UsePaging]
-    [UseProjection]
     [HotChocolate.Data.UseFiltering]
-    [HotChocolate.Data.UseSorting]
+    [HotChocolate.Data.UseFirstOrDefault]
     [UseResolverScopedMediator]
-    public async Task<IQueryable<Features.Agency.Models.Agency>> GetAgenciesAsync(
+    public async Task<IQueryable<Features.Agency.Models.Agency>> GetAgencyAsync(
         [Service]
         IMediator mediator,
         IResolverContext resolverContext,
         [Service]
-        ILogger<GetAgenciesQuery> logger)
+        ILogger<GetAgencyQuery> logger)
     {
-        logger.ExecutingQuery(nameof(GetAgenciesAsync));
+        logger.ExecutingQuery(nameof(GetAgencyAsync));
         return await mediator.Send(new Features.Agency.Queries.GetAgenciesQuery(resolverContext));
     }
 }

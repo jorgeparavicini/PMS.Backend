@@ -8,12 +8,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
-using HotChocolate.Data;
 using HotChocolate.Types;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using PMS.Backend.Features.Agency.Commands;
-using PMS.Backend.Features.Agency.Models.Input;
+using PMS.Backend.Features.Agency.Commands.Payloads;
 using LoggerExtensions = PMS.Backend.Api.Extensions.LoggerExtensions;
 
 namespace PMS.Backend.Api.GraphQL.Agency.Mutations;
@@ -21,10 +20,8 @@ namespace PMS.Backend.Api.GraphQL.Agency.Mutations;
 [ExtendObjectType<Mutation>]
 public class CreateAgencyMutation
 {
-    [HotChocolate.Data.UseSingleOrDefault]
-    [UseProjection]
-    public async Task<Features.Agency.Models.Agency> CreateAgencyAsync(
-        CreateAgencyInput input,
+    public async Task<CreateAgencyPayload> CreateAgencyAsync(
+        CreateAgencyCommand input,
         [Service]
         ILogger<CreateAgencyMutation> logger,
         [Service]
@@ -33,6 +30,6 @@ public class CreateAgencyMutation
     {
         LoggerExtensions.ExecutingMutation(logger, nameof(CreateAgencyMutation));
 
-        return await mediator.Send(new CreateAgencyCommand(input), cancellationToken);
+        return await mediator.Send(input, cancellationToken);
     }
 }

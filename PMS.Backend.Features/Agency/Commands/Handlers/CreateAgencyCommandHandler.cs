@@ -1,53 +1,43 @@
 ﻿using AutoMapper;
 using MediatR;
-using PMS.Backend.Features.Agency.Models.Input;
+using PMS.Backend.Features.Agency.Commands.Payloads;
 using PMS.Backend.Features.Infrastructure;
-using PMS.Backend.Features.Shared.ValueObjects;
 
 namespace PMS.Backend.Features.Agency.Commands.Handlers;
 
 internal class CreateAgencyCommandHandler(
         PmsContext context,
         IMapper mapper)
-    : IRequestHandler<CreateAgencyCommand, Models.Agency>
+    : IRequestHandler<CreateAgencyCommand, CreateAgencyPayload>
 {
-    public async Task<Models.Agency> Handle(CreateAgencyCommand request, CancellationToken cancellationToken)
+    public async Task<CreateAgencyPayload> Handle(CreateAgencyCommand request, CancellationToken cancellationToken)
     {
-        CreateAgencyInput input = request.Input;
-
-        var agency = Entities.Agency.Create(
-            input.LegalName,
-            input.DefaultCommission,
-            input.DefaultCommissionOnExtras,
-            input.CommissionMethod,
-            contactDetails,
-            input.Contacts.Select(CreateAgencyContact).ToList()
+        Entities.Agency agency = new(
+            request.LegalName,
+            request.DefaultCommission,
+            request.DefaultCommissionOnExtras,
+            (int)request.CommissionMethod,
+            request.EmergencyContactEmail,
+            request.EmergencyContactPhone,
+            request.Contacts.Select(CreateAgencyContact).ToList()
         );
 
         await context.Agencies.AddAsync(agency, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
-        return mapper.Map<Models.Agency>(agency);
+        var agencyModel = mapper.Map<Models.Agency>(agency);
+        return new CreateAgencyPayload(agencyModel);
     }
 
     private static Entities.AgencyContact CreateAgencyContact(CreateAgencyContactInput input)
-    {
-        Email? email = string.IsNullOrWhiteSpace(input.Email)
-            ? null
-            : new Email(input.Email);
-
-        Phone? phone = string.IsNullOrWhiteSpace(input.Phone)
-            ? null
-            : new Phone(input.Phone);
-
-        ContactDetails contactDetails = new(email, phone);
-
-        Address address = new(input.Street, input.City, input.State, input.Country, input.ZipCode);
-
-        return new Entities.AgencyContact(
+        => new(
             input.Name,
-            contactDetails,
-            address
+            input.Email,
+            input.Phone,
+            input.Street,
+            input.City,
+            input.State,
+            input.Country,
+            input.ZipCode
         );
-    }
 }

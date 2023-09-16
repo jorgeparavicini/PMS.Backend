@@ -20,6 +20,7 @@ builder.Configuration
     .AddUserSecrets<Program>(optional: true, reloadOnChange: true);
 
 builder.Services
+    .AddLogging()
     .AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateAgencyCommand>())
     .AddValidators()
     .AddEfCore(builder.Configuration)

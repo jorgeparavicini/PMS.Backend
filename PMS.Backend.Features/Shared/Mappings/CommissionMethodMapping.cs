@@ -9,6 +9,6 @@ public class CommissionMethodMapping : Profile
 {
     public CommissionMethodMapping()
     {
-        CreateMap<CommissionMethod, string>().ConvertUsing(src => src.Name);
+        CreateMap<CommissionMethod, Models.CommissionMethod>().ConvertUsing(src => (Models.CommissionMethod)src.Id);
     }
 }

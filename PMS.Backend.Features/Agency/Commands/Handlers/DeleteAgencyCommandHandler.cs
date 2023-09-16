@@ -7,12 +7,12 @@ using PMS.Backend.Features.Infrastructure;
 
 namespace PMS.Backend.Features.Agency.Commands.Handlers;
 
-internal class EditAgencyCommandHandler(
+internal class DeleteAgencyCommandHandler(
         PmsContext context,
         IMapper mapper)
-    : IRequestHandler<EditAgencyCommand, EditAgencyPayload>
+    : IRequestHandler<DeleteAgencyCommand, DeleteAgencyPayload>
 {
-    public async Task<EditAgencyPayload> Handle(EditAgencyCommand request, CancellationToken cancellationToken)
+    public async Task<DeleteAgencyPayload> Handle(DeleteAgencyCommand request, CancellationToken cancellationToken)
     {
         if (await context.Agencies
                 .Include(entity => entity.Contacts)
@@ -22,18 +22,9 @@ internal class EditAgencyCommandHandler(
             throw new NotFoundException<Entities.Agency>(request.Id);
         }
 
-        agency.SetAgencyDetails(
-            request.LegalName,
-            request.DefaultCommission,
-            request.DefaultCommissionOnExtras,
-            (int)request.CommissionMethod,
-            request.EmergencyContactEmail,
-            request.EmergencyContactPhone);
-
+        agency.Delete();
         await context.SaveChangesAsync(cancellationToken);
 
-        var agencyModel = mapper.Map<Models.Agency>(agency);
-
-        return new EditAgencyPayload(agencyModel);
+        return new DeleteAgencyPayload();
     }
 }

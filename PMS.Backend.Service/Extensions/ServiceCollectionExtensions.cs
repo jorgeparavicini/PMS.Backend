@@ -2,11 +2,13 @@
 using Detached.Mappers.HotChocolate;
 using FluentValidation;
 using HotChocolate.Data;
+using HotChocolate.Types.Descriptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PMS.Backend.Api;
+using PMS.Backend.Api.Conventions;
 using PMS.Backend.Api.GraphQL;
 using PMS.Backend.Features.Agency.Mappings;
 using PMS.Backend.Features.Infrastructure;
@@ -61,7 +63,13 @@ public static class ServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection" /> so that additional calls can be chained.</returns>
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(AgencyMappings).Assembly);
+        services.AddAutoMapper(
+            cfg =>
+            {
+                cfg.ShouldMapMethod = _ => false;
+                cfg.ShouldUseConstructor = _ => false;
+            },
+            typeof(AgencyMappings).Assembly);
         return services;
     }
 
@@ -102,8 +110,8 @@ public static class ServiceCollectionExtensions
             .AddSorting()
             .AddProjections()
             .AddFairyBread()
-            .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = environment.IsDevelopment())
-            .AddMutationConventions();
+            .AddConvention<INamingConventions, CommandNamingConvention>()
+            .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = environment.IsDevelopment());
 
         return services;
     }

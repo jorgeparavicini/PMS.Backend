@@ -1,4 +1,6 @@
-﻿namespace PMS.Backend.Features.Agency.Models;
+﻿using JetBrains.Annotations;
+
+namespace PMS.Backend.Features.Agency.Models;
 
 public record AgencyContact(
     Guid Id,
@@ -12,17 +14,18 @@ public record AgencyContact(
     string? Country,
     string? ZipCode)
 {
-    public AgencyContact() : this(
+    [UsedImplicitly]
+    private AgencyContact() : this(
         Guid.Empty,
         Guid.Empty,
         string.Empty,
-        string.Empty,
-        string.Empty,
-        string.Empty,
-        string.Empty,
-        string.Empty,
-        string.Empty,
-        string.Empty)
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null)
     {
     }
 }

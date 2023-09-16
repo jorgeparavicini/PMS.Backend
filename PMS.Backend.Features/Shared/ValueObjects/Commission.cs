@@ -2,7 +2,7 @@
 
 namespace PMS.Backend.Features.Shared.ValueObjects;
 
-internal record Commission(decimal Value)
+internal record  Commission(decimal Value)
 {
     public static Commission? FromDecimal(decimal? value) => value is null ? null : new Commission(value.Value);
 

@@ -6,6 +6,7 @@ public class AgencyMappings : Profile
 {
     public AgencyMappings()
     {
-        CreateMap<Entities.Agency, Models.Agency>();
+        CreateMap<Entities.Agency, Models.Agency>()
+            .ForAllMembers(member => member.ExplicitExpansion());
     }
 }

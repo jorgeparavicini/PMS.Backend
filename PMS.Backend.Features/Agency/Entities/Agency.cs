@@ -1,4 +1,6 @@
-﻿using PMS.Backend.Features.Agency.Events;
+﻿using JetBrains.Annotations;
+using PMS.Backend.Features.Agency.Events;
+using PMS.Backend.Features.Exceptions;
 using PMS.Backend.Features.Shared;
 using PMS.Backend.Features.Shared.ValueObjects;
 
@@ -17,26 +19,35 @@ internal class Agency : Entity, IAggregateRoot
     public ContactDetails EmergencyContact { get; private set; }
 
     private readonly IList<AgencyContact> _contacts;
-    public IReadOnlyCollection<AgencyContact> Contacts => _contacts.AsReadOnly();
+    public IList<AgencyContact> Contacts => _contacts.AsReadOnly();
+
+    /// <summary>
+    ///   Required by EF Core.
+    /// </summary>
+    [UsedImplicitly]
+    private Agency()
+    {
+        LegalName = null!;
+        DefaultCommission = null;
+        DefaultCommissionOnExtras = null;
+        CommissionMethod = null!;
+        EmergencyContact = null!;
+        _contacts = new List<AgencyContact>();
+    }
 
     public Agency(
         string legalName,
         decimal? defaultCommission,
         decimal? defaultCommissionOnExtras,
-        string commissionMethod,
+        int commissionMethod,
         string? email,
         string? phone,
         IList<AgencyContact> contacts)
     {
-        if (contacts.Count == 0)
-        {
-            throw new ArgumentException("Agency must have at least one contact.", nameof(contacts));
-        }
-
         LegalName = legalName;
         DefaultCommission = Commission.FromDecimal(defaultCommission);
         DefaultCommissionOnExtras = Commission.FromDecimal(defaultCommissionOnExtras);
-        CommissionMethod = CommissionMethod.FromName(commissionMethod);
+        CommissionMethod = CommissionMethod.From(commissionMethod);
         EmergencyContact = ContactDetails.FromStrings(email, phone);
         _contacts = contacts;
 
@@ -53,14 +64,14 @@ internal class Agency : Entity, IAggregateRoot
         string legalName,
         decimal? defaultCommission,
         decimal? defaultCommissionOnExtras,
-        string commissionMethod,
+        int commissionMethod,
         string? emergencyEmail,
         string? emergencyPhone)
     {
         LegalName = legalName;
         DefaultCommission = Commission.FromDecimal(defaultCommission);
         DefaultCommissionOnExtras = Commission.FromDecimal(defaultCommissionOnExtras);
-        CommissionMethod = CommissionMethod.FromName(commissionMethod);
+        CommissionMethod = CommissionMethod.From(commissionMethod);
         EmergencyContact = ContactDetails.FromStrings(emergencyEmail, emergencyPhone);
     }
 
@@ -79,16 +90,24 @@ internal class Agency : Entity, IAggregateRoot
         _contacts.Remove(contact);
     }
 
-    public void UpdateContact(Guid contactId, string name, ContactDetails contactDetails, Address address)
+    public void UpdateContact(
+        Guid contactId,
+        string name,
+        string? email,
+        string? phone,
+        string? street,
+        string? city,
+        string? state,
+        string? country,
+        string? zipCode)
     {
         AgencyContact? contact = _contacts.FirstOrDefault(contact => contact.Id == contactId);
         if (contact is null)
         {
-            throw new InvalidOperationException(
-                $"Failed to update contact. No contact found with the specified ID: {contactId}.");
+            throw new NotFoundException<AgencyContact>(contactId);
         }
 
-        contact.SetDetails(name, contactDetails, address);
+        contact.SetDetails(name, email, phone, street, city, state, country, zipCode);
     }
 
     public override void Delete()
@@ -99,5 +118,16 @@ internal class Agency : Entity, IAggregateRoot
         {
             agencyContact.Delete();
         }
+    }
+
+    public void DeleteContact(Guid contactId)
+    {
+        AgencyContact? contact = _contacts.FirstOrDefault(contact => contact.Id == contactId);
+        if (contact is null)
+        {
+            throw new NotFoundException<AgencyContact>(contactId);
+        }
+
+        contact.Delete();
     }
 }

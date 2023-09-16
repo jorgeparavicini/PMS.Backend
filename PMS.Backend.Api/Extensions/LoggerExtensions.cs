@@ -37,4 +37,10 @@ public static partial class LoggerExtensions
         message: "Executing mutation {MutationName}",
         EventName = nameof(ExecutingMutation))]
     public static partial void ExecutingMutation(this ILogger logger, string mutationName);
+
+    [LoggerMessage(eventId: 10003,
+        LogLevel.Debug,
+        message: "Executing data loader {DataLoaderName}",
+        EventName = nameof(ExecutingDataLoader))]
+    public static partial void ExecutingDataLoader(this ILogger logger, string dataLoaderName);
 }

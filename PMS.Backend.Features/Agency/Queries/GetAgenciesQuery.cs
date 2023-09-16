@@ -1,6 +1,6 @@
-﻿using MediatR;
-using PMS.Backend.Features.Agency.Models;
+﻿using HotChocolate.Resolvers;
+using MediatR;
 
-namespace PMS.Backend.Application.Queries;
+namespace PMS.Backend.Features.Agency.Queries;
 
-public record GetAgenciesQuery : IRequest<IQueryable<Agency>>;
+public record GetAgenciesQuery(IResolverContext ResolverContext) : IRequest<IQueryable<Models.Agency>>;
